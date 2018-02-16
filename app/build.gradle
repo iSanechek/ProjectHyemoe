@@ -1,0 +1,103 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android-extensions'
+
+kotlin {
+    experimental {
+        coroutines "enable"
+    }
+}
+
+androidExtensions {
+    experimental = true
+}
+
+android {
+    compileSdkVersion 27
+    buildToolsVersion '27.0.3'
+    defaultConfig {
+        applicationId "com.isanechek.wallpaper"
+        minSdkVersion 21
+        targetSdkVersion 27
+        versionCode 1
+        versionName "1.0"
+        vectorDrawables.useSupportLibrary = true
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    sourceSets {
+        main {
+            java {
+                srcDirs += 'build/generated-src/kotlin'
+            }
+        }
+    }
+}
+
+ext {
+    okHttpVersion = '3.9.1'
+    retrofitVersion = '2.3.0'
+    archVersion = '1.1.0'
+    room = '1.1.0-alpha1'
+    supportVersion = '27.0.2'
+    glide = '4.5.0'
+    koin_version = '0.8.2'
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    // kotlin
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:0.21'
+    // support
+    implementation "com.android.support:appcompat-v7:${supportVersion}"
+    implementation "com.android.support:support-v4:${supportVersion}"
+    implementation "com.android.support:recyclerview-v7:${supportVersion}"
+    implementation "com.android.support:design:${supportVersion}"
+    implementation "com.android.support:cardview-v7:${supportVersion}"
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    // arch
+    implementation "android.arch.persistence.room:runtime:${room}"
+    kapt "android.arch.persistence.room:compiler:${room}"
+    implementation "android.arch.lifecycle:extensions:${archVersion}"
+    implementation "android.arch.lifecycle:common-java8:${archVersion}"
+    implementation 'android.arch.paging:runtime:1.0.0-alpha5'
+    // koin
+    implementation "org.koin:koin-core:${koin_version}"
+    implementation "org.koin:koin-android:${koin_version}"
+    implementation "org.koin:koin-android-architecture:${koin_version}"
+    // glide
+    implementation "com.github.bumptech.glide:glide:${glide}"
+    implementation "com.github.bumptech.glide:okhttp3-integration:${glide}"
+    kapt "com.github.bumptech.glide:compiler:${glide}"
+    // network
+    implementation "com.squareup.okhttp3:okhttp:${okHttpVersion}"
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.9.1'
+    implementation "com.squareup.retrofit2:retrofit:${retrofitVersion}"
+    implementation "com.squareup.retrofit2:converter-gson:${retrofitVersion}"
+    implementation 'com.jakewharton.retrofit:retrofit2-kotlin-coroutines-experimental-adapter:1.0.0'
+    implementation 'com.github.amalhanaja:retrofit2-kotlin:1.0.0'
+    // view
+    implementation 'com.github.chrisbanes:PhotoView:2.1.3'
+    implementation('com.github.lowlevel-studios:storo:1.2.0') {
+        transitive = true
+    }
+    // test
+    testImplementation "org.koin:koin-test:${koin_version}"
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.robolectric:robolectric:3.0'
+//    testImplementation 'android.arch.core.core-testing:1.1.0'
+    testImplementation "android.arch.persistence.room:testing:${room}"
+    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+}

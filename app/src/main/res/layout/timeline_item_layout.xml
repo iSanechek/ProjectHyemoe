@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    android:layout_marginStart="@dimen/dp8"
+    android:layout_marginEnd="@dimen/dp0"
+    android:layout_marginBottom="@dimen/dp8"
+    android:elevation="@dimen/dp8"
+
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/list_item_baground">
+
+    <com.isanechek.wallpaper.view.widgets.ParallaxImageView
+        android:id="@+id/list_item_img"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:transitionName="wall_image"
+        tools:src="@drawable/test_img"/>
+
+</FrameLayout>

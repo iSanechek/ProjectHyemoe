@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">Wallpaper</string>
+    <string name="title_item_detail">Item Detail</string>
+    <string name="list_item_img">img</string>
+    <string name="details_toolbar_img">detailsImg</string>
+    <string name="arc_view_image">Arc view image</string>
+    <string name="navigation_drawer_icon">Navigation drawer icon</string>
+    <string name="user_avatar">User avatar</string>
+
+    <!--Status request message-->
+    <string name="request_category_network">request category from network</string>
+    <string name="request_wallpapers_network">request wallpapers from network</string>
+    <string name="request_wallpaper_network">request wallpaper from network</string>
+    <string name="load_category_network">load category from network</string>
+    <string name="load_wallpapers_network">load wallpapers from network</string>
+    <string name="load_wallpaper_network">load wallpaper from network</string>
+    <string name="working_category_network">working category from network</string>
+    <string name="working_wallpapers_network">working wallpapers from network</string>
+    <string name="working_wallpaper_network">working wallpaper from network</string>
+    <string name="save_category_network">save category from network</string>
+    <string name="save_wallpapers_network">save wallpapers from network</string>
+    <string name="save_wallpaper_network">save wallpaper from network</string>
+    <string name="shot_detail_image">details wallpaper image</string>
+    <string name="shot_author_image">author img</string>
+    <string name="title_item_list">Items</string>
+</resources>
