@@ -47,7 +47,10 @@ interface WallDao {
     fun loadWallpaperItem(arg0: String): Wallpaper
 
     @Query("SELECT * FROM ${Const.WALLPAPER_TABLE_NAME} WHERE title = :arg0")
-    fun loadWallpaper(arg0: String): LiveData<Wallpaper>
+    fun loadWallpaperLiveData(arg0: String): LiveData<Wallpaper>
+
+    @Query("SELECT * FROM ${Const.WALLPAPER_TABLE_NAME} WHERE title = :arg0")
+    fun loadWallpaper(arg0: String): Wallpaper
 
     @Query("SELECT * FROM ${Const.WALLPAPER_TABLE_NAME} WHERE category = :arg0")
     fun loadAllWallpapers(arg0: String) : LiveData<List<Wallpaper>>

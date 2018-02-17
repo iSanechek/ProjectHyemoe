@@ -13,7 +13,7 @@ object MappingData {
     fun mappingResourceToWallpapers2(res: com.isanechek.wallpaper.data.network.dto.Resource, album: String) : List<Wallpaper> =
             res.resourceList.items.map { Wallpaper(
                     title = it.name,
-                    publicKey = it.name,
+                    publicKey = it.publicKey,
                     publicPath = it.path,
                     preview = it.preview,
                     cacheKey = emptyString,

@@ -2,6 +2,7 @@ package com.isanechek.wallpaper.data.repository
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
+import android.content.Context
 import com.isanechek.wallpaper.data.database.DataBase
 import com.isanechek.wallpaper.data.database.Wallpaper
 import com.isanechek.wallpaper.data.network.ApiInterface
@@ -9,34 +10,31 @@ import com.isanechek.wallpaper.data.network.MappingData
 import com.isanechek.wallpaper.data.network.RequestStrategy
 import com.isanechek.wallpaper.data.network.Response
 import com.isanechek.wallpaper.utils.Const
+import com.isanechek.wallpaper.utils.FileUtils
 import com.isanechek.wallpaper.utils.RequestLimiter
 import com.isanechek.wallpaper.utils.logger
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.async
-import kotlinx.coroutines.experimental.launch
 import java.util.concurrent.TimeUnit
 
-class YaRepository(private val api: ApiInterface,
+class YaRepository(private val context: Context,
+                   private val api: ApiInterface,
                    private val database: DataBase) : Repository {
     private val requestLimiter = RequestLimiter<String>(1, TimeUnit.DAYS) // Нехер больше. В край просто передернуть надо
     private val statusMessage: MutableLiveData<Response<Any>> by lazy { MutableLiveData<Response<Any>>() }
     val status: LiveData<Response<Any>> = statusMessage
 
-    override fun loadCategory(strategy: RequestStrategy) {
+    override suspend fun loadCategory(strategy: RequestStrategy) {
         when (strategy) {
             is RequestStrategy.EMPTY_REQUEST -> {
                 logger("$TAG empty request")
                 statusMessage.value = Response.loading(message = Const.REQUEST_DATA_AND_SHOW_BIG_PROGRESS)
-                launch(CommonPool) {
-                    loadDataCategory()
-                }
+                loadDataCategory()
             }
             is RequestStrategy.DATA_REQUEST -> if (requestLimiter.shouldFetch("category")) {
                 logger("${TAG} request limiter")
                 statusMessage.value = Response.loading(message = Const.REQUEST_UPDATE_AND_SHOW_SMALL_PROGRESS)
-                launch(CommonPool) {
-                    loadDataCategory()
-                }
+                loadDataCategory()
             } else {
                 statusMessage.value = Response.success(message = Const.WAIT_AND_SHOW_NO_NEW)
                 logger("${TAG} Соси писю!!!")
@@ -44,9 +42,7 @@ class YaRepository(private val api: ApiInterface,
             is RequestStrategy.UPDATE_REQUEST -> {
                 logger("${TAG} update category")
                 statusMessage.value = Response.loading(message = Const.REQUEST_UPDATE_DATE)
-                launch(CommonPool) {
-                    loadDataCategory()
-                }
+                loadDataCategory()
                 requestLimiter.reset("category")
             }
         }
@@ -103,21 +99,17 @@ class YaRepository(private val api: ApiInterface,
         }
     }
 
-    override fun loadImages(category: String, strategy: RequestStrategy) {
+    override suspend fun loadImages(category: String, strategy: RequestStrategy) {
         when (strategy) {
             is RequestStrategy.EMPTY_REQUEST -> {
                 logger("$TAG loadImages empty request")
                 statusMessage.value = Response.loading(message = Const.REQUEST_DATA_AND_SHOW_BIG_PROGRESS)
-                launch(CommonPool) {
-                    loadDataWallpapers(category)
-                }
+                loadDataWallpapers(category)
             }
             is RequestStrategy.DATA_REQUEST -> if (requestLimiter.shouldFetch(category)) {
                 logger("$TAG loadImages request limiter $category")
                 statusMessage.value = Response.loading(message = Const.REQUEST_UPDATE_AND_SHOW_SMALL_PROGRESS)
-                launch(CommonPool) {
-                    loadDataWallpapers(category)
-                }
+                loadDataWallpapers(category)
             } else {
                 statusMessage.value = Response.success(message = Const.WAIT_AND_SHOW_NO_NEW)
                 logger("$TAG Соси писю!!!")
@@ -125,9 +117,7 @@ class YaRepository(private val api: ApiInterface,
             is RequestStrategy.UPDATE_REQUEST -> {
                 logger("$TAG loadImages update category $category")
                 statusMessage.value = Response.loading(message = Const.REQUEST_UPDATE_DATE)
-                launch(CommonPool) {
-                    loadDataWallpapers(category)
-                }
+                loadDataWallpapers(category)
             }
         }
     }
@@ -163,9 +153,7 @@ class YaRepository(private val api: ApiInterface,
             val newData = result.map { it.title }.toSet()
             cache.filterNot { it.title in newData }.map { item ->
                 logger("$TAG Wallpaper item for remove ${item.title}")
-                async(CommonPool) {
-                    database.wallpaper().removeWallpaper(item)
-                }.await()
+                database.wallpaper().removeWallpaper(item)
             }
 
             // Check items for update
@@ -195,11 +183,32 @@ class YaRepository(private val api: ApiInterface,
         }
     }
 
-    override fun loadImage(item: Wallpaper) {
+    override suspend fun loadImage(item: Wallpaper) {
+        val key = item.publicKey!!
+        val ppath = item.publicPath!!
+        logger("Key $key Path $ppath")
+        val response = api.getDownloadLink(item.publicKey!!, item.publicPath!!).await()
+        val path = FileUtils.saveFile(context, response.href)
+        logger("result path $path")
+        item.fullCachePath = path
+        async {
+            database.wallpaper().updateWallpaper(item)
+        }.await()
     }
+
+
+    override suspend fun updateWallpaper(wallpaper: Wallpaper) {
+        async {
+            database.wallpaper().updateWallpaper(wallpaper)
+        }
+    }
+
+    override fun loadWallpaper(id: String): LiveData<Wallpaper> =
+            database.wallpaper().loadWallpaperLiveData(id)
 
     companion object {
         private const val TAG = "YaRepository"
         private const val DEFAULT_KEY = "https://yadi.sk/d/vAlQ0s7O3PjV6s"
+//        private const val DEFAULT_KEY = "https://yadi.sk/d/x8WJ-PcL3JNkwy"
     }
 }

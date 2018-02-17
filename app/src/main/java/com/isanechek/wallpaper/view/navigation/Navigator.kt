@@ -5,9 +5,9 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentTransaction
 import android.support.v7.app.AppCompatActivity
-import com.isanechek.wallpaper.utils.ANIM
+import com.isanechek.wallpaper.utils._anim
 import com.isanechek.wallpaper.utils.Experimental
-import com.isanechek.wallpaper.utils.ID
+import com.isanechek.wallpaper.utils._id
 import com.isanechek.wallpaper.utils.log
 
 class Navigator constructor(private val activity: AppCompatActivity,
@@ -20,7 +20,7 @@ class Navigator constructor(private val activity: AppCompatActivity,
     private var fragmentMap: LinkedHashMap<String, Screen> = linkedMapOf()
     lateinit var fragmentChangeListener: FragmentChangeListener
 
-    private val containerId = ID.fragment_container2 //TODO add to builder
+    private val containerId = _id.fragment_container2 //TODO add to builder
     private var activeTag: String? = null
     private var rootTag: String? = null
     private var isCustomAnimationUsed = false
@@ -37,7 +37,7 @@ class Navigator constructor(private val activity: AppCompatActivity,
     private fun addOpenTransition(transaction: FragmentTransaction, withCustomAnimation: Boolean) {
         if (withCustomAnimation) {
             isCustomAnimationUsed = true
-            transaction.setCustomAnimations(ANIM.slide_in_start, 0)
+            transaction.setCustomAnimations(_anim.slide_in_start, 0)
         } else {
             isCustomAnimationUsed = false
             transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
@@ -159,7 +159,7 @@ class Navigator constructor(private val activity: AppCompatActivity,
         val isKeep = backStrategy is BackStrategy.KEEP
         fragmentManager.inTransaction {
             if (isCustomAnimationUsed)
-                setCustomAnimations(0, ANIM.slide_out_finish)
+                setCustomAnimations(0, _anim.slide_out_finish)
             if (isKeep) {
                 hide(screen?.fragment)
             } else if (backStrategy is BackStrategy.DESTROY) {

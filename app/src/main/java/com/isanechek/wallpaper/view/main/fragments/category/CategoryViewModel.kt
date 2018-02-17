@@ -5,6 +5,8 @@ import android.arch.paging.LivePagedListBuilder
 import com.isanechek.wallpaper.data.database.DataBase
 import com.isanechek.wallpaper.data.network.RequestStrategy
 import com.isanechek.wallpaper.data.repository.YaRepository
+import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.launch
 
 /**
  * Created by isanechek on 9/26/17.
@@ -18,6 +20,8 @@ class CategoryViewModel(private val repository: YaRepository,
             .build()
 
     fun load(strategy: RequestStrategy) {
-        repository.loadCategory(strategy)
+        launch(UI) {
+            repository.loadCategory(strategy)
+        }
     }
 }

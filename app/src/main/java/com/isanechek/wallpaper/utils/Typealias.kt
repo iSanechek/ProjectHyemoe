@@ -2,9 +2,9 @@ package com.isanechek.wallpaper.utils
 
 import com.isanechek.wallpaper.R
 
-typealias S = R.string
-typealias C = R.color
-typealias D = R.drawable
-typealias L = R.layout
-typealias ID = R.id
-typealias ANIM = R.anim
+typealias _string = R.string
+typealias _color = R.color
+typealias _drawable = R.drawable
+typealias _layout = R.layout
+typealias _id = R.id
+typealias _anim = R.anim

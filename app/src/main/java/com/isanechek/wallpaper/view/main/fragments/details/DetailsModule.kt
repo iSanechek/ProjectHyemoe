@@ -4,5 +4,5 @@ import org.koin.android.architecture.ext.viewModel
 import org.koin.dsl.module.applicationContext
 
 val detailsModule = applicationContext {
-    viewModel { DetailsViewModel(get(), get()) }
+    viewModel { DetailsViewModel(get()) }
 }

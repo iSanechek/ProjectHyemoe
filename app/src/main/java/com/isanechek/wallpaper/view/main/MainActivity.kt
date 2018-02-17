@@ -33,13 +33,13 @@ class MainActivity : BaseActivity(), NavAdapterItemSelectedListener {
     private val SCALE_KEY = "SCALE_KEY"
 
     // view's
-    private val toolbar: Toolbar by lazy { findViewById<Toolbar>(ID.toolbar) }
-    private val toolbarTitle: AnimatedTextView by lazy { findViewById<AnimatedTextView>(ID.toolbarTitle) }
-    private val arcImage: AnimatedImageView by lazy { findViewById<AnimatedImageView>(ID.arcImage) }
-    private val arcView: ArcView by lazy { findViewById<ArcView>(ID.arcView) }
-    private val navView: NavigationDrawerView by lazy { findViewById<NavigationDrawerView>(ID.navView) }
-    private val drawer: DrawerLayout by lazy { findViewById<DrawerLayout>(ID.drawerLayout) }
-    private val mainView: CardView by lazy { findViewById<CardView>(ID.mainView) }
+    private val toolbar: Toolbar by lazy { findViewById<Toolbar>(_id.toolbar) }
+    private val toolbarTitle: AnimatedTextView by lazy { findViewById<AnimatedTextView>(_id.toolbarTitle) }
+    private val arcImage: AnimatedImageView by lazy { findViewById<AnimatedImageView>(_id.arcImage) }
+    private val arcView: ArcView by lazy { findViewById<ArcView>(_id.arcView) }
+    private val navView: NavigationDrawerView by lazy { findViewById<NavigationDrawerView>(_id.navView) }
+    private val drawer: DrawerLayout by lazy { findViewById<DrawerLayout>(_id.drawerLayout) }
+    private val mainView: CardView by lazy { findViewById<CardView>(_id.mainView) }
 
     private lateinit var viewModel: MainViewModel
     private val pref: Preferences by lazy { Preferences() }
@@ -51,10 +51,9 @@ class MainActivity : BaseActivity(), NavAdapterItemSelectedListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(L.main_activity_layout)
-        initViews()
-//        viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
+        setContentView(_layout.main_activity_layout)
         viewModel = getViewModel()
+        initViews()
         setupObservers()
         logger("Hello from main activity")
         logger("Pref category ${category}")
@@ -119,7 +118,7 @@ class MainActivity : BaseActivity(), NavAdapterItemSelectedListener {
         } else if (isArcIcon) {
             isArcIcon = false
             setArcHamburgerIconState()
-            toolbar.setBackgroundColor(takeColor(C.bg_color))
+            toolbar.setBackgroundColor(takeColor(_color.bg_color))
         }
 
         val checkPosition = when(tag) {
@@ -181,18 +180,18 @@ class MainActivity : BaseActivity(), NavAdapterItemSelectedListener {
         arcView.onClick {
             super.onBackPressed()
         }
-        arcImage.setAnimatedImage(D.hamb)
+        arcImage.setAnimatedImage(_drawable.hamb)
     }
 
     private fun setArcHamburgerIconState() {
         arcView.onClick {
             drawer.openDrawer(GravityCompat.START)
         }
-        arcImage.setAnimatedImage(D.hamb)
+        arcImage.setAnimatedImage(_drawable.hamb)
     }
 
     private fun setupObservers() {
-        viewModel?.getNavigationState()?.observe(this, Observer { state ->
+        viewModel.getNavigationState().observe(this, Observer { state ->
             if (state == null) {
                 logger("State null")
                 if (category == Const.EMPTY) {

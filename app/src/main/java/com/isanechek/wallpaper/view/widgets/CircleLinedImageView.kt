@@ -6,7 +6,7 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.support.v7.widget.AppCompatImageView
 import android.util.AttributeSet
-import com.isanechek.wallpaper.utils.D
+import com.isanechek.wallpaper.utils._drawable
 import com.isanechek.wallpaper.utils.extensions.toPx
 
 class CircleLinedImageView : AppCompatImageView {
@@ -26,7 +26,7 @@ class CircleLinedImageView : AppCompatImageView {
             strokeWidth = LINE_WIDTH
             style = Paint.Style.STROKE
         }
-        setImageResource(D.ic_menu_gallery) //TODO remove
+        setImageResource(_drawable.ic_menu_gallery) //TODO remove
         padding = padding.toPx(context)
         setPadding(padding, padding, padding, padding)
     }

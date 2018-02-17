@@ -3,9 +3,7 @@ package com.isanechek.wallpaper.view.main.fragments.timeline
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.content.ContextCompat
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
@@ -13,12 +11,9 @@ import android.view.View
 import com.isanechek.wallpaper.R
 import com.isanechek.wallpaper.data.Message
 import com.isanechek.wallpaper.data.database.Wallpaper
-import com.isanechek.wallpaper.data.network.MappingData
 import com.isanechek.wallpaper.data.network.RequestStrategy
-import com.isanechek.wallpaper.data.network.Status
 import com.isanechek.wallpaper.utils.Const
-import com.isanechek.wallpaper.utils.HelperUtil
-import com.isanechek.wallpaper.utils.L
+import com.isanechek.wallpaper.utils._layout
 import com.isanechek.wallpaper.utils.extensions.extraWithKey
 import com.isanechek.wallpaper.utils.logger
 import com.isanechek.wallpaper.utils.pref.Preferences
@@ -47,7 +42,7 @@ class TimelineFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, T
     private lateinit var category: String
     private val pref by lazy { Preferences() }
 
-    override fun layoutResId(): Int = L.fragment_list_layout
+    override fun layoutResId(): Int = _layout.fragment_list_layout
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)

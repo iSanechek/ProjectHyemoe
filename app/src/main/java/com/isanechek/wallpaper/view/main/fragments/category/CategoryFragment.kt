@@ -4,7 +4,7 @@ import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.view.View
 import com.isanechek.wallpaper.data.network.RequestStrategy
-import com.isanechek.wallpaper.utils.L
+import com.isanechek.wallpaper.utils._layout
 import com.isanechek.wallpaper.utils.logger
 import com.isanechek.wallpaper.view.base.BaseFragment
 import com.isanechek.wallpaper.view.main.fragments.timeline.TimelineFragment
@@ -29,7 +29,7 @@ class CategoryFragment : BaseFragment(), CategoryAdapter.ItemClickListener {
         fun createInstance() : CategoryFragment = CategoryFragment()
     }
 
-    override fun layoutResId(): Int = L.fragment_list_layout
+    override fun layoutResId(): Int = _layout.fragment_list_layout
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
