@@ -21,8 +21,8 @@ class NavigationViewAdapter constructor(navigationItemList: MutableList<Navigati
     }
 
     override fun View.bind(item: NavigationItem) {
-        val itemText: TextView = findViewById<TextView>(_id.itemText)
-        val itemIcon: ImageView = findViewById<ImageView>(_id.itemIcon)
+        val itemText: TextView = findViewById(_id.itemText)
+        val itemIcon: ImageView = findViewById(_id.itemIcon)
         itemText.text = item.name
         itemIcon.setImageResource(item.icon)
         itemIcon.tint(item.itemIconColor)

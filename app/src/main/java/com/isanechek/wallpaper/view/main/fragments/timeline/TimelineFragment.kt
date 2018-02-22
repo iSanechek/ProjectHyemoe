@@ -123,7 +123,7 @@ class TimelineFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, T
     }
 
     private fun sendDataToActivity(key: String, message: String) {
-        ViewModelProviders.of(activity).get(MainViewModel::class.java).sendMessage(Message(key, message))
+//        ViewModelProviders.of(activity).get(MainViewModel::class.java).sendMessage(Message(key, message))
     }
 
     private fun showMessage(msg: String?, update: Boolean = false) {

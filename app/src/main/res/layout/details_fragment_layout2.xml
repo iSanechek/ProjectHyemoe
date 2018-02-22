@@ -7,27 +7,59 @@
     android:layout_height="match_parent">
 
 
-
-    <ImageView
-        android:id="@+id/detailsImgCover"
+    <com.isanechek.wallpaper.view.widgets.SquareCardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:contentDescription="TODO"
-        tools:scaleType="centerCrop"
-        tools:src="@drawable/test_img"
-        tools:ignore="ContentDescription,HardcodedText" />
-    <Button
-        android:id="@+id/detailsInstallButton"
+        android:layout_height="350dp"
+        android:clipToPadding="true"
+        android:layout_marginStart="@dimen/dp16"
+        android:layout_marginTop="@dimen/dp8"
+        app:cardCornerRadius="@dimen/dp16"
+        app:cardElevation="@dimen/dp8">
+
+        <ImageView
+            android:id="@+id/detailsImgCover"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="TODO"
+            tools:scaleType="centerCrop"
+            tools:src="@tools:sample/avatars"
+            tools:ignore="ContentDescription,HardcodedText" />
+
+    </com.isanechek.wallpaper.view.widgets.SquareCardView>
+
+
+
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="16dp"
-        android:text="Install"
-        android:layout_marginStart="16dp"
-        android:textColor="@color/my_accent_color"
-        android:textStyle="normal|bold"
-        android:theme="@style/InstallBtn" />
+        android:orientation="vertical"
+        android:layout_gravity="bottom">
+        <Button
+            android:id="@+id/detailsInstallButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="16dp"
+            android:text="Install"
+            android:layout_marginStart="16dp"
+            android:textColor="@color/my_accent_color"
+            android:textStyle="normal|bold"
+            android:theme="@style/InstallBtn" />
+
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/my_accent_color">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ADS"
+                android:layout_gravity="center"/>
+        </FrameLayout>
+
+    </LinearLayout>
 
 
 

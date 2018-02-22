@@ -22,7 +22,8 @@ val netModule = applicationContext {
 
 fun createOkHttpClient(): OkHttpClient {
     val logging = HttpLoggingInterceptor()
-    logging.level = if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BASIC else HttpLoggingInterceptor.Level.NONE
+    logging.level = if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BASIC
+    else HttpLoggingInterceptor.Level.NONE
     return OkHttpClient.Builder()
             .addInterceptor(logging)
             .connectTimeout(30, TimeUnit.SECONDS)
@@ -30,11 +31,9 @@ fun createOkHttpClient(): OkHttpClient {
             .build()
 }
 
-fun createYandexApi(client: OkHttpClient): ApiInterface {
-    return createRetrofitService {
-        this.baseUrl = "https://cloud-api.yandex.net"
-        this.client = client
-        converterFactories = arrayListOf(GsonConverterFactory.create())
-        callAdapterFactories = arrayListOf(CoroutineCallAdapterFactory())
-    }
+fun createYandexApi(client: OkHttpClient): ApiInterface = createRetrofitService {
+    this.baseUrl = "https://cloud-api.yandex.net"
+    this.client = client
+    converterFactories = arrayListOf(GsonConverterFactory.create())
+    callAdapterFactories = arrayListOf(CoroutineCallAdapterFactory())
 }

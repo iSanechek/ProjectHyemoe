@@ -56,8 +56,7 @@ class MainActivity : BaseActivity(), NavAdapterItemSelectedListener {
         initViews()
         setupObservers()
         logger("Hello from main activity")
-        logger("Pref category ${category}")
-
+        logger("Pref category $category")
     }
 
     override fun onSaveInstanceState(outState: Bundle?) {
@@ -104,11 +103,7 @@ class MainActivity : BaseActivity(), NavAdapterItemSelectedListener {
     }
 
     override fun onFragmentChanged(currentTag: String, currentFragment: Fragment) {
-        val tag = if (currentFragment is BaseFragment) {
-            currentFragment.getTitle()
-        } else {
-            emptyString
-        }
+        val tag = (currentFragment as? BaseFragment)?.getTitle() ?: emptyString
 
         toolbarTitle.setAnimatedText(tag, 100)
         if (currentTag == Id.DETAIL.fullName) {
@@ -137,10 +132,8 @@ class MainActivity : BaseActivity(), NavAdapterItemSelectedListener {
         // toolbar
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-        when {
-            isArcIcon || isDrawerOpened -> setArcArrowState()
-            else -> setArcHamburgerIconState()
-        }
+        if (isArcIcon || isDrawerOpened) setArcArrowState()
+        else setArcHamburgerIconState()
 
         // navView
         navView.navigationItemSelectListener = this
