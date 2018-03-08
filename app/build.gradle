@@ -44,7 +44,7 @@ android {
 
     defaultConfig {
         applicationId "com.isanechek.wallpaper"
-        minSdkVersion 21
+        minSdkVersion 19
         targetSdkVersion 27
         versionCode versionNumber
         versionName "${versionMajor}.${versionMinor}.${versionPatch} (${versionBuild})"
@@ -52,6 +52,28 @@ android {
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
+    flavorDimensions "wtf"
+    productFlavors {
+        stable {
+            dimension "wtf"
+        }
+        beta {
+            applicationId 'com.isanechek.wallpaper.beta'
+            versionCode versionNumber
+            versionName "${versionMajor}.${versionMinor}.${versionPatch} (${versionBuild}) beta"
+            dimension "wtf"
+        }
+
+        dev {
+            minSdkVersion '21'
+            applicationId 'com.isanechek.wallpaper.debug'
+            versionCode versionNumber
+            versionName "${versionMajor}.${versionMinor}.${versionPatch} (${versionBuild}) dev_api_21"
+            dimension "wtf"
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
