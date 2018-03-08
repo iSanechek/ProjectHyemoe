@@ -1,3 +1,6 @@
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
@@ -13,15 +16,38 @@ androidExtensions {
     experimental = true
 }
 
+static def getDateTime() {
+    DateFormat df = new SimpleDateFormat("dd MMMMM yyyy");
+    return df.format(new Date()) + " г.";
+}
+
 android {
     compileSdkVersion 27
     buildToolsVersion '27.0.3'
+
+    def fileNaming = "apk/ProjectHyemoe"
+    def versionNumber = 0
+    def versionMajor = "0"
+    def versionMinor = "2"
+    def versionPatch = "1.1"
+
+    def versionBuild = -1
+    def versionPropsFile = file('version.properties')
+    if (versionPropsFile.canRead()) {
+        def Properties versionProps = new Properties()
+        versionProps.load(new FileInputStream(versionPropsFile))
+        versionBuild = versionProps['VERSION_BUILD'].toInteger() + 1
+        versionProps['VERSION_BUILD'] = versionBuild.toString()
+        versionProps['DATE_BUILD'] = getDateTime()
+        versionProps.store(versionPropsFile.newWriter(), null)
+    }
+
     defaultConfig {
         applicationId "com.isanechek.wallpaper"
         minSdkVersion 21
         targetSdkVersion 27
-        versionCode 1
-        versionName "1.0"
+        versionCode versionNumber
+        versionName "${versionMajor}.${versionMinor}.${versionPatch} (${versionBuild})"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -35,6 +61,11 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+    android.applicationVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = "${fileNaming}-${versionMajor}.${versionMinor}.${versionPatch}.apk"
+        }
     }
     sourceSets {
         main {
