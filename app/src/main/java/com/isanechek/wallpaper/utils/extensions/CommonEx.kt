@@ -3,6 +3,7 @@ package com.isanechek.wallpaper.utils.extensions
 import android.content.Context
 import android.os.Handler
 import android.support.v4.content.ContextCompat
+import android.widget.FrameLayout
 
 infix fun Context.takeColor(colorId: Int) = ContextCompat.getColor(this, colorId)
 

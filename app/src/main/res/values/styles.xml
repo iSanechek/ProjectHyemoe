@@ -27,6 +27,8 @@
         <item name="android:elevation">4dp</item>
     </style>
 
+    <style name="AppTheme.WallpaperDetail" parent="AppTheme" />
+
     <!--Set Wallpaper style-->
     <style name="InstallBtn" parent="Theme.AppCompat.Light">
         <item name="colorControlHighlight">@color/my_accent_color</item>

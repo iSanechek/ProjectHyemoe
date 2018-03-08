@@ -135,13 +135,6 @@ class YaRepository(private val context: Context,
                     true )
                     .await()
 
-
-            val ee = api.getPublicList("")
-
-            if (ee.isCompletedExceptionally) {
-
-            }
-
             val result = MappingData.mappingResourceToWallpapers2(response, category)
             logger("$TAG loadDataWallpapers result ${result.size}")
             val cache = async(CommonPool) {
@@ -183,6 +176,7 @@ class YaRepository(private val context: Context,
         }
     }
 
+    val _data = MutableLiveData<Wallpaper>()
     override suspend fun loadImage(item: Wallpaper) {
         val key = item.publicKey!!
         val ppath = item.publicPath!!
@@ -191,9 +185,11 @@ class YaRepository(private val context: Context,
         val path = FileUtils.saveFile(context, response.href)
         logger("result path $path")
         item.fullCachePath = path
-        async {
-            database.wallpaper().updateWallpaper(item)
-        }.await()
+//        async {
+//            database.wallpaper().updateWallpaper(item)
+//        }.await()
+
+        _data.postValue(item)
     }
 
 
@@ -203,8 +199,8 @@ class YaRepository(private val context: Context,
         }
     }
 
-    override fun loadWallpaper(id: String): LiveData<Wallpaper> =
-            database.wallpaper().loadWallpaperLiveData(id)
+    override fun loadWallpaper(id: String): LiveData<Wallpaper> = _data
+//            database.wallpaper().loadWallpaperLiveData(id)
 
     companion object {
         private const val TAG = "YaRepository"

@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity
 import com.isanechek.wallpaper.utils._anim
 import com.isanechek.wallpaper.utils.Experimental
 import com.isanechek.wallpaper.utils._id
-import com.isanechek.wallpaper.utils.log
 
 class Navigator constructor(private val activity: AppCompatActivity,
                             private val fragmentManager: FragmentManager) {
@@ -20,18 +19,18 @@ class Navigator constructor(private val activity: AppCompatActivity,
     private var fragmentMap: LinkedHashMap<String, Screen> = linkedMapOf()
     lateinit var fragmentChangeListener: FragmentChangeListener
 
-    private val containerId = _id.fragment_container2 //TODO add to builder
+    private val containerId = _id.main_fragment_container //TODO add to builder
     private var activeTag: String? = null
     private var rootTag: String? = null
     private var isCustomAnimationUsed = false
 
     private fun runDebugLog() {
-        log {
-            "Chain [${fragmentMap.size}] - ${fragmentMap.keys.joinToString(" -> ") {
-                val split: List<String> = it.split(".")
-                split[split.size - 1]
-            }}"
-        }
+//        log {
+//            "Chain [${fragmentMap.size}] - ${fragmentMap.keys.joinToString(" -> ") {
+//                val split: List<String> = it.split(".")
+//                split[split.size - 1]
+//            }}"
+//        }
     }
 
     private fun addOpenTransition(transaction: FragmentTransaction, withCustomAnimation: Boolean) {

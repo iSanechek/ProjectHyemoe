@@ -2,19 +2,23 @@ package com.isanechek.wallpaper.view.main.fragments.details
 
 import android.arch.lifecycle.Observer
 import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
+import android.view.View
+import android.widget.Button
+import android.widget.ImageView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.RequestManager
 import com.isanechek.wallpaper.data.DownloadService
 import com.isanechek.wallpaper.data.database.Wallpaper
 import com.isanechek.wallpaper.data.network.Status
+import com.isanechek.wallpaper.utils._id
 import com.isanechek.wallpaper.utils._layout
 import com.isanechek.wallpaper.utils.extensions.emptyString
 import com.isanechek.wallpaper.utils.extensions.onClick
 import com.isanechek.wallpaper.utils.logger
 import com.isanechek.wallpaper.view.base.BaseFragment
-import kotlinx.android.synthetic.main.details_fragment_layout2.*
+import com.isanechek.wallpaper.view.widgets.DragLayout
+import kotlinx.android.synthetic.main.details_activity_layout.*
 import org.koin.android.architecture.ext.getViewModel
 
 
@@ -24,10 +28,16 @@ import org.koin.android.architecture.ext.getViewModel
 class DetailsFragment : BaseFragment() {
     private var btnEnabled = true
     private lateinit var _title: String
-    private lateinit var viewModel: DetailsViewModel
     private var wall: Wallpaper? = null
 
-    override fun layoutResId(): Int = _layout.details_fragment_layout2
+    private lateinit var viewModel: DetailsViewModel
+    private lateinit var requestManager: RequestManager
+    // view's
+    private lateinit var container: DragLayout
+    private lateinit var cover: ImageView
+    private lateinit var installBtn: Button
+
+    override fun layoutResId(): Int = _layout.details_activity_layout
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
@@ -37,32 +47,42 @@ class DetailsFragment : BaseFragment() {
 
     override fun getTitle(): String = _title
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        container = view.findViewById(_id.drag_layout)
+        cover = container.findViewById(_id.details_wallpaper)
+        installBtn = container.findViewById(_id.details_install_button)
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = getViewModel()
+        requestManager = Glide.with(this)
 
+        detailArcView.onClick {
+            navigator.goBack()
+        }
+
+        initLoadCover()
         initObserver()
+    }
 
-        val path = wall?.preview
-        Glide.with(this)
-                .asBitmap()
-                .load(path)
-                .into(detailsImgCover)
+    private fun initLoadCover() {
+        Glide.with(this).load(wall?.preview).into(cover)
     }
 
     private fun initObserver() {
 
-        DownloadService.startDownloads(activity, wall!!)
         viewModel.getWallpaper(wall!!.title).observe(this, Observer<Wallpaper> {
             logger("RESULT ${it?.fullCachePath}")
             if (it != null && !it.fullCachePath.isNullOrEmpty()) {
                 logger("$TAG point")
-                detailsInstallButton.apply {
-                    isEnabled = btnEnabled
-                    onClick {
-                        installWallpaper(Uri.parse(it.fullCachePath))
-                    }
-                }
+//                detailsInstallButton.apply {
+//                    isEnabled = btnEnabled
+//                    onClick {
+//                        installWallpaper(Uri.parse(it.fullCachePath))
+//                    }
+//                }
             } else {
                 logger("$TAG point pony")
                 DownloadService.startDownloads(activity, wall!!)
@@ -89,15 +109,6 @@ class DetailsFragment : BaseFragment() {
 
     }
 
-    private fun installWallpaper(path: Uri) {
-        Intent(Intent.ACTION_ATTACH_DATA).run {
-            flags = Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION
-            addCategory(Intent.CATEGORY_DEFAULT)
-            setDataAndType(path, "image/jpeg")
-            putExtra("mimeType", "image/jpeg")
-            startActivity(Intent.createChooser(this, "Install Wallpaper"))
-        }
-    }
 
     companion object {
         private const val TAG = "DetailsFragment"

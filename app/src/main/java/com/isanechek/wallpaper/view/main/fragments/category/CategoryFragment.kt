@@ -49,7 +49,7 @@ class CategoryFragment : BaseFragment(), CategoryAdapter.ItemClickListener {
             if (response != null) {
                 logger("$TAG Response size ${response.size}")
                 refreshHideIfShow()
-                adapter?.setList(response)
+                adapter?.submitList(response)
             } else logger("$TAG Response NULL")
         })
         viewModel.load(RequestStrategy.DATA_REQUEST)

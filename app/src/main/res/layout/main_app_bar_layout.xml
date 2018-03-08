@@ -11,6 +11,7 @@
     app:cardUseCompatPadding="false"
     tools:context=".view.main.MainActivity">
     <android.support.design.widget.AppBarLayout
+        android:id="@+id/mainAppBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
@@ -87,5 +88,5 @@
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/main_content_layout" />
+    <!--<include layout="@layout/main_content_layout" />-->
 </android.support.v7.widget.CardView>

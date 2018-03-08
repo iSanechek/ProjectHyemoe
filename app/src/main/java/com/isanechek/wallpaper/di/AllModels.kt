@@ -2,6 +2,7 @@ package com.isanechek.wallpaper.di
 
 import com.isanechek.wallpaper.data.database.databaseModule
 import com.isanechek.wallpaper.data.repository.reposModule
+import com.isanechek.wallpaper.utils.notificationUtilsModule
 import com.isanechek.wallpaper.view.main.fragments.category.categoryModule
 import com.isanechek.wallpaper.view.main.fragments.details.detailsModule
 import com.isanechek.wallpaper.view.main.fragments.timeline.timelineModule
@@ -14,5 +15,6 @@ val allModels = listOf(
         categoryModule,
         detailsModule,
         timelineModule,
-        mainModel
+        mainModel,
+        notificationUtilsModule
 )

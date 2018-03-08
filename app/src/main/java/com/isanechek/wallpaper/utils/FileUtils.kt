@@ -24,11 +24,14 @@ import java.io.FileOutputStream
 object FileUtils {
 
     fun saveFile(context: Context, downloadUrl: String): String? {
-        val directory = context.getDir("cache", Context.MODE_PRIVATE)
+        val directory = context.getExternalFilesDir("Wallpaper")
         val fileName = Uri.parse(downloadUrl).lastPathSegment
-        val cacheFile = File(directory, "$fileName.jpg")
+        val cacheFile = File(directory, "temp.jpg")
         if (directory.exists()) {
             directory.mkdirs()
+//            if (created) {
+//                File(directory, ".nomedia").mkdirs()
+//            }
         }
 
         val future: FutureTarget<Bitmap> = Glide
@@ -55,15 +58,10 @@ object FileUtils {
                     val docId = DocumentsContract.getDocumentId(uri)
                     val split = docId.split(":".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
                     val type = split[0]
-
-                    if ("primary".equals(type, ignoreCase = true)) {
+                    if ("primary".equals(type, ignoreCase = true))
                         return Environment.getExternalStorageDirectory().toString() + "/" + split[1]
-                    }
-
-                    // TODO handle non-primary volumes
                 }
                 isDownloadsDocument(uri) -> {
-
                     val id = DocumentsContract.getDocumentId(uri)
                     val contentUri = ContentUris.withAppendedId(
                             Uri.parse("content://downloads/public_downloads"), java.lang.Long.valueOf(id))
@@ -115,7 +113,6 @@ object FileUtils {
         val projection = arrayOf(column)
         try {
             cursor = context.contentResolver.query(uri, projection, selection, selectionArgs, null)
-
             if (cursor != null && cursor.moveToFirst()) {
                 if (DEBUG) {
                     DatabaseUtils.dumpCursor(cursor)

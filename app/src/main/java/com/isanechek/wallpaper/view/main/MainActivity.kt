@@ -3,12 +3,14 @@ package com.isanechek.wallpaper.view.main
 import android.arch.lifecycle.Observer
 import android.graphics.Color
 import android.os.Bundle
+import android.support.design.widget.AppBarLayout
 import android.support.v4.app.Fragment
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.widget.CardView
 import android.support.v7.widget.Toolbar
 import android.view.View
+import android.widget.FrameLayout
 import com.isanechek.wallpaper.utils.*
 import com.isanechek.wallpaper.utils.extensions.*
 import com.isanechek.wallpaper.utils.pref.Preferences
@@ -40,7 +42,7 @@ class MainActivity : BaseActivity(), NavAdapterItemSelectedListener {
     private val navView: NavigationDrawerView by lazy { findViewById<NavigationDrawerView>(_id.navView) }
     private val drawer: DrawerLayout by lazy { findViewById<DrawerLayout>(_id.drawerLayout) }
     private val mainView: CardView by lazy { findViewById<CardView>(_id.mainView) }
-
+    private lateinit var container: FrameLayout
     private lateinit var viewModel: MainViewModel
     private val pref: Preferences by lazy { Preferences() }
     private var category = pref.defaultCategory
@@ -66,6 +68,7 @@ class MainActivity : BaseActivity(), NavAdapterItemSelectedListener {
             put(TRANSLATION_X_KEY, translationX)
             put(CARD_ELEVATION_KEY, scale)
             put(SCALE_KEY, cardElevation)
+
         }
     }
 
@@ -78,6 +81,13 @@ class MainActivity : BaseActivity(), NavAdapterItemSelectedListener {
                 cardElevation = it.getFloat(SCALE_KEY)
             }
         }
+    }
+
+    private fun containerMargins(start: Int = 0, top: Int = 0, bottom: Int = 0, end: Int = 0): FrameLayout.LayoutParams {
+        val match = FrameLayout.LayoutParams.MATCH_PARENT
+        val params = FrameLayout.LayoutParams(match, match)
+        params.setMargins(start, top, end, bottom)
+        return params
     }
 
     override fun onDestroy() {
@@ -107,9 +117,9 @@ class MainActivity : BaseActivity(), NavAdapterItemSelectedListener {
 
         toolbarTitle.setAnimatedText(tag, 100)
         if (currentTag == Id.DETAIL.fullName) {
-            isArcIcon = true
-            setArcArrowState()
-            toolbar.setBackgroundColor(Color.TRANSPARENT)
+//            isArcIcon = true
+//            setArcArrowState()
+            logger("Show details fragment!")
         } else if (isArcIcon) {
             isArcIcon = false
             setArcHamburgerIconState()
@@ -128,7 +138,11 @@ class MainActivity : BaseActivity(), NavAdapterItemSelectedListener {
         }
     }
 
+
     private fun initViews() {
+        container = FrameLayout(this)
+                .apply { id = _id.main_fragment_container }
+        mainView.addView(container, containerMargins(top = 75.toPx(this)))
         // toolbar
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)

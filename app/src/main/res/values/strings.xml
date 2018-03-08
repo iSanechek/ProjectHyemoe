@@ -23,4 +23,10 @@
     <string name="shot_detail_image">details wallpaper image</string>
     <string name="shot_author_image">author img</string>
     <string name="title_item_list">Items</string>
+    <string name="wallpaper_details_description">wallpaper details description</string>
+
+    <!---->
+    <string name="notif_title_download_complited">Download done</string>
+    <string name="notif_title_download_error">Download error</string>
+    <string name="notif_tap_to_open">Tap to open</string>
 </resources>

@@ -1,15 +1,14 @@
 package com.isanechek.wallpaper.view.main.fragments.timeline
 
 import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.os.Bundle
+import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.content.ContextCompat
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import com.isanechek.wallpaper.R
-import com.isanechek.wallpaper.data.Message
 import com.isanechek.wallpaper.data.database.Wallpaper
 import com.isanechek.wallpaper.data.network.RequestStrategy
 import com.isanechek.wallpaper.utils.Const
@@ -18,8 +17,7 @@ import com.isanechek.wallpaper.utils.extensions.extraWithKey
 import com.isanechek.wallpaper.utils.logger
 import com.isanechek.wallpaper.utils.pref.Preferences
 import com.isanechek.wallpaper.view.base.BaseFragment
-import com.isanechek.wallpaper.view.main.MainViewModel
-import com.isanechek.wallpaper.view.main.fragments.details.DetailsFragment
+import com.isanechek.wallpaper.view.details.DetailsActivity
 import com.isanechek.wallpaper.view.widgets.ParallaxImageView
 import com.isanechek.wallpaper.view.widgets.navigation.NavigationId
 import kotlinx.android.synthetic.main.fragment_list_layout.*
@@ -33,7 +31,9 @@ class TimelineFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, T
     companion object {
         private val TAG = "TimelineFragment"
         const val SAVE_CATEGORY_KEY = "save.category.key"
-        fun getBundle(category: String) = Bundle().apply { putString(SAVE_CATEGORY_KEY, category) }
+        fun getBundle(category: String) = Bundle().apply {
+            putString(SAVE_CATEGORY_KEY, category)
+        }
     }
 
     private lateinit var viewModel: TimelineViewModel
@@ -116,33 +116,10 @@ class TimelineFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, T
                 if (response.size > 0) {
                     hideProgress()
                     showMsgToolbar = true
-                    adapter?.setList(response)
+                    adapter?.submitList(response)
                 }
             }
         })
-    }
-
-    private fun sendDataToActivity(key: String, message: String) {
-//        ViewModelProviders.of(activity).get(MainViewModel::class.java).sendMessage(Message(key, message))
-    }
-
-    private fun showMessage(msg: String?, update: Boolean = false) {
-        if (msg == null) return
-        if (showMsgToolbar) {
-            // hide textview
-
-            // send message to toolbar
-            if (update) {
-                logger("$TAG send message for toolbar title")
-                sendDataToActivity(Const.MSG_FOR_TOOLBAR_TITLE, msg)
-            } else {
-                logger("$TAG send message for toolbar subtitle")
-                sendDataToActivity(Const.MSG_FOR_TOOLBAR_SUBTITLE, msg)
-            }
-        } else {
-            // show textview and message
-            logger("$TAG show message in textview")
-        }
     }
 
     private fun hideProgress() {
@@ -170,11 +147,7 @@ class TimelineFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, T
 
     override fun onItemClick(view: View, position: Int, id: String, preview: Wallpaper) {
         logger("$TAG Item click $position $id")
-        val bundle = DetailsFragment.arg(preview)
-        goTo<DetailsFragment>(
-                keepState = false,
-                withCustomAnimation = false,
-                arg = bundle)
+        DetailsActivity.startWithTransation(activity, preview, view)
     }
 
     override fun getTitle(): String = if (category == Const.EMPTY) NavigationId.TIMELINE.name else category

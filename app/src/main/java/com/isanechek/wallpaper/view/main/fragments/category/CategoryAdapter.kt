@@ -10,12 +10,11 @@ import com.isanechek.wallpaper.data.database.Category
  * Created by isanechek on 9/26/17.
  */
 class CategoryAdapter : PagedListAdapter<Category, CategoryHolder>(diffCallback) {
-
     private var listener: ItemClickListener? = null
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): CategoryHolder = CategoryHolder(parent)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryHolder = CategoryHolder(parent)
 
-    override fun onBindViewHolder(holder: CategoryHolder?, position: Int) {
+    override fun onBindViewHolder(holder: CategoryHolder, position: Int) {
         holder?.bindTo(getItem(position), position, listener)
     }
 
