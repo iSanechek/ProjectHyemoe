@@ -42,8 +42,9 @@ android {
         versionProps.store(versionPropsFile.newWriter(), null)
     }
 
+    def appId = "my.wallpapers.averdsoft"
     defaultConfig {
-        applicationId "com.isanechek.wallpaper"
+        applicationId appId
         minSdkVersion 19
         targetSdkVersion 27
         versionCode versionNumber
@@ -59,7 +60,7 @@ android {
             dimension "wtf"
         }
         beta {
-            applicationId 'com.isanechek.wallpaper.beta'
+            applicationId "${appId}.beta"
             versionCode versionNumber
             versionName "${versionMajor}.${versionMinor}.${versionPatch} (${versionBuild}) beta"
             dimension "wtf"
@@ -67,7 +68,7 @@ android {
 
         dev {
             minSdkVersion '21'
-            applicationId 'com.isanechek.wallpaper.debug'
+            applicationId "{appId}.debug"
             versionCode versionNumber
             versionName "${versionMajor}.${versionMinor}.${versionPatch} (${versionBuild}) dev_api_21"
             dimension "wtf"
@@ -143,11 +144,9 @@ dependencies {
     implementation 'com.github.amalhanaja:retrofit2-kotlin:1.0.0'
     // view
     implementation 'com.github.chrisbanes:PhotoView:2.1.3'
-
-
-    implementation "com.andkulikov:transitionseverywhere:1.7.9"
-    implementation 'com.github.egorikftp:CoreLib-Kotlin:0.0.8'
-
+    // ads and other
+    implementation 'com.yandex.android:mobmetricalib:2.73'
+    implementation 'com.yandex.android:mobileads:2.62'
     // test
     testImplementation "org.koin:koin-test:${koin_version}"
     testImplementation 'junit:junit:4.12'

@@ -24,7 +24,6 @@
     <style name="WallToolbarTheme">
         <item name="theme">@style/ThemeOverlay.AppCompat.Dark</item>
         <item name="android:background">?colorPrimary</item>
-        <item name="android:elevation">4dp</item>
     </style>
 
     <style name="AppTheme.WallpaperDetail" parent="AppTheme" />
@@ -34,4 +33,15 @@
         <item name="colorControlHighlight">@color/my_accent_color</item>
     </style>
 
+
+
+    <!--Details Activity-->
+    <style name="DetailsActivityTheme" parent="Theme.AppCompat.Light.NoActionBar" >
+        <item name="colorPrimary">@color/my_primary_color</item>
+        <item name="colorPrimaryDark">@color/my_primary_dark_color</item>
+        <item name="colorAccent">@color/my_accent_color</item>
+        <item name="android:windowBackground">@color/colorPrimary_light</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
+    </style>
 </resources>

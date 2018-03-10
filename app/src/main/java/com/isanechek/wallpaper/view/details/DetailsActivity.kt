@@ -1,8 +1,7 @@
 package com.isanechek.wallpaper.view.details
 
 import android.Manifest
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.WallpaperManager
 import android.arch.lifecycle.Observer
@@ -10,40 +9,30 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
-import android.os.Build
+import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.support.transition.Slide
-import android.support.transition.Transition
-import android.support.transition.TransitionManager
-import android.support.transition.TransitionSet
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.FileProvider
 import android.support.v7.app.AppCompatActivity
-import android.view.Gravity
 import android.view.View
-import android.view.ViewAnimationUtils
-import android.view.animation.AccelerateInterpolator
+import android.view.ViewTreeObserver
 import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.Toast
 import com.bumptech.glide.Glide
-import com.egoriku.corelib_kt.dsl.afterMeasured
-import com.egoriku.corelib_kt.dsl.fromApi
-import com.egoriku.corelib_kt.dsl.show
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.isanechek.wallpaper.BuildConfig
 import com.isanechek.wallpaper.data.DownloadService
 import com.isanechek.wallpaper.data.database.Wallpaper
 import com.isanechek.wallpaper.data.repository.YaRepository
-import com.isanechek.wallpaper.utils._drawable
-import com.isanechek.wallpaper.utils._id
-import com.isanechek.wallpaper.utils._layout
-import com.isanechek.wallpaper.utils.extensions.hide
-import com.isanechek.wallpaper.utils.extensions.invisible
-import com.isanechek.wallpaper.utils.extensions.onClick
-import com.isanechek.wallpaper.utils.logger
+import com.isanechek.wallpaper.utils.*
+import com.isanechek.wallpaper.utils.extensions.*
 import com.isanechek.wallpaper.view.widgets.DragLayout
 import kotlinx.android.synthetic.main.details_activity_layout.*
 import org.koin.android.ext.android.inject
@@ -62,63 +51,76 @@ class DetailsActivity : AppCompatActivity() {
     private val repository by inject<YaRepository>()
     private var wall: Wallpaper? = null
 
-    private var revealX: Int = 0
-    private var revealY: Int = 0
-
+    @SuppressLint("NewApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.statusBarColor = Color.TRANSPARENT
+        fromApi(lollipop) {
+            window.statusBarColor = Color.TRANSPARENT
+        }
         setContentView(_layout.details_activity_layout)
         container = findViewById(_id.drag_layout)
         cover = container.findViewById(_id.details_wallpaper)
         installBtn = container.findViewById(_id.details_install_button)
         controlContainer = container.findViewById(_id.details_control_container)
 
+
         container.setVisibilityStateListener(object: DragLayout.StateVisibilityControlContainer {
-            override fun state(visibility: Boolean) = if (!visibility) {
-                details_install_button.visibility = View.VISIBLE
-                details_ads.visibility = View.VISIBLE
-                details_swipe_iv.setAnimatedImage(_drawable.ic_expand_less_white_24dp)
-                details_swipe_tv.setAnimatedText("swipe down", 250)
-                logger("State show")
-            } else {
-                logger("State hide")
-                details_install_button.hide()
-                details_ads.hide()
-                details_swipe_iv.setAnimatedImage(_drawable.ic_expand_more_white_24dp)
-                details_swipe_tv.setAnimatedText("swipe up", 250)
+            override fun state(visibility: Boolean) {
+                if (!visibility) {
+                    details_install_button.visibility = View.VISIBLE
+                    details_ads.visibility = View.VISIBLE
+
+                    details_swipe_iv.setAnimatedImage(_drawable.ic_expand_less_white_24dp)
+                    details_swipe_tv.setAnimatedText("swipe down", 250)
+                    logger("State show")
+                } else {
+                    logger("State hide")
+                    details_install_button.hide()
+                    details_ads.hide()
+
+                    details_swipe_iv.setAnimatedImage(_drawable.ic_expand_more_white_24dp)
+                    details_swipe_tv.setAnimatedText("swipe up", 250)
+                }
             }
         })
 
         wall = intent.extras.getParcelable(DETAILS_ARGS) as Wallpaper
 
-        fromApi(Build.VERSION_CODES.LOLLIPOP, true) {
-            revealX = intent.getIntExtra(EXTRA_CIRCULAR_REVEAL_X, 0)
-            revealY = intent.getIntExtra(EXTRA_CIRCULAR_REVEAL_Y, 0)
-            details_root.afterMeasured {
-                val finalRadius = (Math.max(details_root.width, details_root.height) * 1.1).toFloat()
-                ViewAnimationUtils.createCircularReveal(details_root, revealX, revealY, 0f, finalRadius).apply {
-                    duration = ANIMATION_DURATION
-                    interpolator = AccelerateInterpolator()
-                    details_root.show()
-                    start()
-                }
-            }
-        }
         Glide.with(this).load(wall?.preview).into(cover)
 
-        TransitionManager.beginDelayedTransition(detailsCloseButtonContainer, Slide(Gravity.LEFT))
+//        if (isApi(lollipop)) {
+//            logger("Check From Lollipop")
+//            postponeEnterTransition()
+//            Glide.with(this)
+//                    .load(wall?.preview)
+//                    .listener(object: RequestListener<Drawable> {
+//                        override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean = false
+//
+//                        override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+//                            cover.viewTreeObserver.addOnPreDrawListener(object: ViewTreeObserver.OnPreDrawListener {
+//                                override fun onPreDraw(): Boolean {
+//                                    cover.viewTreeObserver.removeOnPreDrawListener(this)
+//                                    startPostponedEnterTransition()
+//                                    return true
+//                                }
+//                            })
+//                            return true
+//                        }
+//                    })
+//                    .into(cover)
+//        } else Glide.with(this).load(wall?.preview).into(cover)
 
         detailArcView.onClick {
-            TransitionManager.beginDelayedTransition(detailsCloseButtonContainer, Slide(Gravity.LEFT))
-            unRevealActivity()
-            finish()
+            closeActivity()
         }
 
         details_install_button.onClick {
-            if (isCheckPermission()) {
-                startDownloadAction()
-            }
+            if (isApi(marshmallow)) {
+                if (isCheckPermission()) {
+                    startDownloadAction()
+                }
+            } else startDownloadAction()
+
         }
 
         repository._data.observe(this, Observer { item ->
@@ -143,8 +145,8 @@ class DetailsActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        unRevealActivity()
-
+        super.onBackPressed()
+        closeActivity()
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
@@ -157,19 +159,11 @@ class DetailsActivity : AppCompatActivity() {
         }
     }
 
-    private fun unRevealActivity() {
-        val finalRadius = (Math.max(details_root.width, details_root.height) * 1.1).toFloat()
-
-        ViewAnimationUtils.createCircularReveal(details_root, revealX, revealY, finalRadius, 0f).apply {
-            duration = ANIMATION_DURATION
-            addListener(object : AnimatorListenerAdapter() {
-                override fun onAnimationEnd(animation: Animator?) {
-                    details_root.invisible()
-                    finish()
-                }
-            })
-            start()
-        }
+    @SuppressLint("NewApi")
+    private fun closeActivity() {
+        if (isApi(lollipop)) {
+            finishAfterTransition()
+        } else finish()
     }
 
     private fun isCheckPermission(): Boolean {
@@ -197,8 +191,6 @@ class DetailsActivity : AppCompatActivity() {
 
     companion object {
         private const val TAG = "DetailsActivity"
-        private const val EXTRA_CIRCULAR_REVEAL_X = "REVEAL_X"
-        private const val EXTRA_CIRCULAR_REVEAL_Y = "REVEAL_Y"
         private const val ANIMATION_DURATION = 400L
         private const val DETAILS_ARGS = "details.args"
         private const val REQUEST_PERMISSION_CODE = 303
@@ -209,18 +201,20 @@ class DetailsActivity : AppCompatActivity() {
             }
         }
 
-        fun startWithTransation(context: Activity, wallpaper: Wallpaper, view: View) {
-            val options = ActivityOptionsCompat.makeSceneTransitionAnimation(context, view, "transition")
-            val revealX = (view.x + view.width / 2).toInt()
-            val revealY = (view.y + view.height / 2).toInt()
-            ActivityCompat.startActivity(context,
-                    Intent(context, DetailsActivity::class.java).apply {
+        fun startWithAnimation(context: Activity, wallpaper: Wallpaper, view: View): Unit =
+                if (isApi(lollipop)) {
+                    val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                            context, view, context.getString(_string.wall_image))
+                    ActivityCompat.startActivity(context,
+                            Intent(context, DetailsActivity::class.java).apply {
+                                putExtra(DETAILS_ARGS, wallpaper)
+                            },
+                            options.toBundle())
+                } else {
+                    Intent(context, DetailsActivity::class.java).run {
                         putExtra(DETAILS_ARGS, wallpaper)
-                        putExtra(EXTRA_CIRCULAR_REVEAL_X, revealX)
-                        putExtra(EXTRA_CIRCULAR_REVEAL_Y, revealY)
-                    },
-                    options.toBundle())
-
-        }
+                        context.startActivity(this)
+                    }
+                }
     }
 }

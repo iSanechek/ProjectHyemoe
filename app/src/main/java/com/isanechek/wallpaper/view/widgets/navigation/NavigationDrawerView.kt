@@ -100,7 +100,7 @@ class NavigationDrawerView : NavigationView, NavItemClickListener {
         var currentPosition: Int = 0
 
         private constructor(parcel: Parcel) : super(parcel) {
-            currentPosition = parcel.readInt()
+            currentPosition = parcel.readInt() //FIXME
         }
 
         constructor(parcelable: Parcelable) : super(parcelable)

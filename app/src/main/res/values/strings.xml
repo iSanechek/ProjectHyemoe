@@ -29,4 +29,6 @@
     <string name="notif_title_download_complited">Download done</string>
     <string name="notif_title_download_error">Download error</string>
     <string name="notif_tap_to_open">Tap to open</string>
+    <string name="wall_image">wall_image</string>
+    <string name="transition_title">transition title</string>
 </resources>

@@ -18,7 +18,6 @@
         app:sriv_left_top_corner_radius="@dimen/dp8"
         app:sriv_left_bottom_corner_radius="@dimen/dp8"
         android:scaleType="centerCrop"
-        android:transitionName="wall_image"
         tools:src="@drawable/test_img"/>
 
 </FrameLayout>

@@ -147,7 +147,7 @@ class TimelineFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, T
 
     override fun onItemClick(view: View, position: Int, id: String, preview: Wallpaper) {
         logger("$TAG Item click $position $id")
-        DetailsActivity.startWithTransation(activity, preview, view)
+        DetailsActivity.startWithAnimation(activity, preview, view)
     }
 
     override fun getTitle(): String = if (category == Const.EMPTY) NavigationId.TIMELINE.name else category

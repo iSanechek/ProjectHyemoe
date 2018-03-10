@@ -6,7 +6,7 @@
     android:id="@+id/details_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:visibility="invisible">
+    android:visibility="visible">
 
     <com.isanechek.wallpaper.view.widgets.DragLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -25,10 +25,12 @@
             android:layout_gravity="bottom">
             <Button
                 android:id="@+id/details_install_button"
-                android:layout_width="match_parent"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:text="install"
-                android:layout_gravity="top"
+                android:backgroundTint="@color/my_accent_color"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:layout_gravity="top|right"
                 android:visibility="invisible"
                 tools:ignore="HardcodedText" />
             <FrameLayout
@@ -54,6 +56,7 @@
                 android:id="@+id/details_wallpaper"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:transitionName="@string/wall_image"
                 android:contentDescription="@string/wallpaper_details_description"
                 tools:src="@tools:sample/avatars"
                 tools:scaleType="centerCrop"/>
@@ -80,7 +83,8 @@
                     tools:text="swipe up"
                     android:textColor="@android:color/white"
                     android:layout_gravity="center|bottom"
-                    tools:ignore="HardcodedText" />
+                    tools:ignore="HardcodedText"
+                    android:visibility="gone"/>
             </FrameLayout>
         </FrameLayout>
     </com.isanechek.wallpaper.view.widgets.DragLayout>

@@ -15,6 +15,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true">
+
         <activity
             android:name=".view.main.MainActivity"
             android:label="@string/app_name"
@@ -24,10 +25,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".view.details.DetailsActivity"
-            android:theme="@style/AppTheme.WallpaperDetail"/>
+            android:theme="@style/DetailsActivityTheme"/>
+
         <activity android:name=".view.test.TestActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
+
         <service android:name=".data.DownloadService"
             android:exported="false"
             android:label="@string/app_name"/>
