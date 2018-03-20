@@ -9,39 +9,22 @@
         <item name="android:windowBackground">@color/colorPrimary_light</item>
     </style>
 
+
+    <!--Main Theme-->
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+
+    <!--Details Activity-->
+    <style name="DetailsActivityTheme" parent="Theme.AppCompat.Light.NoActionBar" >
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/colorPrimary_light</item>
+    </style>
+
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="WallButtonStyle" parent="Theme.AppCompat.Light">
-        <item name="colorControlHighlight">@color/my_accent_color</item>
-    </style>
-
-    <style name="WallToolbarTheme">
-        <item name="theme">@style/ThemeOverlay.AppCompat.Dark</item>
-        <item name="android:background">?colorPrimary</item>
-    </style>
-
-    <style name="AppTheme.WallpaperDetail" parent="AppTheme" />
-
-    <!--Set Wallpaper style-->
-    <style name="InstallBtn" parent="Theme.AppCompat.Light">
-        <item name="colorControlHighlight">@color/my_accent_color</item>
-    </style>
-
-
-
-    <!--Details Activity-->
-    <style name="DetailsActivityTheme" parent="Theme.AppCompat.Light.NoActionBar" >
-        <item name="colorPrimary">@color/my_primary_color</item>
-        <item name="colorPrimaryDark">@color/my_primary_dark_color</item>
-        <item name="colorAccent">@color/my_accent_color</item>
-        <item name="android:windowBackground">@color/colorPrimary_light</item>
-        <item name="android:windowTranslucentNavigation">true</item>
-        <item name="android:windowTranslucentStatus">true</item>
-    </style>
 </resources>

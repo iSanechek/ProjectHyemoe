@@ -36,7 +36,7 @@
             android:layout_height="match_parent"
             app:layoutManager="LinearLayoutManager"
             tools:context="com.isanechek.wallpaper.view.main.MainActivity"
-            tools:listitem="@layout/timeline_item_layout"/>
+            tools:listitem="@layout/category_item_layout2"/>
 
     </LinearLayout>
 

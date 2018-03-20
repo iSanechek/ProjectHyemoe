@@ -17,16 +17,11 @@ import org.koin.android.architecture.ext.getViewModel
  */
 class CategoryFragment : BaseFragment(), CategoryAdapter.ItemClickListener {
 
-//    private val viewModel by lazy(LazyThreadSafetyMode.NONE) {
-//        ViewModelProviders.of(this).get(CategoryViewModel::class.java)
-//    }
     private var adapter: CategoryAdapter? = null
-
     private lateinit var viewModel: CategoryViewModel
 
     companion object {
         private val TAG = "CategoryFragment"
-        fun createInstance() : CategoryFragment = CategoryFragment()
     }
 
     override fun layoutResId(): Int = _layout.fragment_list_layout

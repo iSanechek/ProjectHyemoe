@@ -31,9 +31,7 @@ object ISO8601 {
         return calendar
     }
 }
-/**
- * потому что в обьект нельзя передать статический контекст
- */
+
 fun parse(iso8601string: String): Date? {
     try {
         return ISO8601.toCalendar(iso8601string).time

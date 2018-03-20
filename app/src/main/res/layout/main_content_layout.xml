@@ -10,6 +10,6 @@
         android:layout_width="match_parent"
         android:layout_marginTop="75dp"
         android:layout_height="match_parent"
-        android:background="@color/bg_color"
+        android:background="@color/my_text_color"
         android:id="@+id/fragment_container2"/>
 </android.support.constraint.ConstraintLayout>

@@ -30,7 +30,7 @@
                 android:text="install"
                 android:backgroundTint="@color/my_accent_color"
                 android:foreground="?android:attr/selectableItemBackground"
-                android:layout_gravity="top|right"
+                android:layout_gravity="top|end"
                 android:visibility="invisible"
                 tools:ignore="HardcodedText" />
             <FrameLayout
@@ -139,7 +139,5 @@
                 android:visibility="gone"
                 tools:visibility="visible"/>
         </android.support.constraint.ConstraintLayout>
-
     </FrameLayout>
-
 </FrameLayout>
