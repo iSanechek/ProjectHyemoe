@@ -33,6 +33,7 @@ import com.isanechek.wallpaper.data.database.Wallpaper
 import com.isanechek.wallpaper.data.repository.YaRepository
 import com.isanechek.wallpaper.utils.*
 import com.isanechek.wallpaper.utils.extensions.*
+import com.isanechek.wallpaper.utils.glide.GlideApp
 import com.isanechek.wallpaper.view.widgets.DragLayout
 import kotlinx.android.synthetic.main.details_activity_layout.*
 import org.koin.android.ext.android.inject
@@ -63,7 +64,6 @@ class DetailsActivity : AppCompatActivity() {
         installBtn = container.findViewById(_id.details_install_button)
         controlContainer = container.findViewById(_id.details_control_container)
 
-
         container.setVisibilityStateListener(object: DragLayout.StateVisibilityControlContainer {
             override fun state(visibility: Boolean) {
                 if (!visibility) {
@@ -86,29 +86,34 @@ class DetailsActivity : AppCompatActivity() {
 
         wall = intent.extras.getParcelable(DETAILS_ARGS) as Wallpaper
 
-        Glide.with(this).load(wall?.preview).into(cover)
+        if (isApi(lollipop)) {
+            logger("Check From Lollipop")
+            supportPostponeEnterTransition()
+            GlideApp.with(this)
+                    .load(wall?.preview)
+                    .centerCrop()
+                    .dontAnimate()
+                    .listener(object: RequestListener<Drawable> {
+                        override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
+                            supportStartPostponedEnterTransition()
+                            logger("Boom1")
+                            return false
+                        }
 
-//        if (isApi(lollipop)) {
-//            logger("Check From Lollipop")
-//            postponeEnterTransition()
-//            Glide.with(this)
-//                    .load(wall?.preview)
-//                    .listener(object: RequestListener<Drawable> {
-//                        override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean = false
-//
-//                        override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
-//                            cover.viewTreeObserver.addOnPreDrawListener(object: ViewTreeObserver.OnPreDrawListener {
-//                                override fun onPreDraw(): Boolean {
-//                                    cover.viewTreeObserver.removeOnPreDrawListener(this)
-//                                    startPostponedEnterTransition()
-//                                    return true
-//                                }
-//                            })
-//                            return true
-//                        }
-//                    })
-//                    .into(cover)
-//        } else Glide.with(this).load(wall?.preview).into(cover)
+                        override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+                            cover.viewTreeObserver.addOnPreDrawListener(object: ViewTreeObserver.OnPreDrawListener {
+                                override fun onPreDraw(): Boolean {
+                                    cover.viewTreeObserver.removeOnPreDrawListener(this)
+                                    supportStartPostponedEnterTransition()
+                                    logger("Boom2")
+                                    return false
+                                }
+                            })
+                            return false
+                        }
+                    })
+                    .into(cover)
+        } else GlideApp.with(this).load(wall?.preview).into(cover)
 
         detailArcView.onClick {
             closeActivity()
@@ -127,12 +132,9 @@ class DetailsActivity : AppCompatActivity() {
             if (item != null) {
                 detailToolbarProgress.hide()
                 if (item.fullCachePath?.isNotEmpty() == true) {
-                    logger("$TAG ${item.fullCachePath}")
                     val uri = FileProvider.getUriForFile(this,
                             BuildConfig.APPLICATION_ID + ".provider",
                             File(item.fullCachePath))
-
-                    logger("Details uri ${uri.path}")
                     val wm = WallpaperManager.getInstance(this)
                     startActivity(wm.getCropAndSetWallpaperIntent(uri))
                 }

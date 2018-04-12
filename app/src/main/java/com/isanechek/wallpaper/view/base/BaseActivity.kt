@@ -25,12 +25,13 @@ abstract class BaseActivity : AppCompatActivity(), Navigator.FragmentChangeListe
             super.onBackPressed()
     }
 
-    inline protected fun <reified T : Fragment> goTo(keepState: Boolean = true,
+    protected inline fun <reified T : Fragment> goTo(keepState: Boolean = true,
                                                      withCustomAnimation: Boolean = false,
                                                      arg: Bundle = Bundle.EMPTY) {
         navigator.goTo<T>(keepState = keepState,
                 withCustomAnimation = withCustomAnimation,
-                arg = arg)
+                arg = arg,
+                shared = null)
     }
 
     fun getInstanceNavigator() : Navigator = navigator

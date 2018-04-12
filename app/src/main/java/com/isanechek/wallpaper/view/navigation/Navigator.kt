@@ -5,8 +5,9 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentTransaction
 import android.support.v7.app.AppCompatActivity
+import android.transition.Fade
+import android.view.View
 import com.isanechek.wallpaper.utils._anim
-import com.isanechek.wallpaper.utils.Experimental
 import com.isanechek.wallpaper.utils._id
 
 class Navigator constructor(private val activity: AppCompatActivity,
@@ -24,15 +25,6 @@ class Navigator constructor(private val activity: AppCompatActivity,
     private var rootTag: String? = null
     private var isCustomAnimationUsed = false
 
-    private fun runDebugLog() {
-//        log {
-//            "Chain [${fragmentMap.size}] - ${fragmentMap.keys.joinToString(" -> ") {
-//                val split: List<String> = it.split(".")
-//                split[split.size - 1]
-//            }}"
-//        }
-    }
-
     private fun addOpenTransition(transaction: FragmentTransaction, withCustomAnimation: Boolean) {
         if (withCustomAnimation) {
             isCustomAnimationUsed = true
@@ -41,6 +33,12 @@ class Navigator constructor(private val activity: AppCompatActivity,
             isCustomAnimationUsed = false
             transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
         }
+    }
+
+    private fun addSharedElement(fragment: Fragment) {
+        fragment.sharedElementEnterTransition = SharedTransitionSet()
+        fragment.enterTransition = Fade()
+        fragment.sharedElementReturnTransition = SharedTransitionSet()
     }
 
     private fun invokeFragmentChangeListener(tag: String?) {
@@ -63,11 +61,6 @@ class Navigator constructor(private val activity: AppCompatActivity,
         state.clear()
 
         fragmentMap.clear()
-//        fragmentManager.fragments.forEach {
-//            log {
-//                "Fragment manager fragment - ${it::class.java.simpleName}"
-//            }
-//        }
         fragmentManager.fragments
                 .filter { it.tag!!.contains(activity.applicationContext.packageName) }
                 .forEach {
@@ -83,16 +76,15 @@ class Navigator constructor(private val activity: AppCompatActivity,
             show(fragmentMap[activeTag]?.fragment)
         }
         invokeFragmentChangeListener(activeTag)
-        runDebugLog()
     }
 
     inline fun <reified T : Fragment> goTo(keepState: Boolean = true,
                                            withCustomAnimation: Boolean = false,
                                            arg: Bundle = Bundle.EMPTY,
-                                           @Experimental
+                                           shared: Pair<String, View>?,
                                            backStrategy: BackStrategy = BackStrategy.KEEP) {
         val tag = T::class.java.name
-        goTo(tag, keepState, withCustomAnimation, arg, backStrategy)
+        goTo(tag, keepState, withCustomAnimation, arg, shared, backStrategy)
     }
 
     @PublishedApi
@@ -100,9 +92,9 @@ class Navigator constructor(private val activity: AppCompatActivity,
                       keepState: Boolean,
                       withCustomAnimation: Boolean,
                       arg: Bundle,
+                      shared: Pair<String, View>?,
                       backStrategy: BackStrategy) {
-        if (activeTag == tag)
-            return
+        if (activeTag == tag) return
 
         if (!fragmentMap.containsKey(tag) || !keepState) {
             val fragment = Fragment.instantiate(activity, tag)
@@ -118,8 +110,13 @@ class Navigator constructor(private val activity: AppCompatActivity,
                     }
                 }
             }
+
             fragmentManager.inTransaction {
                 addOpenTransition(this, withCustomAnimation)
+                if (shared != null) {
+                    addSharedElement(fragment)
+                    addSharedElement(shared.second, shared.first)
+                }
                 add(containerId, fragment, tag)
             }
 
@@ -138,14 +135,17 @@ class Navigator constructor(private val activity: AppCompatActivity,
                     .forEach {
                         hide(it.value.fragment)
                     }
+
+            if (shared != null) {
+                addSharedElement(fragmentMap[tag]?.fragment!!)
+                addSharedElement(shared.second, shared.first)
+            }
             show(fragmentMap[tag]?.fragment)
         }
         activeTag = tag
         invokeFragmentChangeListener(tag)
 
         fragmentMap.replaceValue(tag, fragmentMap[tag])
-
-        runDebugLog()
     }
 
     fun hasBackStack(): Boolean {
@@ -184,7 +184,6 @@ class Navigator constructor(private val activity: AppCompatActivity,
         isCustomAnimationUsed = false
         activeTag = currentTag
         invokeFragmentChangeListener(currentTag)
-        runDebugLog()
     }
 
     private inline fun FragmentManager.inTransaction(transaction: FragmentTransaction.() -> Unit) {

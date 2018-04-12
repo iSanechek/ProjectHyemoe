@@ -1,7 +1,7 @@
 package com.isanechek.wallpaper.view.main.fragments.category
 
 import android.arch.paging.PagedListAdapter
-import android.support.v7.recyclerview.extensions.DiffCallback
+import android.support.v7.util.DiffUtil
 import android.view.View
 import android.view.ViewGroup
 import com.isanechek.wallpaper.data.database.Category
@@ -15,7 +15,7 @@ class CategoryAdapter : PagedListAdapter<Category, CategoryHolder>(diffCallback)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryHolder = CategoryHolder(parent)
 
     override fun onBindViewHolder(holder: CategoryHolder, position: Int) {
-        holder?.bindTo(getItem(position), position, listener)
+        holder.bindTo(getItem(position), position, listener)
     }
 
     fun setOnClickListener(listener: ItemClickListener) {
@@ -23,7 +23,7 @@ class CategoryAdapter : PagedListAdapter<Category, CategoryHolder>(diffCallback)
     }
 
     companion object {
-        private val diffCallback = object : DiffCallback<Category>() {
+        private val diffCallback = object : DiffUtil.ItemCallback<Category>() {
             override fun areItemsTheSame(oldItem: Category, newItem: Category): Boolean = oldItem.title == newItem.title
             override fun areContentsTheSame(oldItem: Category, newItem: Category): Boolean = oldItem == newItem
 

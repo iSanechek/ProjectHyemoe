@@ -1,7 +1,7 @@
 package com.isanechek.wallpaper.view.main.fragments.timeline
 
 import android.arch.paging.PagedListAdapter
-import android.support.v7.recyclerview.extensions.DiffCallback
+import android.support.v7.util.DiffUtil
 import android.view.View
 import android.view.ViewGroup
 import com.isanechek.wallpaper.data.database.Wallpaper
@@ -20,7 +20,7 @@ class TimelineAdapter : PagedListAdapter<Wallpaper, TimelineHolder>(diffCallback
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TimelineHolder = TimelineHolder(parent)
 
     companion object {
-        private val diffCallback = object : DiffCallback<Wallpaper>() {
+        private val diffCallback = object : DiffUtil.ItemCallback<Wallpaper>() {
             override fun areItemsTheSame(oldItem: Wallpaper, newItem: Wallpaper): Boolean = oldItem.title == newItem.title
             override fun areContentsTheSame(oldItem: Wallpaper, newItem: Wallpaper): Boolean = oldItem == newItem
         }

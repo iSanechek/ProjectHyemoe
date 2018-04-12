@@ -90,6 +90,7 @@ data class Category(@PrimaryKey var title: String,
                     var lastUpdate: String?,
                     var size: Long?,
                     var color: Int?,
+                    var cover: String?,
                     var newItem: Boolean?) : Parcelable {
 
     @Ignore
@@ -97,6 +98,7 @@ data class Category(@PrimaryKey var title: String,
             title,
             key,
             path,
+            null,
             null,
             null,
             null,
@@ -113,6 +115,7 @@ data class Category(@PrimaryKey var title: String,
                 lastUpdate = parcel.readString(),
                 size = parcel.readLong(),
                 color = parcel.readInt(),
+                cover = parcel.readString(),
                 newItem = parcel.readBoolean()
         )
 
@@ -124,6 +127,7 @@ data class Category(@PrimaryKey var title: String,
             parcel.writeString(lastUpdate)
             parcel.writeLong(size?:0L)
             parcel.writeInt(color?:0)
+            parcel.writeString(cover)
             parcel.writeBoolean(newItem?:false)
         }
     }

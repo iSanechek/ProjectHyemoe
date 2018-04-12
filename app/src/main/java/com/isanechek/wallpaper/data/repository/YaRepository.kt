@@ -50,7 +50,7 @@ class YaRepository(private val context: Context,
 
     private suspend fun loadDataCategory() {
         val response = api.getPublicList(DEFAULT_KEY).await()
-        val result = MappingData.mappingResourceToAlbum2(response)
+        val result = MappingData.mappingResourceToAlbum(response)
 
         val cache = async(CommonPool) {
             database.wallpaper().loadAllCategory()
@@ -204,7 +204,7 @@ class YaRepository(private val context: Context,
 
     companion object {
         private const val TAG = "YaRepository"
-//        private const val DEFAULT_KEY = "https://yadi.sk/d/vAlQ0s7O3PjV6s"
-        private const val DEFAULT_KEY = "https://yadi.sk/d/x8WJ-PcL3JNkwy"
+        private const val DEFAULT_KEY = "https://yadi.sk/d/OPeqGfrb3TnF5y"
+//        private const val DEFAULT_KEY = "https://yadi.sk/d/x8WJ-PcL3JNkwy"
     }
 }

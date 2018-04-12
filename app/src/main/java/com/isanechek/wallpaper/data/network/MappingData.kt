@@ -2,8 +2,10 @@ package com.isanechek.wallpaper.data.network
 
 import com.isanechek.wallpaper.data.database.Category
 import com.isanechek.wallpaper.data.database.Wallpaper
+import com.isanechek.wallpaper.data.network.dto.Resource
 import com.isanechek.wallpaper.utils.MaterialColorPalette
 import com.isanechek.wallpaper.utils.extensions.emptyString
+import com.isanechek.wallpaper.utils.logger
 
 /**
  * Created by isanechek on 7/12/17.
@@ -34,5 +36,37 @@ object MappingData {
                     lastUpdate = it.modified,
                     size = it.size,
                     color = MaterialColorPalette.randomColor(),
+                    cover = emptyString,
                     newItem = false) }?.toList() ?: emptyList()
+
+
+    fun mappingResourceToAlbum(resource: com.isanechek.wallpaper.data.network.dto.Resource?): List<Category> {
+        val result = mutableListOf<Category>()
+        val covers = mutableMapOf<String, String>()
+
+        resource?.resourceList?.items?.forEach { item ->
+            if (item.type == "file") {
+                covers[item.name.replaceFirst(".jpg", "").trim()] = item.preview
+            }
+        }
+
+        resource?.resourceList?.items?.forEach { item ->
+            if(item.type == "dir") {
+                val i = mappingItem(item, covers[item.name] ?: emptyString)
+                result.add(i)
+            }
+        }
+        return result
+    }
+
+    private fun mappingItem(resource: Resource, coverPath: String = emptyString): Category = Category(
+            title = resource.name,
+            publicKey = resource.publicKey,
+            publicPath = resource.path,
+            createDate = resource.created,
+            lastUpdate = resource.modified,
+            size = resource.size,
+            color = MaterialColorPalette.randomColor(),
+            cover = coverPath,
+            newItem = false)
 }

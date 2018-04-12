@@ -22,7 +22,7 @@ class ArcView constructor(context: Context, attrs: AttributeSet) : View(context,
     init {
         setBackgroundColor(Color.TRANSPARENT)
         with(paint) {
-            color = context takeColor com.isanechek.wallpaper.R.color.accent_material_light
+            color = context takeColor com.isanechek.wallpaper.R.color.my_primary_dark_color
             style = Paint.Style.FILL
             strokeCap = Paint.Cap.ROUND
             isDither = true

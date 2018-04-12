@@ -1,31 +1,41 @@
 package com.isanechek.wallpaper.view.main.fragments.category
 
+import android.os.Build
+import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
+import android.widget.ImageView
 import android.widget.TextView
 import com.isanechek.wallpaper.R
 import com.isanechek.wallpaper.data.database.Category
+import com.isanechek.wallpaper.utils._id
+import com.isanechek.wallpaper.utils.glide.load
 
 /**
  * Created by isanechek on 9/26/17.
  */
+
 class CategoryHolder(parent: ViewGroup?) : RecyclerView.ViewHolder(
-        LayoutInflater.from(parent?.context).inflate(R.layout.category_item_layout2, parent, false)) {
-    private val rootView = itemView.findViewById<FrameLayout>(R.id.category_item_root)
-    private val tv = itemView.findViewById<TextView>(R.id.category_item_text)
-    private val dateTv = itemView.findViewById<TextView>(R.id.category_item_date_update)
-    private val newTv = itemView.findViewById<TextView>(R.id.category_item_new)
-    private lateinit var model: Category
+        LayoutInflater.from(parent?.context).inflate(R.layout.cat_item_layout, parent, false)) {
+    private var model: Category? = null
+    private val root = itemView.findViewById<CardView>(_id.cat_item_root)
+    private val title = itemView.findViewById<TextView>(_id.cat_item_title_tv)
+    private val cover = itemView.findViewById<ImageView>(_id.cat_item_cover_iv)
 
     fun bindTo(model: Category?, position: Int, listener: CategoryAdapter.ItemClickListener?) {
-        this.model = model!!
-        rootView.setOnClickListener { listener?.onItemClickListener(it, position,  model.title) }
-        model.title.let { tv.text = it }
-        model.lastUpdate.let { dateTv.text = it }
-        newTv.visibility = View.GONE
+        this.model = model
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            cover.transitionName = "shared$position"
+        }
+        model?.let {
+            title.text = it.title
+            cover.load(it.cover)
+            root.setOnClickListener {
+                listener?.onItemClickListener(cover, position, model.title)
+            }
+        }
     }
+
 }

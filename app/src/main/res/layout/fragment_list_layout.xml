@@ -5,6 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/list_refresh"
     android:orientation="vertical"
+    android:layout_marginTop="75dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -34,7 +35,6 @@
             android:id="@+id/list_rv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layoutManager="LinearLayoutManager"
             tools:context="com.isanechek.wallpaper.view.main.MainActivity"
             tools:listitem="@layout/category_item_layout2"/>
 

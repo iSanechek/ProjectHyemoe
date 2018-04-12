@@ -22,8 +22,8 @@ import java.io.InputStream
 @GlideModule
 class WallGlideModule : AppGlideModule() {
 
-    override fun applyOptions(context: Context?, builder: GlideBuilder) {
-        val activityManager = context?.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+    override fun applyOptions(context: Context, builder: GlideBuilder) {
+        val activityManager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
         val memoryCacheSizeBytes = 1024 * 1024 * 20 // 20mb
         builder.setMemoryCache(LruResourceCache(memoryCacheSizeBytes.toLong()))
         builder.setDefaultRequestOptions(RequestOptions().format(

@@ -21,13 +21,14 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="75dp"
-            android:background="@color/my_text_color"
             android:padding="0dp"
+            android:background="@android:color/transparent"
             app:contentInsetEnd="0dp"
             app:contentInsetStart="0dp">
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent">
                 <com.isanechek.wallpaper.view.widgets.ArcView
                     android:id="@+id/arcView"
                     android:layout_width="85dp"
@@ -41,23 +42,26 @@
                 <com.isanechek.wallpaper.view.widgets.AnimatedImageView
                     android:id="@+id/arcImage"
                     android:layout_width="28dp"
-                    android:layout_height="0dp"
+                    android:layout_height="28dp"
                     android:layout_gravity="center"
                     android:layout_marginBottom="2dp"
-                    android:layout_marginLeft="22dp"
-                    android:layout_marginStart="22dp"
+                    android:layout_marginLeft="28dp"
+                    android:layout_marginStart="28dp"
                     android:contentDescription="@string/arc_view_image"
                     android:tint="@android:color/white"
+                    app:srcCompat="@drawable/ic_arrow_back_black_24dp"
+                    android:background="@drawable/circle_white_background"
                     app:layout_constraintBottom_toBottomOf="@+id/toolbarTitle"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/toolbarTitle"
-                    app:layout_constraintVertical_bias="0.50" />
+                    app:layout_constraintVertical_bias="0.50"
+                    />
+
                 <com.isanechek.wallpaper.view.widgets.AnimatedTextView
                     android:id="@+id/toolbarTitle"
-                    android:layout_width="0dp"
+                    android:layout_width="25dp"
                     android:layout_height="0dp"
                     android:layout_marginEnd="8dp"
-                    android:layout_marginRight="8dp"
                     android:ellipsize="end"
                     android:gravity="center"
                     android:maxLength="18"
@@ -67,24 +71,26 @@
                     android:textSize="19sp"
                     android:textStyle="bold"
                     android:transitionName="@string/transition_title"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.88"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:text="@tools:sample/full_names"/>
+                    tools:text="@tools:sample/full_names" />
 
                 <ProgressBar
                     style="?android:attr/progressBarStyleSmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
-                    android:layout_marginEnd="24dp"
+                    android:layout_marginEnd="16dp"
                     android:layout_marginTop="8dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="@+id/toolbarTitle"
-                    app:layout_constraintTop_toTopOf="parent"
                     android:visibility="invisible"
-                    tools:visibility="visible"/>
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:visibility="visible" />
             </android.support.constraint.ConstraintLayout>
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>

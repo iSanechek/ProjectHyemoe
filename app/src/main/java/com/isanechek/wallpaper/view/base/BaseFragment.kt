@@ -32,8 +32,9 @@ abstract class BaseFragment : Fragment() {
 
     inline fun <reified T : Fragment> goTo(keepState: Boolean = true,
                                            withCustomAnimation: Boolean = false,
-                                           arg: Bundle = Bundle.EMPTY) {
-        navigator.goTo<T>(keepState = keepState, withCustomAnimation = withCustomAnimation, arg = arg)
+                                           arg: Bundle = Bundle.EMPTY,
+                                           shared: Pair<String, View>? = null) {
+        navigator.goTo<T>(keepState = keepState, withCustomAnimation = withCustomAnimation, arg = arg, shared = shared)
     }
 
     open fun getTitle(): String = emptyString

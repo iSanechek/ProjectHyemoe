@@ -3,7 +3,6 @@ package com.isanechek.wallpaper.view.main
 import android.arch.lifecycle.Observer
 import android.graphics.Color
 import android.os.Bundle
-import android.support.design.widget.AppBarLayout
 import android.support.v4.app.Fragment
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
@@ -57,8 +56,6 @@ class MainActivity : BaseActivity(), NavAdapterItemSelectedListener {
         viewModel = getViewModel()
         initViews()
         setupObservers()
-        logger("Hello from main activity")
-        logger("Pref category $category")
     }
 
     override fun onSaveInstanceState(outState: Bundle?) {
@@ -116,14 +113,17 @@ class MainActivity : BaseActivity(), NavAdapterItemSelectedListener {
         val tag = (currentFragment as? BaseFragment)?.getTitle() ?: emptyString
 
         toolbarTitle.setAnimatedText(tag, 100)
-        if (currentTag == Id.DETAIL.fullName) {
+        if (currentTag == Id.ABOUT.fullName) {
 //            isArcIcon = true
 //            setArcArrowState()
-            logger("Show details fragment!")
         } else if (isArcIcon) {
             isArcIcon = false
             setArcHamburgerIconState()
-            toolbar.setBackgroundColor(takeColor(_color.bg_color))
+            toolbar.setBackgroundColor(takeColor(_color.my_text_color))
+        } else if (currentTag == Id.CATEGORY.fullName) {
+            toolbar.invisible()
+        } else if (currentTag == Id.TIMELINE.fullName) {
+            toolbar.show()
         }
 
         val checkPosition = when(tag) {
@@ -138,11 +138,10 @@ class MainActivity : BaseActivity(), NavAdapterItemSelectedListener {
         }
     }
 
-
     private fun initViews() {
         container = FrameLayout(this)
                 .apply { id = _id.main_fragment_container }
-        mainView.addView(container, containerMargins(top = 75.toPx(this)))
+        mainView.addView(container, containerMargins())
         // toolbar
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
@@ -151,11 +150,10 @@ class MainActivity : BaseActivity(), NavAdapterItemSelectedListener {
 
         // navView
         navView.navigationItemSelectListener = this
-//        navView.header.
 
-        // drawer layout
-        drawer.drawerElevation = 0F
-        drawer.addDrawerListener(object: DrawerLayout.SimpleDrawerListener() {
+        with(drawer) {
+            drawerElevation = 0F
+            addDrawerListener(object: DrawerLayout.SimpleDrawerListener() {
             override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
                 super.onDrawerSlide(drawerView, slideOffset)
                 val moveFactor = navView.width * slideOffset
@@ -180,17 +178,19 @@ class MainActivity : BaseActivity(), NavAdapterItemSelectedListener {
                 }
             }
         })
-        drawer.setScrimColor(Color.TRANSPARENT)
+            setScrimColor(Color.TRANSPARENT)
+        }
     }
 
     private fun setArcArrowState() {
         arcView.onClick {
             super.onBackPressed()
         }
-        arcImage.setAnimatedImage(_drawable.hamb)
+        arcImage.setAnimatedImage(_drawable.ic_arrow_back_black_24dp)
     }
 
     private fun setArcHamburgerIconState() {
+
         arcView.onClick {
             drawer.openDrawer(GravityCompat.START)
         }
@@ -199,22 +199,18 @@ class MainActivity : BaseActivity(), NavAdapterItemSelectedListener {
 
     private fun setupObservers() {
         viewModel.getNavigationState().observe(this, Observer { state ->
-            if (state == null) {
-                logger("State null")
-                if (category == Const.EMPTY) {
-                    logger("Show Category Fragment")
-                    goTo<CategoryFragment>()
-                } else {
-                    logger("Show Timeline Fragment with category $category")
-                    val bundle = TimelineFragment.getBundle(category)
-                    goTo<TimelineFragment>(
-                            keepState = true,
-                            withCustomAnimation = false,
-                            arg = bundle)
+            when (state) {
+                null -> when (category) {
+                    Const.EMPTY -> goTo<CategoryFragment>()
+                    else -> {
+                        val bundle = TimelineFragment.getBundle(category)
+                        goTo<TimelineFragment>(
+                                keepState = true,
+                                withCustomAnimation = false,
+                                arg = bundle)
+                    }
                 }
-            } else {
-                logger("Restore state")
-                navigator.restore(state)
+                else -> navigator.restore(state)
             }
         })
     }
