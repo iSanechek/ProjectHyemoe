@@ -12,7 +12,6 @@ import android.view.View
 import android.widget.FrameLayout
 import com.isanechek.wallpaper.utils.*
 import com.isanechek.wallpaper.utils.extensions.*
-import com.isanechek.wallpaper.utils.pref.Preferences
 import com.isanechek.wallpaper.view.base.BaseActivity
 import com.isanechek.wallpaper.view.base.BaseFragment
 import com.isanechek.wallpaper.view.main.fragments.category.CategoryFragment
@@ -44,9 +43,9 @@ class MainActivity : BaseActivity(), NavAdapterItemSelectedListener {
 
     private lateinit var container: FrameLayout
     private lateinit var viewModel: MainViewModel
-    
-    private val pref: Preferences by lazy { Preferences() }
-    private var category = pref.defaultCategory
+
+//    private val preferences: SharedPreferences by inject()
+    private var category = Const.EMPTY
 
     private var isArcIcon = false
     private var isDrawerOpened = false

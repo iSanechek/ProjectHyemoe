@@ -3,7 +3,6 @@ package com.isanechek.wallpaper.view.main.fragments.timeline
 import android.arch.lifecycle.Observer
 import android.content.Context
 import android.os.Bundle
-import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.content.ContextCompat
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
@@ -15,7 +14,6 @@ import com.isanechek.wallpaper.utils.Const
 import com.isanechek.wallpaper.utils._layout
 import com.isanechek.wallpaper.utils.extensions.extraWithKey
 import com.isanechek.wallpaper.utils.logger
-import com.isanechek.wallpaper.utils.pref.Preferences
 import com.isanechek.wallpaper.view.base.BaseFragment
 import com.isanechek.wallpaper.view.details.DetailsActivity
 import com.isanechek.wallpaper.view.widgets.ParallaxImageView
@@ -40,7 +38,8 @@ class TimelineFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, T
     private var adapter: TimelineAdapter? = null
     private var showMsgToolbar = false
     private lateinit var category: String
-    private val pref by lazy { Preferences() }
+
+//    private val preferences: SharedPreferences by inject()
 
     override fun layoutResId(): Int = _layout.fragment_list_layout
 
@@ -49,7 +48,7 @@ class TimelineFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, T
         if (arguments != null) {
             if (arguments!!.containsKey(SAVE_CATEGORY_KEY)) {
                 category = this extraWithKey SAVE_CATEGORY_KEY
-                pref.defaultCategory = category
+//                pref.defaultCategory = category
             } else {
                 defaultCategory()
             }
@@ -59,7 +58,7 @@ class TimelineFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, T
     }
 
     private fun defaultCategory() {
-        category = pref.defaultCategory
+        category = Const.EMPTY
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

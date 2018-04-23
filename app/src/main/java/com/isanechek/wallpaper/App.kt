@@ -1,8 +1,6 @@
 package com.isanechek.wallpaper
 
 import android.app.Application
-import android.content.Context
-import android.content.SharedPreferences
 import com.isanechek.wallpaper.di.diModule
 import org.koin.android.ext.android.startKoin
 
@@ -14,11 +12,5 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         startKoin(this, listOf(diModule))
-        instance = this
     }
-
-    fun getPreferences() : SharedPreferences = applicationContext.getSharedPreferences("default", Context.MODE_PRIVATE)
-
-    companion object{ lateinit var instance: App private set }
-
 }

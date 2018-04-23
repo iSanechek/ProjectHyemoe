@@ -3,6 +3,7 @@ package com.isanechek.wallpaper.data.repository
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.content.Context
+import android.content.SharedPreferences
 import com.isanechek.wallpaper.data.database.DataBase
 import com.isanechek.wallpaper.data.database.Wallpaper
 import com.isanechek.wallpaper.data.network.ApiInterface
@@ -19,8 +20,9 @@ import java.util.concurrent.TimeUnit
 
 class YaRepository(private val context: Context,
                    private val api: ApiInterface,
-                   private val database: DataBase) : Repository {
-    private val requestLimiter = RequestLimiter<String>(1, TimeUnit.DAYS) // Нехер больше. В край просто передернуть надо
+                   private val database: DataBase,
+                   preferences: SharedPreferences) : Repository {
+    private val requestLimiter = RequestLimiter<String>(1, TimeUnit.DAYS, preferences) // Нехер больше. В край просто передернуть надо
     private val statusMessage: MutableLiveData<Response<Any>> by lazy { MutableLiveData<Response<Any>>() }
     val status: LiveData<Response<Any>> = statusMessage
 

@@ -2,6 +2,8 @@ package com.isanechek.wallpaper.di
 
 import android.arch.persistence.room.Room
 import android.content.Context
+import android.content.SharedPreferences
+import android.preference.PreferenceManager
 import com.isanechek.wallpaper.BuildConfig
 import com.isanechek.wallpaper.data.database.DataBase
 import com.isanechek.wallpaper.data.network.ApiInterface
@@ -25,15 +27,17 @@ import java.util.concurrent.TimeUnit
  * Created by isanechek on 4/23/18.
  */
 val diModule = applicationContext {
-    // main view model
+    // main viewmodel
     viewModel {
         MainViewModel(get())
     }
 
+    // timeline viewmodel
     viewModel {
         TimelineViewModel(get(), get())
     }
 
+    // category viewmodel
     viewModel {
         CategoryViewModel(get(), get())
     }
@@ -42,7 +46,9 @@ val diModule = applicationContext {
         NotificationUtil(get())
     }
 
-    provide { YaRepository(androidApplication(), get(), get()) } bind Repository::class
+    provide {
+        YaRepository(androidApplication(), get(), get(), get())
+    } bind Repository::class
 
     // database
     provide {
@@ -56,6 +62,11 @@ val diModule = applicationContext {
 
     bean {
         createYandexApi(get())
+    }
+
+    // preference
+    provide {
+        sharedPreferences(get())
     }
 }
 
@@ -84,4 +95,8 @@ fun createYandexApi(client: OkHttpClient): ApiInterface = createRetrofitService 
     this.client = client
     converterFactories = arrayListOf(GsonConverterFactory.create())
     callAdapterFactories = arrayListOf(CoroutineCallAdapterFactory())
+}
+
+fun sharedPreferences(context : Context): SharedPreferences {
+    return PreferenceManager.getDefaultSharedPreferences(context)
 }
