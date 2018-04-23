@@ -32,12 +32,10 @@
             android:theme="@style/DetailsActivityTheme"
             android:screenOrientation="portrait"/>
 
-        <!--<activity android:name=".view.details.DetailsActivity2"-->
-            <!--android:theme="@style/DetailsActivityTheme"-->
-            <!--android:screenOrientation="portrait"/>-->
-
         <activity android:name=".view.test.TestActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" >
+
+        </activity>
 
         <service android:name=".data.DownloadService"
             android:exported="false"

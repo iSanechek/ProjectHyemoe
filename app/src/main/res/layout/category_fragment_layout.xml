@@ -11,30 +11,47 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:background="@color/my_accent_color">
 
             <ImageView
                 android:id="@+id/cat_cover_iv"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                tools:src="@tools:sample/avatars"/>
+                tools:src="@tools:sample/avatars"
+                android:visibility="gone"/>
 
-            <TextView
-                android:layout_width="wrap_content"
+            <FrameLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="Category"
-                android:textSize="52sp"
-                android:textStyle="bold|italic"
-                android:textColor="#fff" />
+                android:layout_gravity="center|end"
+                android:layout_marginBottom="40dp"
+                android:layout_marginStart="@dimen/dp36"
+                android:background="@drawable/category_title_background">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/category_title"
+                    android:textSize="60sp"
+                    android:textStyle="bold|italic"
+                    android:textColor="@color/colorAccent_light"
+                    android:paddingStart="@dimen/dp18"
+                    android:paddingEnd="@dimen/dp18"
+                    android:paddingBottom="@dimen/dp8" />
+            </FrameLayout>
+
+
 
         </FrameLayout>
-        <View
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.9"
-            android:background="@color/my_accent_color" />
+            android:layout_weight="0.7"
+            android:background="@drawable/category_background" >
+
+        </FrameLayout>
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView

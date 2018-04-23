@@ -137,6 +137,7 @@ class DetailsActivity : AppCompatActivity() {
                             File(item.fullCachePath))
                     val wm = WallpaperManager.getInstance(this)
                     startActivity(wm.getCropAndSetWallpaperIntent(uri))
+                    repository._data.postValue(null)
                 }
             } else {
                 logger("$TAG item null")

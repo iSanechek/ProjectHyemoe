@@ -204,7 +204,7 @@ class YaRepository(private val context: Context,
 
     companion object {
         private const val TAG = "YaRepository"
-        private const val DEFAULT_KEY = "https://yadi.sk/d/OPeqGfrb3TnF5y"
-//        private const val DEFAULT_KEY = "https://yadi.sk/d/x8WJ-PcL3JNkwy"
+//        private const val DEFAULT_KEY = "https://yadi.sk/d/OPeqGfrb3TnF5y"
+        private const val DEFAULT_KEY = "https://yadi.sk/d/x8WJ-PcL3JNkwy"
     }
 }

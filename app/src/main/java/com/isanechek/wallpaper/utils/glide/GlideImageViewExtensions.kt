@@ -18,6 +18,7 @@ private const val DEFAULT_DURATION_MS = 200
 enum class TransformationType {
     CIRCLE,
     ROUND,
+    ROUND_WITH_FILTER,
     FILTER,
     FILTER_AND_BLUR,
     BLUR,
@@ -27,11 +28,13 @@ enum class TransformationType {
     fun getTransformation(): Transformation<Bitmap> = when (this) {
         CIRCLE -> CircleCrop()
         ROUND -> RoundedCorners(20)
-        FILTER -> ColorFilterTransformation(Color.argb(70, 76, 175, 80))
+        FILTER -> ColorFilterTransformation(Color.argb(75, 76, 175, 80))
         FILTER_AND_BLUR -> MultiTransformation(BlurTransformation(50),
                 ColorFilterTransformation(Color.argb(80, 76, 175, 80)))
         BLUR -> BlurTransformation(30)
-        BLUR_25 -> BlurTransformation(1)
+        BLUR_25 -> BlurTransformation(99)
+        ROUND_WITH_FILTER -> MultiTransformation(RoundedCorners(8),
+                ColorFilterTransformation(Color.argb(155, 0, 0, 0)))
         else -> {
             TODO()
         }
@@ -46,7 +49,6 @@ private fun load(view: ImageView,
     val request: GlideRequest<Drawable> = GlideApp.with(view.context)
             .load(url)
             .transition(DrawableTransitionOptions.withCrossFade(DEFAULT_DURATION_MS))
-            .centerCrop()
             .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
 
     if (transformationType != TransformationType.NOTHING) {

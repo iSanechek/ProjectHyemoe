@@ -10,6 +10,7 @@ import android.widget.TextView
 import com.isanechek.wallpaper.R
 import com.isanechek.wallpaper.data.database.Category
 import com.isanechek.wallpaper.utils._id
+import com.isanechek.wallpaper.utils.glide.TransformationType
 import com.isanechek.wallpaper.utils.glide.load
 
 /**
@@ -31,7 +32,7 @@ class CategoryHolder(parent: ViewGroup?) : RecyclerView.ViewHolder(
         }
         model?.let {
             title.text = it.title
-            cover.load(it.cover)
+            cover.load(it.cover, TransformationType.ROUND_WITH_FILTER)
             root.setOnClickListener {
                 listener?.onItemClickListener(cover, position, model.title)
             }
