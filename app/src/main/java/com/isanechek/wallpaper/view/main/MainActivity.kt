@@ -41,8 +41,10 @@ class MainActivity : BaseActivity(), NavAdapterItemSelectedListener {
     private val navView: NavigationDrawerView by lazy { findViewById<NavigationDrawerView>(_id.navView) }
     private val drawer: DrawerLayout by lazy { findViewById<DrawerLayout>(_id.drawerLayout) }
     private val mainView: CardView by lazy { findViewById<CardView>(_id.mainView) }
+
     private lateinit var container: FrameLayout
     private lateinit var viewModel: MainViewModel
+    
     private val pref: Preferences by lazy { Preferences() }
     private var category = pref.defaultCategory
 

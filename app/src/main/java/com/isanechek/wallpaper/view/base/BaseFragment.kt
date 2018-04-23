@@ -37,5 +37,9 @@ abstract class BaseFragment : Fragment() {
         navigator.goTo<T>(keepState = keepState, withCustomAnimation = withCustomAnimation, arg = arg, shared = shared)
     }
 
+    inline fun goBack() {
+
+    }
+
     open fun getTitle(): String = emptyString
 }

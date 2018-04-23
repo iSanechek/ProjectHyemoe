@@ -3,7 +3,7 @@ package com.isanechek.wallpaper
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
-import com.isanechek.wallpaper.di.allModels
+import com.isanechek.wallpaper.di.diModule
 import org.koin.android.ext.android.startKoin
 
 /**
@@ -13,7 +13,7 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        startKoin(this, allModels)
+        startKoin(this, listOf(diModule))
         instance = this
     }
 

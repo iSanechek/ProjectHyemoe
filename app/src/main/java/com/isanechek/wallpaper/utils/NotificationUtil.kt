@@ -1,7 +1,6 @@
 package com.isanechek.wallpaper.utils
 
 import android.annotation.TargetApi
-import android.app.DownloadManager
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -11,18 +10,12 @@ import android.net.Uri
 import android.os.Build
 import android.support.v4.app.NotificationCompat
 import com.isanechek.wallpaper.view.details.DetailsActivity
-import org.koin.dsl.module.applicationContext
 import java.io.File
 
 /**
  * Created by isanechek on 2/27/18.
  */
 
-val notificationUtilsModule = applicationContext {
-    bean {
-        NotificationUtil(get())
-    }
-}
 
 class NotificationUtil(private val context: Context) {
 

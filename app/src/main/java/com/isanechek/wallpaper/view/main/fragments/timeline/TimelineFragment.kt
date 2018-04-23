@@ -76,6 +76,8 @@ class TimelineFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, T
         setupRequestObserver(category)
     }
 
+
+
 //    private fun initStatus() {
 //        viewModel.status.observe(this, Observer { response ->
 //            if (response != null) {
