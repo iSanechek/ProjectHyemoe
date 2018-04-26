@@ -9,7 +9,7 @@
     android:layout_marginStart="@dimen/dp8"
     app:cardCornerRadius="@dimen/dp8"
     app:cardElevation="@dimen/dp8"
-    app:cardBackgroundColor="@color/my_accent_color">
+    app:cardBackgroundColor="@color/colorAccent_light">
 
     <FrameLayout
         android:layout_width="match_parent"

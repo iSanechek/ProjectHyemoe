@@ -93,7 +93,6 @@ class DetailsActivity : AppCompatActivity() {
         wall = intent.extras.getParcelable(DETAILS_ARGS) as Wallpaper
 
         if (isApi(lollipop)) {
-            logger("Check From Lollipop")
             supportPostponeEnterTransition()
             GlideApp.with(this)
                     .load(wall?.preview)
@@ -102,7 +101,6 @@ class DetailsActivity : AppCompatActivity() {
                     .listener(object: RequestListener<Drawable> {
                         override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
                             supportStartPostponedEnterTransition()
-                            logger("Boom1")
                             return false
                         }
 
@@ -111,7 +109,6 @@ class DetailsActivity : AppCompatActivity() {
                                 override fun onPreDraw(): Boolean {
                                     cover.viewTreeObserver.removeOnPreDrawListener(this)
                                     supportStartPostponedEnterTransition()
-                                    logger("Boom2")
                                     return false
                                 }
                             })

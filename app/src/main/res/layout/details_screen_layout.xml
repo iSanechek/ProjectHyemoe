@@ -6,6 +6,7 @@
     android:id="@+id/details_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/my_primary_color"
     android:visibility="visible">
 
     <com.isanechek.wallpaper.view.widgets.DragLayout
@@ -23,7 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:layout_gravity="bottom"
-            android:background="@drawable/install_container_bg">
+            android:background="@color/my_primary_dark_color">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -39,12 +40,13 @@
                 android:id="@+id/details_install_button"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:layout_marginStart="2dp"
-                android:layout_marginTop="2dp"
-                android:layout_marginEnd="-2dp"
+                android:layout_marginStart="@dimen/dp8"
+                android:layout_marginTop="@dimen/dp8"
+                android:layout_marginEnd="@dimen/dp8"
+                android:elevation="@dimen/dp0"
                 android:text="install"
-                android:layout_gravity="top|end"
-                android:textColor="#fff"
+                android:layout_gravity="top|center"
+                android:textColor="@color/title_color"
                 android:textSize="18sp"
                 android:textAllCaps="true"
                 android:foreground="?android:attr/selectableItemBackground"
@@ -118,7 +120,6 @@
                 android:layout_height="63dp"
                 android:layout_marginBottom="8dp"
                 android:layout_marginTop="4dp"
-                android:background="@android:color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -131,7 +132,6 @@
                 android:layout_marginStart="22dp"
                 app:srcCompat="@drawable/ic_close_white_24dp"
                 android:contentDescription="@string/arc_view_image"
-                android:tint="@android:color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
