@@ -1,24 +1,25 @@
 package com.isanechek.wallpaper.view.main
 
-import android.arch.lifecycle.Observer
 import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.widget.CardView
 import android.support.v7.widget.Toolbar
 import android.view.View
 import android.widget.FrameLayout
+import android.widget.TextView
+import com.github.florent37.kotlin.pleaseanimate.please
 import com.isanechek.wallpaper.utils.*
 import com.isanechek.wallpaper.utils.extensions.*
+import com.isanechek.wallpaper.view.about.AboutFragment
 import com.isanechek.wallpaper.view.base.BaseActivity
 import com.isanechek.wallpaper.view.base.BaseFragment
 import com.isanechek.wallpaper.view.main.fragments.category.CategoryFragment
-import com.isanechek.wallpaper.view.main.fragments.timeline.TimelineFragment
 import com.isanechek.wallpaper.view.widgets.AnimatedImageView
 import com.isanechek.wallpaper.view.widgets.AnimatedTextView
-import com.isanechek.wallpaper.view.widgets.ArcView
 import com.isanechek.wallpaper.view.widgets.navigation.NavAdapterItemSelectedListener
 import com.isanechek.wallpaper.view.widgets.navigation.NavigationDrawerView
 import com.isanechek.wallpaper.view.widgets.navigation.NavigationItem
@@ -33,22 +34,24 @@ class MainActivity : BaseActivity(), NavAdapterItemSelectedListener {
     private val SCALE_KEY = "SCALE_KEY"
 
     // view's
-    private val toolbar: Toolbar by lazy { findViewById<Toolbar>(_id.toolbar) }
-    private val toolbarTitle: AnimatedTextView by lazy { findViewById<AnimatedTextView>(_id.toolbarTitle) }
-    private val arcImage: AnimatedImageView by lazy { findViewById<AnimatedImageView>(_id.arcImage) }
-    private val arcView: ArcView by lazy { findViewById<ArcView>(_id.arcView) }
+    private val toolbar: Toolbar by lazy { findViewById<Toolbar>(_id.main_screen_toolbar) }
+    private val toolbarTitle: AnimatedTextView by lazy { findViewById<AnimatedTextView>(_id.main_screen_title_toolbar_tv) }
+
+    private val toolbarHelperView: View by lazy { findViewById<View>(_id.main_screen_toolbar_helper_view) }
+    private val toolbarCustomContainer: FrameLayout by lazy { findViewById<FrameLayout>(_id.main_screen_custom_title_container) }
+    private val toolbarCustomTitle: TextView by lazy { findViewById<TextView>(_id.main_screen_title_tv) }
+
     private val navView: NavigationDrawerView by lazy { findViewById<NavigationDrawerView>(_id.navView) }
     private val drawer: DrawerLayout by lazy { findViewById<DrawerLayout>(_id.drawerLayout) }
     private val mainView: CardView by lazy { findViewById<CardView>(_id.mainView) }
 
-    private lateinit var container: FrameLayout
+    private val navBtn: AnimatedImageView by lazy { findViewById<AnimatedImageView>(_id.main_screen_navigation_btn) }
+    private val adsInfoBtn: AnimatedImageView by lazy { findViewById<AnimatedImageView>(_id.main_screen_ads_info_btn) }
+
     private lateinit var viewModel: MainViewModel
 
-//    private val preferences: SharedPreferences by inject()
-    private var category = Const.EMPTY
-
-    private var isArcIcon = false
     private var isDrawerOpened = false
+    private var categoryScreen = false
     private var currentNavigationSelectedItem = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,7 +59,7 @@ class MainActivity : BaseActivity(), NavAdapterItemSelectedListener {
         setContentView(_layout.main_activity_layout)
         viewModel = getViewModel()
         initViews()
-        setupObservers()
+        goTo<CategoryFragment>()
     }
 
     override fun onSaveInstanceState(outState: Bundle?) {
@@ -81,18 +84,6 @@ class MainActivity : BaseActivity(), NavAdapterItemSelectedListener {
         }
     }
 
-    private fun containerMargins(start: Int = 0, top: Int = 0, bottom: Int = 0, end: Int = 0): FrameLayout.LayoutParams {
-        val match = FrameLayout.LayoutParams.MATCH_PARENT
-        val params = FrameLayout.LayoutParams(match, match)
-        params.setMargins(start, top, end, bottom)
-        return params
-    }
-
-    override fun onDestroy() {
-        viewModel.saveNavigationState(navigator.getState())
-        super.onDestroy()
-    }
-
     override fun onBackPressed() {
         when {
             drawer.isDrawerOpen(GravityCompat.START) -> drawer.closeDrawer(GravityCompat.START)
@@ -102,10 +93,9 @@ class MainActivity : BaseActivity(), NavAdapterItemSelectedListener {
     }
 
     override fun onNavigationItemSelected(item: NavigationItem) {
-        logger("NavigationItemSelected ${item.id.name}")
         when (item.id) {
             Id.CATEGORY -> goTo<CategoryFragment>()
-            Id.TIMELINE -> goTo<TimelineFragment>()
+            Id.ABOUT -> goTo<AboutFragment>()
         }
         drawer.closeDrawer(GravityCompat.START)
     }
@@ -113,18 +103,58 @@ class MainActivity : BaseActivity(), NavAdapterItemSelectedListener {
     override fun onFragmentChanged(currentTag: String, currentFragment: Fragment) {
         val tag = (currentFragment as? BaseFragment)?.getTitle() ?: emptyString
 
-        toolbarTitle.setAnimatedText(tag, 100)
         if (currentTag == Id.ABOUT.fullName) {
-//            isArcIcon = true
-//            setArcArrowState()
-        } else if (isArcIcon) {
-            isArcIcon = false
-            setArcHamburgerIconState()
-            toolbar.setBackgroundColor(takeColor(_color.my_text_color))
+            categoryScreen = false
+            setArcArrowState(true)
         } else if (currentTag == Id.CATEGORY.fullName) {
-            toolbar.invisible()
+            categoryScreen = true
+
+            toolbar.setBackgroundColor(Color.TRANSPARENT)
+
+            please(duration = 300) {
+                animate(toolbarTitle) toBe {
+                    invisible()
+                }
+                animate(toolbarHelperView) toBe {
+                    alpha(1f)
+                    topOfItsParent()
+                }
+            }.thenCouldYou(duration = 150) {
+                animate(toolbarCustomContainer) toBe {
+                    alpha(1f)
+//                    topOfItsParent(52f)
+                }
+            }.thenCouldYou(duration = 150) {
+                animate(toolbarCustomTitle) toBe {
+                    toolbarCustomTitle.text = getString(_string.category_title)
+                    visible()
+                }
+            }.start()
+
+            setArcHamburgerIconState()
         } else if (currentTag == Id.TIMELINE.fullName) {
-            toolbar.show()
+            categoryScreen = false
+            please(duration = 150) {
+                animate(toolbarCustomTitle) toBe {
+                    visible()
+                }
+            }.thenCouldYou(duration = 100) {
+                animate(toolbarCustomContainer) toBe {
+                    outOfScreen()
+                    alpha(0f)
+                }
+            }.thenCouldYou(duration = 100) {
+                animate(toolbarHelperView) toBe {
+                    outOfScreen()
+                    alpha(0f)
+                }
+                toolbar.setBackgroundColor(ContextCompat.getColor(this@MainActivity, _color.my_primary_dark_color))
+                animate(toolbarTitle) toBe {
+                    visible()
+                }
+            }.start()
+
+            setArcArrowState(true)
         }
 
         val checkPosition = when(tag) {
@@ -140,13 +170,13 @@ class MainActivity : BaseActivity(), NavAdapterItemSelectedListener {
     }
 
     private fun initViews() {
-        container = FrameLayout(this)
-                .apply { id = _id.main_fragment_container }
-        mainView.addView(container, containerMargins())
         // toolbar
+        toolbar.setBackgroundColor(Color.TRANSPARENT)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-        if (isArcIcon || isDrawerOpened) setArcArrowState()
+        if (isDrawerOpened)
+            if (categoryScreen) setArcArrowState(false)
+            else setArcArrowState(true)
         else setArcHamburgerIconState()
 
         // navView
@@ -165,15 +195,15 @@ class MainActivity : BaseActivity(), NavAdapterItemSelectedListener {
 
             override fun onDrawerOpened(drawerView: View) {
                 super.onDrawerOpened(drawerView)
-                if (!isArcIcon) {
+                isDrawerOpened = true
+                if (categoryScreen) {
                     setArcArrowState()
-                    isDrawerOpened = true
-                }
+                } else setArcArrowState(true)
             }
 
             override fun onDrawerClosed(drawerView: View) {
                 super.onDrawerClosed(drawerView)
-                if (!isArcIcon && isDrawerOpened) {
+                if (isDrawerOpened) {
                     setArcHamburgerIconState()
                     isDrawerOpened = false
                 }
@@ -183,36 +213,21 @@ class MainActivity : BaseActivity(), NavAdapterItemSelectedListener {
         }
     }
 
-    private fun setArcArrowState() {
-        arcView.onClick {
+    private fun setArcArrowState(arrow: Boolean = false) {
+        if (arrow) {
+            navBtn.setAnimatedImage(_drawable.navigation_arrow_24dp, 100)
+        } else navBtn.setAnimatedImage(_drawable.navigation_open_24dp, 100)
+
+        navBtn.onClick {
             super.onBackPressed()
         }
-        arcImage.setAnimatedImage(_drawable.ic_arrow_back_black_24dp)
     }
 
     private fun setArcHamburgerIconState() {
+        navBtn.setAnimatedImage(_drawable.navigation_closed_24dp, 100)
 
-        arcView.onClick {
+        navBtn.onClick {
             drawer.openDrawer(GravityCompat.START)
         }
-        arcImage.setAnimatedImage(_drawable.hamb)
-    }
-
-    private fun setupObservers() {
-        viewModel.getNavigationState().observe(this, Observer { state ->
-            when (state) {
-                null -> when (category) {
-                    Const.EMPTY -> goTo<CategoryFragment>()
-                    else -> {
-                        val bundle = TimelineFragment.getBundle(category)
-                        goTo<TimelineFragment>(
-                                keepState = true,
-                                withCustomAnimation = false,
-                                arg = bundle)
-                    }
-                }
-                else -> navigator.restore(state)
-            }
-        })
     }
 }

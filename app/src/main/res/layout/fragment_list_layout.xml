@@ -1,43 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.SwipeRefreshLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/list_refresh"
-    android:orientation="vertical"
     android:layout_marginTop="75dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <com.isanechek.wallpaper.view.widgets.AnimatedRecyclerView
+        android:id="@+id/list_rv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <!--<FrameLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="100dp">-->
-            <!--<TextView-->
-                <!--android:id="@+id/list_info_text"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:textStyle="bold|italic"-->
-                <!--android:textSize="48sp"-->
-                <!--android:textColor="@color/my_primary_text_color"-->
-                <!--android:layout_marginStart="@dimen/dp36"-->
-                <!--android:layout_marginEnd="@dimen/dp0"-->
-                <!--android:layout_marginTop="@dimen/dp16"-->
-                <!--android:layout_marginBottom="@dimen/dp0"-->
-                <!--tools:text="Category"/>-->
-        <!--</FrameLayout>-->
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/list_rv"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:context="com.isanechek.wallpaper.view.main.MainActivity"
-            tools:listitem="@layout/category_item_layout2"/>
-
-    </LinearLayout>
-
+        tools:context="com.isanechek.wallpaper.view.main.MainActivity"
+        tools:listitem="@layout/category_item_layout2"/>
 </android.support.v4.widget.SwipeRefreshLayout>

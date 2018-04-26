@@ -33,8 +33,7 @@ enum class TransformationType {
                 ColorFilterTransformation(Color.argb(80, 76, 175, 80)))
         BLUR -> BlurTransformation(30)
         BLUR_25 -> BlurTransformation(99)
-        ROUND_WITH_FILTER -> MultiTransformation(RoundedCorners(8),
-                ColorFilterTransformation(Color.argb(155, 0, 0, 0)))
+        ROUND_WITH_FILTER -> RoundedCorners(8)
         else -> {
             TODO()
         }

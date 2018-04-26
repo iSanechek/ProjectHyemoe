@@ -4,9 +4,9 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/my_primary_color</item>
-        <item name="colorPrimaryDark">@color/my_primary_dark_color</item>
+        <item name="colorPrimaryDark">@color/my_primary_dark_color2</item>
         <item name="colorAccent">@color/my_accent_color</item>
-        <item name="android:windowBackground">@color/colorPrimary_light</item>
+        <item name="android:windowBackground">@color/bg_light_color</item>
     </style>
 
 
@@ -20,7 +20,7 @@
     <style name="DetailsActivityTheme" parent="Theme.AppCompat.Light.NoActionBar" >
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="android:windowBackground">@color/colorPrimary_light</item>
+        <item name="android:windowBackground">@color/bg_light_color</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />

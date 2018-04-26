@@ -4,21 +4,16 @@ import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.View
 import android.view.animation.OvershootInterpolator
-import android.widget.ImageView
 import com.isanechek.wallpaper.data.network.RequestStrategy
 import com.isanechek.wallpaper.utils._id
 import com.isanechek.wallpaper.utils._layout
-import com.isanechek.wallpaper.utils.glide.TransformationType
-import com.isanechek.wallpaper.utils.glide.load
 import com.isanechek.wallpaper.view.base.BaseFragment
 import com.isanechek.wallpaper.view.main.fragments.timeline.TimelineFragment
 import com.isanechek.wallpaper.view.widgets.navigation.NavigationId
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
 import org.koin.android.architecture.ext.getViewModel
-import java.util.*
 
 /**
  * Created by isanechek on 9/26/17.
@@ -28,15 +23,14 @@ class CategoryFragment : BaseFragment(), CategoryAdapter.ItemClickListener {
     private var _adapter: CategoryAdapter? = null
     private lateinit var viewModel: CategoryViewModel
 
-    private lateinit var coverImg: ImageView
+    // view's
     private lateinit var list: RecyclerView
 
     override fun layoutResId(): Int = _layout.category_fragment_layout
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        coverImg = view.findViewById(_id.cat_cover_iv)
-        list = view.findViewById(_id.cat_list)
+        list = view.findViewById(_id.category_screen_list)
 
         _adapter = CategoryAdapter()
         _adapter?.setOnClickListener(this)
@@ -57,11 +51,6 @@ class CategoryFragment : BaseFragment(), CategoryAdapter.ItemClickListener {
         viewModel.loadCategory.observe(this, Observer { response ->
             if (response != null) {
                 _adapter?.submitList(response)
-                if (response.size > 0 ) {
-
-                    val urls = response.map { it.cover }.toList()
-                    actionWithBackground(urls)
-                }
             }
         })
         viewModel.load(RequestStrategy.DATA_REQUEST)
@@ -77,12 +66,4 @@ class CategoryFragment : BaseFragment(), CategoryAdapter.ItemClickListener {
 
     override fun getTitle(): String = NavigationId.CATEGORY.name
 
-
-    private fun actionWithBackground(urls: List<String?>) {
-//        val random = Random()
-//        val url = urls[random.nextInt(urls.size)]
-//        Log.e("TEST", "URL $url")
-//        coverImg.load(url, TransformationType.BLUR_25)
-
-    }
 }

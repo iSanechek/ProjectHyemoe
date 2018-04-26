@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="120dp"
-    android:layout_height="160dp"
+    android:layout_width="150dp"
+    android:layout_height="200dp"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cat_item_root"
-    android:layout_marginEnd="@dimen/dp4"
-    android:layout_marginStart="@dimen/dp4"
+    android:layout_marginEnd="@dimen/dp8"
+    android:layout_marginStart="@dimen/dp8"
     app:cardCornerRadius="@dimen/dp8"
     app:cardElevation="@dimen/dp8"
-    app:cardBackgroundColor="#fff">
+    app:cardBackgroundColor="@color/my_accent_color">
 
     <FrameLayout
         android:layout_width="match_parent"

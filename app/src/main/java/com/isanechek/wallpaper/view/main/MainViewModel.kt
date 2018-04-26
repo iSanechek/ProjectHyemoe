@@ -11,14 +11,15 @@ import com.isanechek.wallpaper.view.navigation.NavigationState
  * Created by isanechek on 9/1/17.
  */
 class MainViewModel(private val repository: YaRepository) : ViewModel() {
-    private val mutableNavigationState: MutableLiveData<NavigationState> by lazy { MutableLiveData<NavigationState>() }
 
-    init {
-        mutableNavigationState.value = null
+    val openNavigationState: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
+
+
+    fun openNavigation() {
+        openNavigationState.value = true
     }
 
-
-    fun saveNavigationState(state: NavigationState) { mutableNavigationState.value = state }
-
-    fun getNavigationState() : LiveData<NavigationState> = mutableNavigationState
+    init {
+        openNavigationState.value = false
+    }
 }

@@ -20,7 +20,7 @@ class Navigator constructor(private val activity: AppCompatActivity,
     private var fragmentMap: LinkedHashMap<String, Screen> = linkedMapOf()
     lateinit var fragmentChangeListener: FragmentChangeListener
 
-    private val containerId = _id.main_fragment_container //TODO add to builder
+    private val containerId = _id.main_screen_fragment_contaner //TODO add to builder
     private var activeTag: String? = null
     private var rootTag: String? = null
     private var isCustomAnimationUsed = false

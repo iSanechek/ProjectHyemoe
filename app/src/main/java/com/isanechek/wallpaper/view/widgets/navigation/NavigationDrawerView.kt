@@ -20,13 +20,14 @@ class NavigationDrawerView : NavigationView, NavItemClickListener {
 
     private var itemList = mutableListOf(
             NavigationItem(
-                    NavigationId.TIMELINE,
-                    com.isanechek.wallpaper.R.drawable.ic_timeline_black_24dp,
+                    item = NavigationId.CATEGORY,
+                    icon = com.isanechek.wallpaper.R.drawable.ic_bubble_chart_black_24dp,
+                    isSelected = true,
                     itemIconColor = com.isanechek.wallpaper.R.color.my_primary_color
             ),
             NavigationItem(
-                    NavigationId.CATEGORY,
-                    com.isanechek.wallpaper.R.drawable.ic_bubble_chart_black_24dp,
+                    item = NavigationId.ABOUT,
+                    icon = com.isanechek.wallpaper.R.drawable.ic_timeline_black_24dp,
                     itemIconColor = com.isanechek.wallpaper.R.color.my_primary_color
             )
     )

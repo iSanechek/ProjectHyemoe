@@ -35,6 +35,10 @@ import com.isanechek.wallpaper.utils.*
 import com.isanechek.wallpaper.utils.extensions.*
 import com.isanechek.wallpaper.utils.glide.GlideApp
 import com.isanechek.wallpaper.view.widgets.DragLayout
+import com.yandex.mobile.ads.AdEventListener
+import com.yandex.mobile.ads.AdRequest
+import com.yandex.mobile.ads.AdSize
+import com.yandex.mobile.ads.AdView
 import kotlinx.android.synthetic.main.details_activity_layout.*
 import org.koin.android.ext.android.inject
 import java.io.File
@@ -48,6 +52,10 @@ class DetailsActivity : AppCompatActivity() {
     private lateinit var cover: ImageView
     private lateinit var installBtn: Button
     private lateinit var controlContainer: FrameLayout
+
+    // ads
+    private lateinit var adView: AdView
+    private lateinit var adRequest: AdRequest
 
     private val repository by inject<YaRepository>()
     private var wall: Wallpaper? = null
@@ -63,20 +71,19 @@ class DetailsActivity : AppCompatActivity() {
         cover = container.findViewById(_id.details_wallpaper)
         installBtn = container.findViewById(_id.details_install_button)
         controlContainer = container.findViewById(_id.details_control_container)
+        adView = container.findViewById(_id.details_screen_ads_widget)
 
         container.setVisibilityStateListener(object: DragLayout.StateVisibilityControlContainer {
             override fun state(visibility: Boolean) {
                 if (!visibility) {
                     details_install_button.visibility = View.VISIBLE
-                    details_ads.visibility = View.VISIBLE
+                    adView.show()
 
                     details_swipe_iv.setAnimatedImage(_drawable.ic_expand_less_white_24dp)
                     details_swipe_tv.setAnimatedText("swipe down", 250)
-                    logger("State show")
                 } else {
-                    logger("State hide")
                     details_install_button.hide()
-                    details_ads.hide()
+                    adView.hide()
 
                     details_swipe_iv.setAnimatedImage(_drawable.ic_expand_more_white_24dp)
                     details_swipe_tv.setAnimatedText("swipe up", 250)
@@ -145,6 +152,9 @@ class DetailsActivity : AppCompatActivity() {
             }
         })
 
+
+        initAds()
+
     }
 
     override fun onBackPressed() {
@@ -190,6 +200,23 @@ class DetailsActivity : AppCompatActivity() {
             return
         }
         DownloadService.startDownloads(this@DetailsActivity, wall!!)
+    }
+
+    private fun initAds() {
+        adView.blockId = "R-M-DEMO-320x50"
+        adView.adSize = AdSize.BANNER_320x50
+
+        adRequest = AdRequest
+                .builder()
+                .build()
+        adView.adEventListener = loadAdsBannerListener
+        adView.loadAd(adRequest)
+    }
+
+    private val loadAdsBannerListener = object: AdEventListener.SimpleAdEventListener() {
+        override fun onAdLoaded() {
+            super.onAdLoaded()
+        }
     }
 
     companion object {
