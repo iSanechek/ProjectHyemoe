@@ -26,6 +26,7 @@ import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
+import com.github.florent37.kotlin.pleaseanimate.please
 import com.isanechek.wallpaper.BuildConfig
 import com.isanechek.wallpaper.data.DownloadService
 import com.isanechek.wallpaper.data.database.Wallpaper
@@ -33,6 +34,9 @@ import com.isanechek.wallpaper.data.repository.YaRepository
 import com.isanechek.wallpaper.utils.*
 import com.isanechek.wallpaper.utils.extensions.*
 import com.isanechek.wallpaper.utils.glide.GlideApp
+import com.isanechek.wallpaper.view.widgets.AnimatedImageView
+import com.isanechek.wallpaper.view.widgets.AnimatedTextView
+import com.isanechek.wallpaper.view.widgets.ArcView
 import com.isanechek.wallpaper.view.widgets.DragLayout
 import com.yandex.mobile.ads.AdEventListener
 import com.yandex.mobile.ads.AdRequest
@@ -45,12 +49,19 @@ import java.io.File
 /**
  * Created by isanechek on 2/25/18.
  */
-class DetailsActivity : AppCompatActivity() {
+class DetailsActivity : AppCompatActivity(), DragLayout.StateVisibilityControlContainer {
 
-    private lateinit var container: DragLayout
+    // view's
     private lateinit var cover: ImageView
+    private lateinit var container: DragLayout
     private lateinit var installBtn: Button
     private lateinit var controlContainer: FrameLayout
+
+    private lateinit var swipeTv: AnimatedTextView
+    private lateinit var swipeIv: AnimatedImageView
+
+    private lateinit var arcView: ArcView
+    private lateinit var closeBtn: AnimatedImageView
 
     // ads
     private lateinit var adView: AdView
@@ -65,32 +76,148 @@ class DetailsActivity : AppCompatActivity() {
         fromApi(lollipop) {
             window.statusBarColor = Color.TRANSPARENT
         }
+
         setContentView(_layout.details_screen_layout)
+
         container = findViewById(_id.drag_layout)
+        container.setVisibilityStateListener(this)
+
+        arcView = findViewById(_id.detailArcView)
+        closeBtn = findViewById(_id.detailArcImage)
+        swipeIv = container.findViewById(_id.details_swipe_iv)
+        swipeTv = container.findViewById(_id.details_swipe_tv)
+
+        please(duration = 250) {
+            animate(arcView) toBe {
+                alpha(1f)
+            }
+
+            animate(closeBtn) toBe {
+                alpha(1f)
+                closeBtn.setAnimatedImage(_drawable.ic_close_white_24dp, 250)
+            }
+        }.thenCouldYou(duration = 150) {
+            animate(swipeTv) toBe {
+                alpha(1f)
+                swipeTv.setAnimatedText(getString(_string.detailt_swipe_down_title), 250)
+            }
+        }.thenCouldYou(duration = 150) {
+            animate(swipeIv) toBe {
+                alpha(1f)
+                swipeIv.setAnimatedImage(_drawable.ic_expand_less_white_24dp)
+            }
+        }
+
         cover = container.findViewById(_id.details_wallpaper)
-        installBtn = container.findViewById(_id.details_install_button)
+        initLoadImg()
+
         controlContainer = container.findViewById(_id.details_control_container)
-        adView = container.findViewById(_id.details_screen_ads_widget)
-
-        container.setVisibilityStateListener(object: DragLayout.StateVisibilityControlContainer {
-            override fun state(visibility: Boolean) {
-                if (!visibility) {
-                    details_install_button.visibility = View.VISIBLE
-                    adView.show()
-
-                    details_swipe_iv.setAnimatedImage(_drawable.ic_expand_less_white_24dp)
-                    details_swipe_tv.setAnimatedText("swipe down", 250)
-                } else {
-                    details_install_button.hide()
-                    adView.hide()
-
-                    details_swipe_iv.setAnimatedImage(_drawable.ic_expand_more_white_24dp)
-                    details_swipe_tv.setAnimatedText("swipe up", 250)
+        installBtn = container.findViewById(_id.details_install_button)
+        installBtn.onClick {
+            if (isApi(marshmallow)) {
+                if (isCheckPermission()) {
+                    startDownloadAction()
                 }
+            } else startDownloadAction()
+        }
+        adView = container.findViewById(_id.details_screen_ads_widget)
+        please {
+            animate(controlContainer) toBe {
+                invisible()
+            }
+
+            animate(installBtn) toBe {
+                invisible()
+            }
+
+            animate(adView) toBe {
+                invisible()
+            }
+        }.now()
+
+        closeBtn.onClick {
+            please(duration = 250) {
+                animate(closeBtn) toBe {
+                    invisible()
+                }
+                animate(arcView) toBe {
+                    invisible()
+                }
+            }.start()
+            closeActivity()
+        }
+
+        wall = intent.extras.getParcelable(DETAILS_ARGS) as Wallpaper
+
+        repository._data.observe(this, Observer { item ->
+            if (item != null) {
+                detailToolbarProgress.hide()
+                if (item.fullCachePath?.isNotEmpty() == true) {
+                    val uri = FileProvider.getUriForFile(this,
+                            BuildConfig.APPLICATION_ID + ".provider",
+                            File(item.fullCachePath))
+                    val wm = WallpaperManager.getInstance(this)
+                    startActivity(wm.getCropAndSetWallpaperIntent(uri))
+                    repository._data.postValue(null)
+                }
+            } else {
+                logger("$TAG item null")
+                detailToolbarProgress.hide()
             }
         })
 
-        wall = intent.extras.getParcelable(DETAILS_ARGS) as Wallpaper
+        initAds()
+    }
+
+    override fun state(visibility: Boolean) {
+        if (!visibility) {
+            please {
+                animate(controlContainer) toBe {
+                    visible()
+                }
+
+                animate(installBtn) toBe {
+                    visible()
+                }
+
+                animate(adView) toBe {
+                    visible()
+                }
+            }.thenCouldYou(duration = 150) {
+                animate(swipeTv) toBe {
+                    swipeTv.setAnimatedText(getString(_string.detailt_swipe_down_title), 250)
+                }
+            }.thenCouldYou(duration = 150) {
+                animate(swipeIv) toBe {
+                    swipeIv.setAnimatedImage(_drawable.ic_expand_less_white_24dp)
+                }
+            }.start()
+        } else {
+            please {
+                animate(controlContainer) toBe {
+                    invisible()
+                }
+
+                animate(installBtn) toBe {
+                    invisible()
+                }
+
+                animate(adView) toBe {
+                    invisible()
+                }
+            }.thenCouldYou(duration = 150) {
+                animate(swipeTv) toBe {
+                    swipeTv.setAnimatedText(getString(_string.details_swipe_up_title), 250)
+                }
+            }.thenCouldYou(duration = 150) {
+                animate(swipeIv) toBe {
+                    swipeIv.setAnimatedImage(_drawable.ic_expand_more_white_24dp)
+                }
+            }.start()
+        }
+    }
+
+    private fun initLoadImg() {
 
         if (isApi(lollipop)) {
             supportPostponeEnterTransition()
@@ -117,39 +244,6 @@ class DetailsActivity : AppCompatActivity() {
                     })
                     .into(cover)
         } else GlideApp.with(this).load(wall?.preview).into(cover)
-
-        detailArcView.onClick {
-            closeActivity()
-        }
-
-        details_install_button.onClick {
-            if (isApi(marshmallow)) {
-                if (isCheckPermission()) {
-                    startDownloadAction()
-                }
-            } else startDownloadAction()
-
-        }
-
-        repository._data.observe(this, Observer { item ->
-            if (item != null) {
-                detailToolbarProgress.hide()
-                if (item.fullCachePath?.isNotEmpty() == true) {
-                    val uri = FileProvider.getUriForFile(this,
-                            BuildConfig.APPLICATION_ID + ".provider",
-                            File(item.fullCachePath))
-                    val wm = WallpaperManager.getInstance(this)
-                    startActivity(wm.getCropAndSetWallpaperIntent(uri))
-                    repository._data.postValue(null)
-                }
-            } else {
-                logger("$TAG item null")
-                detailToolbarProgress.hide()
-            }
-        })
-
-
-        initAds()
 
     }
 

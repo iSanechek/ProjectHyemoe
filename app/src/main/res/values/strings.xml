@@ -33,4 +33,6 @@
     <string name="transition_title">transition title</string>
     <string name="submit">done</string>
     <string name="category_title">Category</string>
+    <string name="detailt_swipe_down_title">swipe down</string>
+    <string name="details_swipe_up_title">swipe up</string>
 </resources>
