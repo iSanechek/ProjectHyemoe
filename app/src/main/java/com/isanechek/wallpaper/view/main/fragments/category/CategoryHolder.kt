@@ -18,7 +18,7 @@ import com.isanechek.wallpaper.utils.glide.load
  */
 
 class CategoryHolder(parent: ViewGroup?) : RecyclerView.ViewHolder(
-        LayoutInflater.from(parent?.context).inflate(R.layout.cat_item_layout, parent, false)) {
+        LayoutInflater.from(parent?.context).inflate(R.layout.category_list_item_layout, parent, false)) {
     private var model: Category? = null
     private val root = itemView.findViewById<CardView>(_id.cat_item_root)
     private val title = itemView.findViewById<TextView>(_id.cat_item_title_tv)

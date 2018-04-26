@@ -6,10 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.isanechek.wallpaper.view.widgets.AnimatedRecyclerView
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/list_rv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.isanechek.wallpaper.view.main.MainActivity"
-        tools:listitem="@layout/category_item_layout2"/>
+        tools:context="com.isanechek.wallpaper.view.main.MainActivity" />
 </android.support.v4.widget.SwipeRefreshLayout>

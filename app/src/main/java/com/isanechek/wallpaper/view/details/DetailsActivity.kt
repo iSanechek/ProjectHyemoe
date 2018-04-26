@@ -22,7 +22,6 @@ import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.Toast
-import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
@@ -39,7 +38,7 @@ import com.yandex.mobile.ads.AdEventListener
 import com.yandex.mobile.ads.AdRequest
 import com.yandex.mobile.ads.AdSize
 import com.yandex.mobile.ads.AdView
-import kotlinx.android.synthetic.main.details_activity_layout.*
+import kotlinx.android.synthetic.main.details_screen_layout.*
 import org.koin.android.ext.android.inject
 import java.io.File
 
@@ -66,7 +65,7 @@ class DetailsActivity : AppCompatActivity() {
         fromApi(lollipop) {
             window.statusBarColor = Color.TRANSPARENT
         }
-        setContentView(_layout.details_activity_layout)
+        setContentView(_layout.details_screen_layout)
         container = findViewById(_id.drag_layout)
         cover = container.findViewById(_id.details_wallpaper)
         installBtn = container.findViewById(_id.details_install_button)

@@ -18,7 +18,7 @@ import com.isanechek.wallpaper.view.base.BaseFragment
 import com.isanechek.wallpaper.view.details.DetailsActivity
 import com.isanechek.wallpaper.view.widgets.ParallaxImageView
 import com.isanechek.wallpaper.view.widgets.navigation.NavigationId
-import kotlinx.android.synthetic.main.fragment_list_layout.*
+import kotlinx.android.synthetic.main.timeline_screen_layout.*
 import org.koin.android.architecture.ext.getViewModel
 
 /**
@@ -41,7 +41,7 @@ class TimelineFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, T
 
 //    private val preferences: SharedPreferences by inject()
 
-    override fun layoutResId(): Int = _layout.fragment_list_layout
+    override fun layoutResId(): Int = _layout.timeline_screen_layout
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)

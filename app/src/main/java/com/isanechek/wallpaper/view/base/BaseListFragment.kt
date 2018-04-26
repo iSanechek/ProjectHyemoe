@@ -13,7 +13,7 @@ class BaseListFragment : BaseFragment() {
     lateinit var refresh: SwipeRefreshLayout
     lateinit var timeline: RecyclerView
 
-    override fun layoutResId(): Int = _layout.fragment_list_layout
+    override fun layoutResId(): Int = _layout.timeline_screen_layout
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)

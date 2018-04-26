@@ -56,7 +56,7 @@ class MainActivity : BaseActivity(), NavAdapterItemSelectedListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(_layout.main_activity_layout)
+        setContentView(_layout.main_screen_layout)
         viewModel = getViewModel()
         initViews()
         goTo<CategoryFragment>()

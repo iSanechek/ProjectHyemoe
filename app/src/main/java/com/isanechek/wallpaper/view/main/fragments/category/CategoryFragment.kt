@@ -26,7 +26,7 @@ class CategoryFragment : BaseFragment(), CategoryAdapter.ItemClickListener {
     // view's
     private lateinit var list: RecyclerView
 
-    override fun layoutResId(): Int = _layout.category_fragment_layout
+    override fun layoutResId(): Int = _layout.category_screen_layout
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
