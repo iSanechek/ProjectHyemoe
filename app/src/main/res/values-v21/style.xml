@@ -13,8 +13,8 @@
     <style name="DetailsActivityTheme" parent="Theme.AppCompat.Light.NoActionBar" >
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
+        <!--<item name="android:windowDrawsSystemBarBackgrounds">true</item>-->
+        <!--<item name="android:statusBarColor">@android:color/transparent</item>-->
         <item name="android:windowBackground">@color/colorPrimary_light</item>
         <item name="android:windowContentTransitions">true</item>
     </style>

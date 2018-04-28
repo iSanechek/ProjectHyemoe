@@ -27,8 +27,10 @@ class NotificationUtil(private val context: Context) {
     init {
         @TargetApi(Build.VERSION_CODES.O)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val notificationChannel = NotificationChannel(NOTIFICATION_CHANNEL_ID,
-                    "Wallpaper", NotificationManager.IMPORTANCE_DEFAULT)
+            val notificationChannel = NotificationChannel(
+                NOTIFICATION_CHANNEL_ID,
+                "Wallpaper", NotificationManager.IMPORTANCE_DEFAULT
+            )
 
             notificationChannel.description = "Wallpaper"
             notificationChannel.enableLights(false)
@@ -45,20 +47,20 @@ class NotificationUtil(private val context: Context) {
     fun showProgressNotification(title: String, content: String, progress: Int, downloadUri: Uri) {
         val id = downloadUri.hashCode()
         val builder = NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
-                .setContentTitle(title)
-                .setContentText(content)
-                .setSmallIcon(_drawable.vector_ic_file_download)
-                .setProgress(100, progress, false)
+            .setContentTitle(title)
+            .setContentText(content)
+            .setSmallIcon(_drawable.vector_ic_file_download)
+            .setProgress(100, progress, false)
         injectAppIntent(builder)
     }
 
     fun showCompleteNotification(downloadUri: Uri, filePath: String?) {
         val id = downloadUri.hashCode()
         val builder = NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
-                .setContentTitle(context.getString(_string.notif_title_download_complited))
-                .setContentText(context.getString(_string.notif_tap_to_open))
-                .setAutoCancel(false)
-                .setSmallIcon(_drawable.ic_cloud_done_black_24dp)
+            .setContentTitle(context.getString(_string.notif_title_download_complited))
+            .setContentText(context.getString(_string.notif_tap_to_open))
+            .setAutoCancel(false)
+            .setSmallIcon(_drawable.ic_cloud_done_black_24dp)
         if (filePath == null) injectAppIntent(builder) else {
             injectViewIntent(builder, filePath)
         }
@@ -66,22 +68,28 @@ class NotificationUtil(private val context: Context) {
 
     private fun injectAppIntent(builder: NotificationCompat.Builder) {
         Intent(context, DetailsActivity::class.java).run {
-            builder.setContentIntent(PendingIntent.getActivity(
+            builder.setContentIntent(
+                PendingIntent.getActivity(
                     context,
                     0,
                     this,
-                    PendingIntent.FLAG_UPDATE_CURRENT))
+                    PendingIntent.FLAG_UPDATE_CURRENT
+                )
+            )
         }
     }
 
     private fun injectViewIntent(builder: NotificationCompat.Builder, filePath: String) {
         Intent(context, DetailsActivity::class.java).run {
             putExtra(Intent.EXTRA_STREAM, Uri.fromFile(File(filePath)))
-            builder.setContentIntent(PendingIntent.getActivity(
+            builder.setContentIntent(
+                PendingIntent.getActivity(
                     context,
                     0,
                     this,
-                    PendingIntent.FLAG_UPDATE_CURRENT))
+                    PendingIntent.FLAG_UPDATE_CURRENT
+                )
+            )
         }
     }
 

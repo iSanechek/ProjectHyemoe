@@ -16,6 +16,8 @@ import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.FileProvider
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
+import android.view.Gravity
 import android.view.View
 import android.view.ViewTreeObserver
 import android.widget.Button
@@ -53,6 +55,7 @@ class DetailsActivity : AppCompatActivity(), DragLayout.StateVisibilityControlCo
 
     // view's
     private lateinit var cover: ImageView
+    private lateinit var photoContainer: FrameLayout
     private lateinit var container: DragLayout
     private lateinit var installBtn: Button
     private lateinit var controlContainer: FrameLayout
@@ -73,40 +76,49 @@ class DetailsActivity : AppCompatActivity(), DragLayout.StateVisibilityControlCo
     @SuppressLint("NewApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        fromApi(lollipop) {
-            window.statusBarColor = Color.TRANSPARENT
-        }
+//        fromApi(lollipop) {
+//            window.statusBarColor = Color.TRANSPARENT
+//        }
 
         setContentView(_layout.details_screen_layout)
 
         container = findViewById(_id.drag_layout)
         container.setVisibilityStateListener(this)
 
+        photoContainer = container.findViewById(_id.details_photo_container)
+
         arcView = findViewById(_id.detailArcView)
         closeBtn = findViewById(_id.detailArcImage)
+
         swipeIv = container.findViewById(_id.details_swipe_iv)
         swipeTv = container.findViewById(_id.details_swipe_tv)
 
         please(duration = 250) {
-            animate(arcView) toBe {
-                alpha(1f)
-            }
+            //            animate(arcView) toBe {
+//                alpha(1f)
+//            }
 
             animate(closeBtn) toBe {
+                outOfScreen(Gravity.START)
                 alpha(1f)
-                closeBtn.setAnimatedImage(_drawable.ic_close_white_24dp, 250)
+                leftOfItsParent(marginDp = 22f)
             }
+            closeBtn.setAnimatedImage(_drawable.ic_close_white_24dp, 150)
         }.thenCouldYou(duration = 150) {
             animate(swipeTv) toBe {
+                outOfScreen(Gravity.BOTTOM)
                 alpha(1f)
-                swipeTv.setAnimatedText(getString(_string.detailt_swipe_down_title), 250)
+                bottomOfItsParent()
             }
+            swipeTv.setAnimatedText(getString(_string.detailt_swipe_down_title), 150)
         }.thenCouldYou(duration = 150) {
             animate(swipeIv) toBe {
+                outOfScreen(Gravity.BOTTOM)
                 alpha(1f)
-                swipeIv.setAnimatedImage(_drawable.ic_expand_less_white_24dp)
+                bottomOfItsParent()
             }
-        }
+            swipeIv.setAnimatedImage(_drawable.ic_expand_less_white_24dp)
+        }.now()
 
         cover = container.findViewById(_id.details_wallpaper)
         initLoadImg()
@@ -122,15 +134,18 @@ class DetailsActivity : AppCompatActivity(), DragLayout.StateVisibilityControlCo
         }
         adView = container.findViewById(_id.details_screen_ads_widget)
         please {
-            animate(controlContainer) toBe {
-                invisible()
-            }
 
             animate(installBtn) toBe {
                 invisible()
+                outOfScreen(Gravity.START)
             }
 
             animate(adView) toBe {
+                invisible()
+                outOfScreen(Gravity.BOTTOM)
+            }
+
+            animate(controlContainer) toBe {
                 invisible()
             }
         }.now()
@@ -138,11 +153,12 @@ class DetailsActivity : AppCompatActivity(), DragLayout.StateVisibilityControlCo
         closeBtn.onClick {
             please(duration = 250) {
                 animate(closeBtn) toBe {
+                    outOfScreen(Gravity.START)
                     invisible()
                 }
-                animate(arcView) toBe {
-                    invisible()
-                }
+//                animate(arcView) toBe {
+//                    invisible()
+//                }
             }.start()
             closeActivity()
         }
@@ -153,9 +169,11 @@ class DetailsActivity : AppCompatActivity(), DragLayout.StateVisibilityControlCo
             if (item != null) {
                 detailToolbarProgress.hide()
                 if (item.fullCachePath?.isNotEmpty() == true) {
-                    val uri = FileProvider.getUriForFile(this,
-                            BuildConfig.APPLICATION_ID + ".provider",
-                            File(item.fullCachePath))
+                    val uri = FileProvider.getUriForFile(
+                        this,
+                        BuildConfig.APPLICATION_ID + ".provider",
+                        File(item.fullCachePath)
+                    )
                     val wm = WallpaperManager.getInstance(this)
                     startActivity(wm.getCropAndSetWallpaperIntent(uri))
                     repository._data.postValue(null)
@@ -178,15 +196,18 @@ class DetailsActivity : AppCompatActivity(), DragLayout.StateVisibilityControlCo
 
                 animate(installBtn) toBe {
                     visible()
+                    topOfItsParent()
                 }
 
                 animate(adView) toBe {
                     visible()
+                    bottomOfItsParent()
                 }
             }.thenCouldYou(duration = 150) {
                 animate(swipeTv) toBe {
-                    swipeTv.setAnimatedText(getString(_string.detailt_swipe_down_title), 250)
+
                 }
+                swipeTv.setAnimatedText(getString(_string.detailt_swipe_down_title), 250)
             }.thenCouldYou(duration = 150) {
                 animate(swipeIv) toBe {
                     swipeIv.setAnimatedImage(_drawable.ic_expand_less_white_24dp)
@@ -194,15 +215,16 @@ class DetailsActivity : AppCompatActivity(), DragLayout.StateVisibilityControlCo
             }.start()
         } else {
             please {
-                animate(controlContainer) toBe {
-                    invisible()
-                }
-
-                animate(installBtn) toBe {
-                    invisible()
-                }
-
                 animate(adView) toBe {
+                    outOfScreen(Gravity.BOTTOM)
+                    invisible()
+                }
+                animate(installBtn) toBe {
+                    outOfScreen(Gravity.TOP)
+                    invisible()
+                }
+            }.thenCouldYou {
+                animate(controlContainer) toBe {
                     invisible()
                 }
             }.thenCouldYou(duration = 150) {
@@ -218,31 +240,42 @@ class DetailsActivity : AppCompatActivity(), DragLayout.StateVisibilityControlCo
     }
 
     private fun initLoadImg() {
-
         if (isApi(lollipop)) {
             supportPostponeEnterTransition()
             GlideApp.with(this)
-                    .load(wall?.preview)
-                    .centerCrop()
-                    .dontAnimate()
-                    .listener(object: RequestListener<Drawable> {
-                        override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
-                            supportStartPostponedEnterTransition()
-                            return false
-                        }
+                .load(wall?.preview)
+                .dontAnimate()
+                .listener(object : RequestListener<Drawable> {
+                    override fun onLoadFailed(
+                        e: GlideException?,
+                        model: Any?,
+                        target: Target<Drawable>?,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        Log.e("TEST", "Load Failed")
+                        return false
+                    }
 
-                        override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
-                            cover.viewTreeObserver.addOnPreDrawListener(object: ViewTreeObserver.OnPreDrawListener {
-                                override fun onPreDraw(): Boolean {
-                                    cover.viewTreeObserver.removeOnPreDrawListener(this)
-                                    supportStartPostponedEnterTransition()
-                                    return false
-                                }
-                            })
-                            return false
-                        }
-                    })
-                    .into(cover)
+                    override fun onResourceReady(
+                        resource: Drawable?,
+                        model: Any?,
+                        target: Target<Drawable>?,
+                        dataSource: DataSource?,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        Log.e("TEST", "load done")
+                        cover.viewTreeObserver.addOnPreDrawListener(object :
+                            ViewTreeObserver.OnPreDrawListener {
+                            override fun onPreDraw(): Boolean {
+                                cover.viewTreeObserver.removeOnPreDrawListener(this)
+                                supportStartPostponedEnterTransition()
+                                return true
+                            }
+                        })
+                        return true
+                    }
+                })
+                .into(cover)
         } else GlideApp.with(this).load(wall?.preview).into(cover)
 
     }
@@ -252,11 +285,16 @@ class DetailsActivity : AppCompatActivity(), DragLayout.StateVisibilityControlCo
         closeActivity()
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
         if (requestCode == DetailsActivity.REQUEST_PERMISSION_CODE) {
             if (permissions[0] == Manifest.permission.WRITE_EXTERNAL_STORAGE
-                    && permissions[0] == Manifest.permission.READ_EXTERNAL_STORAGE
-                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                && permissions[0] == Manifest.permission.READ_EXTERNAL_STORAGE
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED
+            ) {
                 startDownloadAction()
             }
         }
@@ -271,13 +309,29 @@ class DetailsActivity : AppCompatActivity(), DragLayout.StateVisibilityControlCo
 
     private fun isCheckPermission(): Boolean {
         var permissionState = true
-        if (ContextCompat.checkSelfPermission(applicationContext, android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this@DetailsActivity, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE), DetailsActivity.REQUEST_PERMISSION_CODE)
+        if (ContextCompat.checkSelfPermission(
+                applicationContext,
+                android.Manifest.permission.READ_EXTERNAL_STORAGE
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                this@DetailsActivity, arrayOf(
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ), DetailsActivity.REQUEST_PERMISSION_CODE
+            )
             permissionState = false
-        } else if (ContextCompat.checkSelfPermission(applicationContext, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this@DetailsActivity, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE), DetailsActivity.REQUEST_PERMISSION_CODE)
+        } else if (ContextCompat.checkSelfPermission(
+                applicationContext,
+                android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                this@DetailsActivity, arrayOf(
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ), DetailsActivity.REQUEST_PERMISSION_CODE
+            )
             permissionState = false
         }
         return permissionState
@@ -297,13 +351,13 @@ class DetailsActivity : AppCompatActivity(), DragLayout.StateVisibilityControlCo
         adView.adSize = AdSize.BANNER_320x50
 
         adRequest = AdRequest
-                .builder()
-                .build()
+            .builder()
+            .build()
         adView.adEventListener = loadAdsBannerListener
         adView.loadAd(adRequest)
     }
 
-    private val loadAdsBannerListener = object: AdEventListener.SimpleAdEventListener() {
+    private val loadAdsBannerListener = object : AdEventListener.SimpleAdEventListener() {
         override fun onAdLoaded() {
             super.onAdLoaded()
         }
@@ -311,7 +365,6 @@ class DetailsActivity : AppCompatActivity(), DragLayout.StateVisibilityControlCo
 
     companion object {
         private const val TAG = "DetailsActivity"
-        private const val ANIMATION_DURATION = 400L
         private const val DETAILS_ARGS = "details.args"
         private const val REQUEST_PERMISSION_CODE = 303
         fun start(context: Context, wallpaper: Wallpaper) {
@@ -322,19 +375,22 @@ class DetailsActivity : AppCompatActivity(), DragLayout.StateVisibilityControlCo
         }
 
         fun startWithAnimation(context: Activity, wallpaper: Wallpaper, view: View): Unit =
-                if (isApi(lollipop)) {
-                    val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                            context, view, context.getString(_string.wall_image))
-                    ActivityCompat.startActivity(context,
-                            Intent(context, DetailsActivity::class.java).apply {
-                                putExtra(DETAILS_ARGS, wallpaper)
-                            },
-                            options.toBundle())
-                } else {
-                    Intent(context, DetailsActivity::class.java).run {
+            if (isApi(lollipop)) {
+                val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                    context, view, context.getString(_string.wall_image)
+                )
+                ActivityCompat.startActivity(
+                    context,
+                    Intent(context, DetailsActivity::class.java).apply {
                         putExtra(DETAILS_ARGS, wallpaper)
-                        context.startActivity(this)
-                    }
+                    },
+                    options.toBundle()
+                )
+            } else {
+                Intent(context, DetailsActivity::class.java).run {
+                    putExtra(DETAILS_ARGS, wallpaper)
+                    context.startActivity(this)
                 }
+            }
     }
 }

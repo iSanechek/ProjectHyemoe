@@ -16,7 +16,6 @@ import com.isanechek.wallpaper.utils.extensions.extraWithKey
 import com.isanechek.wallpaper.utils.logger
 import com.isanechek.wallpaper.view.base.BaseFragment
 import com.isanechek.wallpaper.view.details.DetailsActivity
-import com.isanechek.wallpaper.view.widgets.ParallaxImageView
 import com.isanechek.wallpaper.view.widgets.navigation.NavigationId
 import kotlinx.android.synthetic.main.timeline_screen_layout.*
 import org.koin.android.architecture.ext.getViewModel
@@ -134,7 +133,6 @@ class TimelineFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, T
 
     private fun setupRecycler() {
         list_rv.layoutManager = LinearLayoutManager(activity)
-        list_rv.tag = ParallaxImageView.RECYCLER_VIEW_TAG
         list_rv.setHasFixedSize(true)
         adapter = TimelineAdapter()
         adapter?.let { list_rv.adapter = it }

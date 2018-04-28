@@ -35,10 +35,10 @@ object FileUtils {
         }
 
         val future: FutureTarget<Bitmap> = Glide
-                .with(context)
-                .asBitmap()
-                .load(downloadUrl)
-                .submit(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+            .with(context)
+            .asBitmap()
+            .load(downloadUrl)
+            .submit(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
         val bitmap: Bitmap = future.get()
         FileOutputStream(cacheFile).use { output ->
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, output)
@@ -56,7 +56,8 @@ object FileUtils {
                 isLocalStorageDocument(uri) -> return DocumentsContract.getDocumentId(uri)
                 isExternalStorageDocument(uri) -> {
                     val docId = DocumentsContract.getDocumentId(uri)
-                    val split = docId.split(":".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+                    val split =
+                        docId.split(":".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
                     val type = split[0]
                     if ("primary".equals(type, ignoreCase = true))
                         return Environment.getExternalStorageDirectory().toString() + "/" + split[1]
@@ -64,12 +65,15 @@ object FileUtils {
                 isDownloadsDocument(uri) -> {
                     val id = DocumentsContract.getDocumentId(uri)
                     val contentUri = ContentUris.withAppendedId(
-                            Uri.parse("content://downloads/public_downloads"), java.lang.Long.valueOf(id))
+                        Uri.parse("content://downloads/public_downloads"),
+                        java.lang.Long.valueOf(id)
+                    )
                     return getDataColumn(context, contentUri, null, null)
                 }
                 isMediaDocument(uri) -> {
                     val docId = DocumentsContract.getDocumentId(uri)
-                    val split = docId.split(":".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+                    val split =
+                        docId.split(":".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
                     val type = split[0]
 
                     var contentUri: Uri? = null
@@ -85,7 +89,15 @@ object FileUtils {
                     return getDataColumn(context, contentUri, selection, selectionArgs)
                 }
             }
-            "content".equals(uri.scheme, ignoreCase = true) -> return if (isGooglePhotosUri(uri)) uri.lastPathSegment else getDataColumn(context, uri, null, null)
+            "content".equals(
+                uri.scheme,
+                ignoreCase = true
+            ) -> return if (isGooglePhotosUri(uri)) uri.lastPathSegment else getDataColumn(
+                context,
+                uri,
+                null,
+                null
+            )
             "file".equals(uri.scheme, ignoreCase = true) -> return uri.path
         }
         return null
@@ -93,21 +105,26 @@ object FileUtils {
 
 
     private fun isDownloadsDocument(uri: Uri): Boolean =
-            "com.android.providers.downloads.documents".equals(uri.authority)
+        "com.android.providers.downloads.documents".equals(uri.authority)
 
     private fun isMediaDocument(uri: Uri): Boolean =
-            "com.android.providers.media.documents".equals(uri.authority)
+        "com.android.providers.media.documents".equals(uri.authority)
 
     private fun isGooglePhotosUri(uri: Uri): Boolean =
-            "com.google.android.apps.photos.content".equals(uri.authority)
+        "com.google.android.apps.photos.content".equals(uri.authority)
 
     private fun isExternalStorageDocument(uri: Uri): Boolean =
-            "com.android.externalstorage.documents".equals(uri.authority)
+        "com.android.externalstorage.documents".equals(uri.authority)
 
     private fun isLocalStorageDocument(uri: Uri): Boolean =
-            LocalStorageProvider.AUTHORITY.equals(uri.authority)
+        LocalStorageProvider.AUTHORITY.equals(uri.authority)
 
-    private fun getDataColumn(context: Context, uri: Uri?, selection: String?, selectionArgs: Array<String>?): String {
+    private fun getDataColumn(
+        context: Context,
+        uri: Uri?,
+        selection: String?,
+        selectionArgs: Array<String>?
+    ): String {
         var cursor: Cursor? = null
         val column = "_data"
         val projection = arrayOf(column)

@@ -10,8 +10,10 @@ import android.view.View
 import com.isanechek.wallpaper.utils._anim
 import com.isanechek.wallpaper.utils._id
 
-class Navigator constructor(private val activity: AppCompatActivity,
-                            private val fragmentManager: FragmentManager) {
+class Navigator constructor(
+    private val activity: AppCompatActivity,
+    private val fragmentManager: FragmentManager
+) {
 
     interface FragmentChangeListener {
         fun onFragmentChanged(currentTag: String, currentFragment: Fragment) {}
@@ -62,38 +64,42 @@ class Navigator constructor(private val activity: AppCompatActivity,
 
         fragmentMap.clear()
         fragmentManager.fragments
-                .filter { it.tag!!.contains(activity.applicationContext.packageName) }
-                .forEach {
-                    fragmentMap.put(it.tag!!, Screen(it, BackStrategy.KEEP)) //FIXME
-                }
+            .filter { it.tag!!.contains(activity.applicationContext.packageName) }
+            .forEach {
+                fragmentMap.put(it.tag!!, Screen(it, BackStrategy.KEEP)) //FIXME
+            }
 
         fragmentManager.inTransaction {
             fragmentMap
-                    .filter { it.key != activeTag }
-                    .forEach {
-                        hide(it.value.fragment)
-                    }
+                .filter { it.key != activeTag }
+                .forEach {
+                    hide(it.value.fragment)
+                }
             show(fragmentMap[activeTag]?.fragment)
         }
         invokeFragmentChangeListener(activeTag)
     }
 
-    inline fun <reified T : Fragment> goTo(keepState: Boolean = true,
-                                           withCustomAnimation: Boolean = false,
-                                           arg: Bundle = Bundle.EMPTY,
-                                           shared: Pair<String, View>?,
-                                           backStrategy: BackStrategy = BackStrategy.KEEP) {
+    inline fun <reified T : Fragment> goTo(
+        keepState: Boolean = true,
+        withCustomAnimation: Boolean = false,
+        arg: Bundle = Bundle.EMPTY,
+        shared: Pair<String, View>?,
+        backStrategy: BackStrategy = BackStrategy.KEEP
+    ) {
         val tag = T::class.java.name
         goTo(tag, keepState, withCustomAnimation, arg, shared, backStrategy)
     }
 
     @PublishedApi
-    internal fun goTo(tag: String,
-                      keepState: Boolean,
-                      withCustomAnimation: Boolean,
-                      arg: Bundle,
-                      shared: Pair<String, View>?,
-                      backStrategy: BackStrategy) {
+    internal fun goTo(
+        tag: String,
+        keepState: Boolean,
+        withCustomAnimation: Boolean,
+        arg: Bundle,
+        shared: Pair<String, View>?,
+        backStrategy: BackStrategy
+    ) {
         if (activeTag == tag) return
 
         if (!fragmentMap.containsKey(tag) || !keepState) {
@@ -131,10 +137,10 @@ class Navigator constructor(private val activity: AppCompatActivity,
         fragmentManager.inTransaction {
             addOpenTransition(this, withCustomAnimation)
             fragmentMap
-                    .filter { it.key != tag }
-                    .forEach {
-                        hide(it.value.fragment)
-                    }
+                .filter { it.key != tag }
+                .forEach {
+                    hide(it.value.fragment)
+                }
 
             if (shared != null) {
                 addSharedElement(fragmentMap[tag]?.fragment!!)

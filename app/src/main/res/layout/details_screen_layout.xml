@@ -51,8 +51,7 @@
                 android:textAllCaps="true"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:background="@drawable/install_button_bg"
-                tools:ignore="HardcodedText"
-                android:visibility="visible"/>
+                tools:ignore="HardcodedText" />
 
             <com.yandex.mobile.ads.AdView
                 android:id="@+id/details_screen_ads_widget"
@@ -87,6 +86,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|top"
+                    android:alpha="0"
+                    tools:alpha="1"
                     tools:src="@drawable/ic_expand_more_white_24dp"
                     tools:ignore="ContentDescription" />
 
@@ -94,12 +95,13 @@
                     android:id="@+id/details_swipe_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="16sp"
-                    tools:text="swipe up"
-                    android:textColor="@android:color/white"
                     android:layout_gravity="center|bottom"
+                    android:alpha="0"
+                    android:textSize="16sp"
+                    android:textColor="@android:color/white"
                     tools:ignore="HardcodedText"
-                    android:visibility="gone"/>
+                    tools:alpha="1"
+                    tools:text="swipe up"/>
             </FrameLayout>
         </FrameLayout>
     </com.isanechek.wallpaper.view.widgets.DragLayout>
@@ -121,6 +123,8 @@
                 android:layout_marginBottom="8dp"
                 android:layout_marginTop="4dp"
                 android:alpha="0"
+                tools:alpha="1"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -132,6 +136,7 @@
                 android:layout_marginBottom="2dp"
                 android:layout_marginStart="22dp"
                 android:alpha="0"
+                tools:alpha="1"
                 tools:srcCompat="@drawable/ic_close_white_24dp"
                 android:contentDescription="@string/arc_view_image"
                 app:layout_constraintBottom_toBottomOf="parent"

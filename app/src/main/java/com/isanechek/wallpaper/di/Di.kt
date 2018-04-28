@@ -74,8 +74,8 @@ val diModule = applicationContext {
 // database
 fun providerDatabase(appContext: Context): DataBase {
     return Room.databaseBuilder(appContext, DataBase::class.java, "Wallpapers.db")
-            .fallbackToDestructiveMigration()
-            .build()
+        .fallbackToDestructiveMigration()
+        .build()
 }
 
 // network
@@ -84,10 +84,10 @@ fun createOkHttpClient(): OkHttpClient {
     logging.level = if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BASIC
     else HttpLoggingInterceptor.Level.NONE
     return OkHttpClient.Builder()
-            .addInterceptor(logging)
-            .connectTimeout(30, TimeUnit.SECONDS)
-            .readTimeout(30, TimeUnit.SECONDS)
-            .build()
+        .addInterceptor(logging)
+        .connectTimeout(30, TimeUnit.SECONDS)
+        .readTimeout(30, TimeUnit.SECONDS)
+        .build()
 }
 
 fun createYandexApi(client: OkHttpClient): ApiInterface = createRetrofitService {
@@ -97,6 +97,6 @@ fun createYandexApi(client: OkHttpClient): ApiInterface = createRetrofitService 
     callAdapterFactories = arrayListOf(CoroutineCallAdapterFactory())
 }
 
-fun sharedPreferences(context : Context): SharedPreferences {
+fun sharedPreferences(context: Context): SharedPreferences {
     return PreferenceManager.getDefaultSharedPreferences(context)
 }

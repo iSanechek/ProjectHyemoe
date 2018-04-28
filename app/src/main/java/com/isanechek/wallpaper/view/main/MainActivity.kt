@@ -148,7 +148,12 @@ class MainActivity : BaseActivity(), NavAdapterItemSelectedListener {
                     outOfScreen()
                     alpha(0f)
                 }
-                toolbar.setBackgroundColor(ContextCompat.getColor(this@MainActivity, _color.my_primary_dark_color))
+                toolbar.setBackgroundColor(
+                    ContextCompat.getColor(
+                        this@MainActivity,
+                        _color.my_primary_dark_color
+                    )
+                )
                 animate(toolbarTitle) toBe {
                     visible()
                 }
@@ -157,7 +162,7 @@ class MainActivity : BaseActivity(), NavAdapterItemSelectedListener {
             setArcArrowState(true)
         }
 
-        val checkPosition = when(tag) {
+        val checkPosition = when (tag) {
             Id.CATEGORY.fullName -> 0
             Id.TIMELINE.fullName -> 1
             else -> currentNavigationSelectedItem
@@ -184,31 +189,31 @@ class MainActivity : BaseActivity(), NavAdapterItemSelectedListener {
 
         with(drawer) {
             drawerElevation = 0F
-            addDrawerListener(object: DrawerLayout.SimpleDrawerListener() {
-            override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
-                super.onDrawerSlide(drawerView, slideOffset)
-                val moveFactor = navView.width * slideOffset
-                mainView.translationX = moveFactor
-                mainView.scale = 1 - slideOffset / 4
-                mainView.cardElevation = slideOffset * 10.toPx(this@MainActivity)
-            }
-
-            override fun onDrawerOpened(drawerView: View) {
-                super.onDrawerOpened(drawerView)
-                isDrawerOpened = true
-                if (categoryScreen) {
-                    setArcArrowState()
-                } else setArcArrowState(true)
-            }
-
-            override fun onDrawerClosed(drawerView: View) {
-                super.onDrawerClosed(drawerView)
-                if (isDrawerOpened) {
-                    setArcHamburgerIconState()
-                    isDrawerOpened = false
+            addDrawerListener(object : DrawerLayout.SimpleDrawerListener() {
+                override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
+                    super.onDrawerSlide(drawerView, slideOffset)
+                    val moveFactor = navView.width * slideOffset
+                    mainView.translationX = moveFactor
+                    mainView.scale = 1 - slideOffset / 4
+                    mainView.cardElevation = slideOffset * 10.toPx(this@MainActivity)
                 }
-            }
-        })
+
+                override fun onDrawerOpened(drawerView: View) {
+                    super.onDrawerOpened(drawerView)
+                    isDrawerOpened = true
+                    if (categoryScreen) {
+                        setArcArrowState()
+                    } else setArcArrowState(true)
+                }
+
+                override fun onDrawerClosed(drawerView: View) {
+                    super.onDrawerClosed(drawerView)
+                    if (isDrawerOpened) {
+                        setArcHamburgerIconState()
+                        isDrawerOpened = false
+                    }
+                }
+            })
             setScrimColor(Color.TRANSPARENT)
         }
     }
