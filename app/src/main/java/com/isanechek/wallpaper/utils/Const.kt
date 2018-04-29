@@ -13,6 +13,7 @@ object Const {
     const val WALLPAPER_TABLE_NAME = "table_wallpaper"
     const val CATEGORY_TABLE_NAME = "table_category"
 
+
     // status request
     const val STATUS_MSG_REQUEST_CATEGORY_NETWORK = "request.category.network"
     const val STATUS_MSG_LOAD_CATEGORY_NETWORK = "load.category.network"

@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentTransaction
 import android.support.v7.app.AppCompatActivity
 import android.transition.Fade
+import android.util.Log
 import android.view.View
 import com.isanechek.wallpaper.utils._anim
 import com.isanechek.wallpaper.utils._id
@@ -104,8 +105,8 @@ class Navigator constructor(
 
         if (!fragmentMap.containsKey(tag) || !keepState) {
             val fragment = Fragment.instantiate(activity, tag)
-            if (!arg.isEmpty) {
-                fragment.arguments = arg
+            when {
+                !arg.isEmpty -> fragment.arguments = arg
             }
 
             if (!keepState) {
@@ -119,8 +120,9 @@ class Navigator constructor(
 
             fragmentManager.inTransaction {
                 addOpenTransition(this, withCustomAnimation)
+                Log.e("TEST", "Boom")
                 if (shared != null) {
-                    addSharedElement(fragment)
+                    Log.e("TEST", "Boom 2")
                     addSharedElement(shared.second, shared.first)
                 }
                 add(containerId, fragment, tag)
@@ -148,6 +150,7 @@ class Navigator constructor(
             }
             show(fragmentMap[tag]?.fragment)
         }
+
         activeTag = tag
         invokeFragmentChangeListener(tag)
 

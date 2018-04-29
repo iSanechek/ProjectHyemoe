@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/progress_view_container"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/my_primary_color"
+    android:visibility="gone">
+
+    <com.vlad1m1r.lemniscate.BernoullisProgressView
+        android:id="@+id/progress_view_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        app:duration="1250"
+        app:hasHole="true"
+        app:lineColor="@color/my_accent_color"
+        app:maxLineLength="0.9"
+        app:minLineLength="0.9"
+        app:strokeWidth="@dimen/dp2"
+        tools:visibility="visible"
+        />
+
+    <FrameLayout
+        android:id="@+id/progress_view_error_container"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_gravity="center"
+        android:layout_marginStart="@dimen/dp24"
+        android:layout_marginEnd="@dimen/dp24"
+        android:visibility="gone"
+        android:background="@drawable/error_view_bg"
+        tools:visibility="gone">
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/progress_view_error_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dp20"
+            android:layout_gravity="center"
+            tools:text="Any Error"/>
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/progress_view_error_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/dp18"
+            android:text="@string/progress_view_error_btn_title"
+            android:textAllCaps="true"/>
+
+    </FrameLayout>
+</FrameLayout>

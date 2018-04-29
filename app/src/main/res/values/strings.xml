@@ -35,4 +35,7 @@
     <string name="category_title">Category</string>
     <string name="detailt_swipe_down_title">swipe down</string>
     <string name="details_swipe_up_title">swipe up</string>
+    <string name="progress_view_error_btn_title">retry</string>
+    <string name="load_data_with_error_text">Ooppss. Load data done with error. :(</string>
+    <string name="load_wallpapers_bad_request_text">Ooopss. Bad request</string>
 </resources>

@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.isanechek.wallpaper.utils.extensions.emptyString
+import com.isanechek.wallpaper.view.navigation.BackStrategy
 import com.isanechek.wallpaper.view.navigation.Navigator
 
 /**
@@ -25,16 +26,29 @@ abstract class BaseFragment : Fragment() {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-            inflater.inflate(layoutResId(), container, false)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? =
+        inflater.inflate(layoutResId(), container, false)
 
     protected abstract fun layoutResId(): Int
 
-    inline fun <reified T : Fragment> goTo(keepState: Boolean = true,
-                                           withCustomAnimation: Boolean = false,
-                                           arg: Bundle = Bundle.EMPTY,
-                                           shared: Pair<String, View>? = null) {
-        navigator.goTo<T>(keepState = keepState, withCustomAnimation = withCustomAnimation, arg = arg, shared = shared)
+    inline fun <reified T : Fragment> goTo(
+        keepState: Boolean = true,
+        withCustomAnimation: Boolean = false,
+        arg: Bundle = Bundle.EMPTY,
+        shared: Pair<String, View>? = null,
+        backStrategy: BackStrategy = BackStrategy.KEEP
+    ) {
+        navigator.goTo<T>(
+            keepState = keepState,
+            withCustomAnimation = withCustomAnimation,
+            arg = arg,
+            shared = shared,
+            backStrategy = backStrategy
+        )
     }
 
     open fun getTitle(): String = emptyString

@@ -29,7 +29,11 @@ inline fun <reified VALUE> bundle() = object : ReadOnlyProperty<Fragment, VALUE>
     }
 }
 
-inline operator fun <reified V> Bundle.setValue(thisRef: Any?, property: KProperty<*>, value: V): Bundle {
+inline operator fun <reified V> Bundle.setValue(
+    thisRef: Any?,
+    property: KProperty<*>,
+    value: V
+): Bundle {
     put(property.name to thisRef)
     return this
 }
@@ -65,34 +69,36 @@ interface KParcelable : Parcelable {
 
 // Create factory function
 inline fun <reified T> parcelableCreator(
-        crossinline create: (Parcel) -> T) =
-        object : Parcelable.Creator<T> {
-            override fun newArray(p0: Int) = arrayOfNulls<T>(p0)
-            override fun createFromParcel(p0: Parcel) = create(p0)
+    crossinline create: (Parcel) -> T
+) =
+    object : Parcelable.Creator<T> {
+        override fun newArray(p0: Int) = arrayOfNulls<T>(p0)
+        override fun createFromParcel(p0: Parcel) = create(p0)
 
-        }
+    }
 
 inline fun <reified T> parcelableClassLoaderCreator(
-        crossinline create: (Parcel, ClassLoader) -> T) =
-        object: Parcelable.ClassLoaderCreator<T> {
-            override fun createFromParcel(p0: Parcel, p1: ClassLoader) = create(p0, p1)
-            override fun createFromParcel(p0: Parcel) = create(p0, T::class.java.classLoader)
-            override fun newArray(p0: Int) = arrayOfNulls<T>(p0)
-        }
+    crossinline create: (Parcel, ClassLoader) -> T
+) =
+    object : Parcelable.ClassLoaderCreator<T> {
+        override fun createFromParcel(p0: Parcel, p1: ClassLoader) = create(p0, p1)
+        override fun createFromParcel(p0: Parcel) = create(p0, T::class.java.classLoader)
+        override fun newArray(p0: Int) = arrayOfNulls<T>(p0)
+    }
 
 // Parcel extensions
 inline fun Parcel.readBoolean() = readInt() != 0
 
-inline fun Parcel.writeBoolean(value: Boolean) = writeInt(if(value) 1 else 0)
+inline fun Parcel.writeBoolean(value: Boolean) = writeInt(if (value) 1 else 0)
 
 inline fun <reified T : Enum<T>> Parcel.readEnum() =
-        readInt().let { if (it >= 0) enumValues<T>()[it] else null }
+    readInt().let { if (it >= 0) enumValues<T>()[it] else null }
 
 inline fun <T : Enum<T>> Parcel.writeEnum(value: T?) =
-        writeInt(value?.ordinal ?: -1)
+    writeInt(value?.ordinal ?: -1)
 
 inline fun <T> Parcel.readNullable(reader: () -> T) =
-        if (readInt() != 0) reader() else null
+    if (readInt() != 0) reader() else null
 
 inline fun <T> Parcel.writeNullable(value: T?, writer: (T) -> Unit) {
     if (value != null) {
@@ -104,19 +110,19 @@ inline fun <T> Parcel.writeNullable(value: T?, writer: (T) -> Unit) {
 }
 
 fun Parcel.readDate() =
-        readNullable { Date(readLong()) }
+    readNullable { Date(readLong()) }
 
 fun Parcel.writeDate(value: Date?) =
-        writeNullable(value) { writeLong(it.time) }
+    writeNullable(value) { writeLong(it.time) }
 
 fun Parcel.readBigInteger() =
-        readNullable { BigInteger(createByteArray()) }
+    readNullable { BigInteger(createByteArray()) }
 
 fun Parcel.writeBigInteger(value: BigInteger?) =
-        writeNullable(value) { writeByteArray(it.toByteArray()) }
+    writeNullable(value) { writeByteArray(it.toByteArray()) }
 
 fun Parcel.readBigDecimal() =
-        readNullable { BigDecimal(BigInteger(createByteArray()), readInt()) }
+    readNullable { BigDecimal(BigInteger(createByteArray()), readInt()) }
 
 fun Parcel.writeBigDecimal(value: BigDecimal?) = writeNullable(value) {
     writeByteArray(it.unscaledValue().toByteArray())
@@ -124,7 +130,7 @@ fun Parcel.writeBigDecimal(value: BigDecimal?) = writeNullable(value) {
 }
 
 fun <T : Parcelable> Parcel.readTypedObjectCompat(c: Parcelable.Creator<T>) =
-        readNullable { c.createFromParcel(this) }
+    readNullable { c.createFromParcel(this) }
 
 fun <T : Parcelable> Parcel.writeTypedObjectCompat(value: T?, parcelableFlags: Int) =
-        writeNullable(value) { it.writeToParcel(this, parcelableFlags) }
+    writeNullable(value) { it.writeToParcel(this, parcelableFlags) }

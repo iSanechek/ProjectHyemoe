@@ -10,9 +10,10 @@ import com.isanechek.wallpaper.utils.extensions.takeColor
 import com.isanechek.wallpaper.utils.extensions.tint
 import com.isanechek.wallpaper.view.base.AbstractAdapter
 
-class NavigationViewAdapter constructor(navigationItemList: MutableList<NavigationItem>,
-                                        private var itemClickListener: NavItemClickListener?)
-    : AbstractAdapter<NavigationItem>(navigationItemList, _layout.navigation_view_item) {
+class NavigationViewAdapter constructor(
+    navigationItemList: MutableList<NavigationItem>,
+    private var itemClickListener: NavItemClickListener?
+) : AbstractAdapter<NavigationItem>(navigationItemList, _layout.navigation_view_item) {
 
     override fun onItemClick(itemView: View, position: Int) {
         itemClickListener?.let {

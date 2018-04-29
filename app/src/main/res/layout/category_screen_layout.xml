@@ -5,10 +5,13 @@
     android:layout_height="match_parent"
     >
 
+    <include layout="@layout/progress_error_layout" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/category_screen_list"
         android:layout_width="match_parent"
         android:layout_height="420dp"
-        android:layout_gravity="bottom"/>
+        android:layout_gravity="bottom"
+        android:visibility="gone"/>
 
 </FrameLayout>

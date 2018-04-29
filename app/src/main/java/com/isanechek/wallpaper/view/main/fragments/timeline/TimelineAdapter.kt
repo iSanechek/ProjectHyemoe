@@ -17,12 +17,16 @@ class TimelineAdapter : PagedListAdapter<Wallpaper, TimelineHolder>(diffCallback
         holder.bindTo(getItem(position), listener, position)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TimelineHolder = TimelineHolder(parent)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TimelineHolder =
+        TimelineHolder(parent)
 
     companion object {
         private val diffCallback = object : DiffUtil.ItemCallback<Wallpaper>() {
-            override fun areItemsTheSame(oldItem: Wallpaper, newItem: Wallpaper): Boolean = oldItem.title == newItem.title
-            override fun areContentsTheSame(oldItem: Wallpaper, newItem: Wallpaper): Boolean = oldItem == newItem
+            override fun areItemsTheSame(oldItem: Wallpaper, newItem: Wallpaper): Boolean =
+                oldItem.title == newItem.title
+
+            override fun areContentsTheSame(oldItem: Wallpaper, newItem: Wallpaper): Boolean =
+                oldItem == newItem
         }
     }
 
@@ -31,6 +35,6 @@ class TimelineAdapter : PagedListAdapter<Wallpaper, TimelineHolder>(diffCallback
     }
 
     interface ItemClickListener {
-        fun onItemClick(view: View, position: Int, id: String, preview: Wallpaper)
+        fun onItemClick(view: View, position: Int, id: String, wallpaper: Wallpaper)
     }
 }

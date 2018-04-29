@@ -1,14 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/list_refresh"
-    android:layout_marginTop="75dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/list_rv"
+    <include layout="@layout/progress_error_layout" />
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/list_refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.isanechek.wallpaper.view.main.MainActivity" />
-</android.support.v4.widget.SwipeRefreshLayout>
+        android:visibility="gone"
+        tools:visibility="gone">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/list_rv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context="com.isanechek.wallpaper.view.main.MainActivity" />
+    </android.support.v4.widget.SwipeRefreshLayout>
+</FrameLayout>
