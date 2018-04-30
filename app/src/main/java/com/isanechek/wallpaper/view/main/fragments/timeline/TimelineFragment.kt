@@ -91,9 +91,8 @@ class TimelineFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, T
         val args = DetailsFragment.args(wallpaper)
         goTo<DetailsFragment>(
             keepState = false,
-            withCustomAnimation = false,
+            withCustomAnimation = true,
             arg = args,
-            shared = Pair(getString(_string.wall_image), view),
             backStrategy = BackStrategy.DESTROY
         )
 
@@ -123,7 +122,7 @@ class TimelineFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, T
                         progressErrorContainer.show()
                         progressView.show()
                     } else if (response.message == STATUS_HIDE_PROGRESS) {
-                        srl.isRefreshing = false
+                        hideProgress()
                         if (progressErrorContainer.visibility == View.VISIBLE) {
                             progressView.hide()
                             progressErrorContainer.hide()
@@ -146,7 +145,6 @@ class TimelineFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, T
                 }
             }
         })
-
 
         viewModel.loadWallpapers(args).observe(this, Observer { response ->
             if (response != null && response.size > 0) {

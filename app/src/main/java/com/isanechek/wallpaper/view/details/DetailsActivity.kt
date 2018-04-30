@@ -307,6 +307,15 @@ class DetailsActivity : AppCompatActivity(), DragLayout.StateVisibilityControlCo
         } else finish()
     }
 
+    private fun startDownloadAction() {
+        detailToolbarProgress.show()
+        if (wall == null) {
+            Toast.makeText(this, "Ooopsss.", Toast.LENGTH_SHORT).show()
+            return
+        }
+        DownloadService.startDownloads(this@DetailsActivity, wall!!)
+    }
+
     private fun isCheckPermission(): Boolean {
         var permissionState = true
         if (ContextCompat.checkSelfPermission(
@@ -335,15 +344,6 @@ class DetailsActivity : AppCompatActivity(), DragLayout.StateVisibilityControlCo
             permissionState = false
         }
         return permissionState
-    }
-
-    private fun startDownloadAction() {
-        detailToolbarProgress.show()
-        if (wall == null) {
-            Toast.makeText(this, "Ooopsss.", Toast.LENGTH_SHORT).show()
-            return
-        }
-        DownloadService.startDownloads(this@DetailsActivity, wall!!)
     }
 
     private fun initAds() {

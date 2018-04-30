@@ -115,11 +115,15 @@ class MainActivity : BaseActivity(), NavAdapterItemSelectedListener {
         } else if (currentTag == Id.CATEGORY.fullName) {
             categoryScreen = true
 
-            toolbar.setBackgroundColor(Color.TRANSPARENT)
+//            toolbar.setBackgroundColor(Color.TRANSPARENT)
 
             please(duration = 100) {
                 animate(toolbarTitle) toBe {
                     invisible()
+
+                }
+                animate(toolbar) toBe {
+                    backgroundAlpha(0f)
                 }
                 animate(toolbarHelperView) toBe {
                     alpha(1f)
@@ -141,6 +145,10 @@ class MainActivity : BaseActivity(), NavAdapterItemSelectedListener {
         } else if (currentTag == Id.TIMELINE.fullName) {
             categoryScreen = false
             please(duration = 100) {
+                animate(toolbar) toBe {
+                    backgroundAlpha(1f)
+                }
+            }.thenCouldYou(duration = 100) {
                 animate(toolbarCustomTitle) toBe {
                     invisible()
                 }
@@ -183,7 +191,7 @@ class MainActivity : BaseActivity(), NavAdapterItemSelectedListener {
 
     private fun initViews() {
         // toolbar
-        toolbar.setBackgroundColor(Color.TRANSPARENT)
+//        toolbar.setBackgroundColor(Color.TRANSPARENT)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
         if (isDrawerOpened)

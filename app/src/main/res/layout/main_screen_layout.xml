@@ -60,19 +60,20 @@
                     android:id="@+id/main_screen_toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
+                    android:background="?attr/colorPrimaryDark"
                     android:padding="0dp"
                     app:contentInsetEnd="0dp"
                     app:contentInsetStart="0dp">
                     <FrameLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@color/my_primary_dark_color">
+                        android:layout_height="match_parent">
                         <com.isanechek.wallpaper.view.widgets.AnimatedImageView
                             android:id="@+id/main_screen_ads_info_btn"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center|end"
                             android:layout_marginEnd="@dimen/dp16"
+                            android:foreground="?android:attr/selectableItemBackground"
                             tools:src="@drawable/ic_error_outline_black_24dp"
                             tools:ignore="ContentDescription" />
                         <com.isanechek.wallpaper.view.widgets.AnimatedTextView
@@ -92,6 +93,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center|start"
                             android:layout_marginStart="@dimen/dp16"
+                            android:foreground="?android:attr/selectableItemBackground"
                             tools:src="@drawable/navigation_closed_24dp"
                             tools:ignore="ContentDescription" />
 

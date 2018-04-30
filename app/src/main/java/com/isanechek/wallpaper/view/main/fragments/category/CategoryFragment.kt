@@ -73,7 +73,7 @@ class CategoryFragment : BaseFragment(), CategoryAdapter.ItemClickListener {
         val bundle = TimelineFragment.getBundle(category)
         goTo<TimelineFragment>(
             keepState = false,
-            withCustomAnimation = false,
+            withCustomAnimation = true,
             arg = bundle
         )
     }
