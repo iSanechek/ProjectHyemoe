@@ -32,7 +32,7 @@
                     android:id="@+id/main_screen_toolbar_helper_view"
                     android:layout_width="match_parent"
                     android:layout_height="90dp"
-                    android:background="#4f2e87"
+                    android:background="@color/my_primary_dark_color"
                     android:layout_gravity="top"
                     android:alpha="0"
                     tools:alpha="1"/>
@@ -65,7 +65,8 @@
                     app:contentInsetStart="0dp">
                     <FrameLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:background="@color/my_primary_dark_color">
                         <com.isanechek.wallpaper.view.widgets.AnimatedImageView
                             android:id="@+id/main_screen_ads_info_btn"
                             android:layout_width="wrap_content"

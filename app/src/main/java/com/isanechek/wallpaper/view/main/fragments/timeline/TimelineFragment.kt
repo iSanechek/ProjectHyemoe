@@ -10,6 +10,7 @@ import android.support.v7.widget.AppCompatTextView
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
+import android.view.animation.OvershootInterpolator
 import com.isanechek.wallpaper.R
 import com.isanechek.wallpaper.data.database.Wallpaper
 import com.isanechek.wallpaper.data.network.RequestStrategy
@@ -23,6 +24,7 @@ import com.isanechek.wallpaper.view.details.DetailsFragment
 import com.isanechek.wallpaper.view.navigation.BackStrategy
 import com.isanechek.wallpaper.view.widgets.navigation.NavigationId
 import com.vlad1m1r.lemniscate.BernoullisProgressView
+import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
 import org.koin.android.architecture.ext.getViewModel
 
 /**
@@ -172,7 +174,11 @@ class TimelineFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, T
         with(tl) {
             layoutManager = LinearLayoutManager(activity)
             setHasFixedSize(true)
-            this.adapter = _adapter
+            adapter = _adapter
+            val animator = SlideInUpAnimator(OvershootInterpolator(1f))
+            animator.addDuration = 350
+            animator.moveDuration = 150
+            itemAnimator = animator
         }
     }
 }
