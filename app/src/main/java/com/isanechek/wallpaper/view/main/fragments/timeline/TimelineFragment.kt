@@ -9,6 +9,7 @@ import android.support.v7.widget.AppCompatButton
 import android.support.v7.widget.AppCompatTextView
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.View
 import android.view.animation.OvershootInterpolator
 import com.isanechek.wallpaper.R
@@ -24,13 +25,19 @@ import com.isanechek.wallpaper.view.details.DetailsFragment
 import com.isanechek.wallpaper.view.navigation.BackStrategy
 import com.isanechek.wallpaper.view.widgets.navigation.NavigationId
 import com.vlad1m1r.lemniscate.BernoullisProgressView
+import com.yandex.mobile.ads.AdRequest
+import com.yandex.mobile.ads.AdRequestError
+import com.yandex.mobile.ads.nativeads.NativeAdLoader
+import com.yandex.mobile.ads.nativeads.NativeAdLoaderConfiguration
+import com.yandex.mobile.ads.nativeads.NativeAppInstallAd
+import com.yandex.mobile.ads.nativeads.NativeContentAd
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
 import org.koin.android.architecture.ext.getViewModel
 
 /**
  * Created by isanechek on 9/26/17.
  */
-class TimelineFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, TimelineAdapter.ItemClickListener {
+class TimelineFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
 
     companion object {
         private val TAG = "TimelineFragment"
@@ -50,9 +57,12 @@ class TimelineFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, T
     private lateinit var tl: RecyclerView // default state visible
     private lateinit var viewModel: TimelineViewModel
 
-    private var _adapter: TimelineAdapter? = null
+    private var _adapter: TestAdapter? = null
     private var showMsgToolbar = false
     private var category = Const.EMPTY
+
+    // ads
+    private lateinit var nativeAdLoader: NativeAdLoader;
 
     override fun layoutResId(): Int = _layout.timeline_screen_layout
 
@@ -81,35 +91,37 @@ class TimelineFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, T
         viewModel = getViewModel()
         viewModel.load(category, RequestStrategy.DATA_REQUEST)
         setupRequestObserver(category)
+        createNativeAdLoader()
     }
 
     override fun onRefresh() {
         viewModel.load(category, RequestStrategy.UPDATE_REQUEST)
     }
-
-    override fun onItemClick(view: View, position: Int, id: String, wallpaper: Wallpaper) {
-        val args = DetailsFragment.args(wallpaper)
-        goTo<DetailsFragment>(
-            keepState = false,
-            withCustomAnimation = true,
-            arg = args,
-            backStrategy = BackStrategy.DESTROY
-        )
-
-
-//        val f = DetailsFragment.create(wallpaper)
-//        f.sharedElementEnterTransition = SharedTransitionSet()
-//        f.enterTransition = Fade()
-//        exitTransition = Fade()
-//        f.sharedElementReturnTransition = SharedTransitionSet()
 //
-//        activity.supportFragmentManager
-//            .beginTransaction()
-//            .addSharedElement(view, getString(_string.wall_image))
-//            .replace(_id.main_screen_fragment_contaner, f)
-//            .addToBackStack(null)
-//            .commit()
-    }
+//    override fun onItemClick(view: View, position: Int, id: String, wallpaper: Wallpaper) {
+//        Log.e("TEST", "Click ${wallpaper.title}")
+//        val args = DetailsFragment.args(wallpaper)
+//        goTo<DetailsFragment>(
+//            keepState = false,
+//            withCustomAnimation = true,
+//            arg = args,
+//            backStrategy = BackStrategy.DESTROY
+//        )
+//
+//
+////        val f = DetailsFragment.create(wallpaper)
+////        f.sharedElementEnterTransition = SharedTransitionSet()
+////        f.enterTransition = Fade()
+////        exitTransition = Fade()
+////        f.sharedElementReturnTransition = SharedTransitionSet()
+////
+////        activity.supportFragmentManager
+////            .beginTransaction()
+////            .addSharedElement(view, getString(_string.wall_image))
+////            .replace(_id.main_screen_fragment_contaner, f)
+////            .addToBackStack(null)
+////            .commit()
+//    }
 
     override fun getTitle(): String = if (category == Const.EMPTY) NavigationId.TIMELINE.name else category
 
@@ -167,9 +179,20 @@ class TimelineFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, T
     }
 
     private fun setupRecycler() {
-        _adapter = TimelineAdapter()
-        _adapter?.setOnClickItemListener(this)
-        with(tl) {
+        _adapter = TestAdapter()
+        _adapter?.setOnClickItemListener(object: TestAdapter.ItemClickListener {
+            override fun onItemClick(view: View, position: Int, id: String, wallpaper: Wallpaper) {
+                Log.e("TEST", "Click ${wallpaper.title}")
+                val args = DetailsFragment.args(wallpaper)
+                goTo<DetailsFragment>(
+                    keepState = false,
+                    withCustomAnimation = true,
+                    arg = args,
+                    backStrategy = BackStrategy.DESTROY
+                )
+            }
+        })
+        with(tl) {    
             layoutManager = LinearLayoutManager(activity)
             setHasFixedSize(true)
             adapter = _adapter
@@ -178,5 +201,28 @@ class TimelineFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, T
             animator.moveDuration = 150
             itemAnimator = animator
         }
+    }
+
+    private fun createNativeAdLoader() {
+        val adLoadConfig = NativeAdLoaderConfiguration
+            .Builder("R-M-268309-1"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    , false)
+            .setImageSizes(NativeAdLoaderConfiguration.NATIVE_IMAGE_SIZE_LARGE)
+            .build()
+
+        nativeAdLoader = NativeAdLoader(activity.applicationContext, adLoadConfig)
+        nativeAdLoader.setOnLoadListener(nativeAdLoadListenr)
+        nativeAdLoader.loadAd(AdRequest.builder().build())
+    }
+
+    private val nativeAdLoadListenr = object: NativeAdLoader.OnLoadListener {
+        override fun onContentAdLoaded(p0: NativeContentAd) {
+            _adapter?.setAd(p0)
+        }
+
+        override fun onAppInstallAdLoaded(p0: NativeAppInstallAd) {
+            _adapter?.setAd(p0)
+        }
+
+        override fun onAdFailedToLoad(p0: AdRequestError) {}
     }
 }

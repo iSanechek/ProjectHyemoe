@@ -10,6 +10,7 @@ import android.support.v4.content.ContextCompat
 import android.support.v4.content.FileProvider
 import android.view.Gravity
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.ImageView
@@ -24,15 +25,13 @@ import com.isanechek.wallpaper.utils._drawable
 import com.isanechek.wallpaper.utils._id
 import com.isanechek.wallpaper.utils._layout
 import com.isanechek.wallpaper.utils._string
-import com.isanechek.wallpaper.utils.extensions.hide
-import com.isanechek.wallpaper.utils.extensions.isApi
-import com.isanechek.wallpaper.utils.extensions.marshmallow
-import com.isanechek.wallpaper.utils.extensions.onClick
+import com.isanechek.wallpaper.utils.extensions.*
 import com.isanechek.wallpaper.utils.glide.GlideApp
 import com.isanechek.wallpaper.view.base.BaseFragment
 import com.isanechek.wallpaper.view.widgets.AnimatedImageView
 import com.isanechek.wallpaper.view.widgets.AnimatedTextView
 import com.isanechek.wallpaper.view.widgets.DragLayout
+import com.vlad1m1r.lemniscate.BernoullisProgressView
 import com.yandex.mobile.ads.AdEventListener
 import com.yandex.mobile.ads.AdRequest
 import com.yandex.mobile.ads.AdSize
@@ -55,15 +54,12 @@ class DetailsFragment : BaseFragment(), DragLayout.StateVisibilityControlContain
 
     private lateinit var swipeTv: AnimatedTextView
     private lateinit var swipeIv: AnimatedImageView
-
-    // ads
-    private lateinit var adView: AdView
-    private lateinit var adRequest: AdRequest
+    private lateinit var progress: BernoullisProgressView
 
     private val repository by inject<YaRepository>()
 
     private var wallpaper: Wallpaper? = null
-        get() = arguments?.getParcelable<Wallpaper>(ARGS)
+        get() = arguments?.getParcelable(ARGS)
 
     override fun layoutResId(): Int = _layout.details_screen_layout
 
@@ -75,18 +71,24 @@ class DetailsFragment : BaseFragment(), DragLayout.StateVisibilityControlContain
 
         swipeIv = container.findViewById(_id.details_swipe_iv)
         swipeTv = container.findViewById(_id.details_swipe_tv)
+        progress = container.findViewById(_id.details_screen_progress)
 
         controlContainer = container.findViewById(_id.details_control_container)
         installBtn = container.findViewById(_id.details_install_button)
-        adView = container.findViewById(_id.details_screen_ads_widget)
 
-
+        please {
+            animate(installBtn) toBe {
+                outOfScreen(Gravity.BOTTOM)
+            }
+            animate(progress) toBe {
+                invisible()
+            }
+        }.now()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         GlideApp.with(activity).load(wallpaper?.preview).into(cover)
-        initAds()
         initObserver()
 
         installBtn.onClick {
@@ -106,50 +108,27 @@ class DetailsFragment : BaseFragment(), DragLayout.StateVisibilityControlContain
                     alpha(1f)
                 }
 
+            }.thenCouldYou(duration = 10) {
                 animate(installBtn) toBe {
                     visible()
                     topOfItsParent()
                 }
-
-                animate(adView) toBe {
-                    visible()
-                    bottomOfItsParent()
-                }
-            }.thenCouldYou(duration = 150) {
-                animate(swipeTv) toBe {
-
-                }
-                swipeTv.setAnimatedText(getString(_string.detailt_swipe_down_title), 250)
-            }.thenCouldYou(duration = 150) {
-                animate(swipeIv) toBe {
-                    swipeIv.setAnimatedImage(_drawable.ic_expand_less_white_24dp)
-                }
             }.start()
         } else {
             please {
-                animate(adView) toBe {
+                animate(installBtn) toBe {
                     outOfScreen(Gravity.BOTTOM)
                     invisible()
                 }
-                animate(installBtn) toBe {
-                    outOfScreen(Gravity.TOP)
-                    invisible()
-                }
-            }.thenCouldYou {
+            }.thenCouldYou(duration = 10) {
                 animate(controlContainer) toBe {
                     alpha(0f)
-                }
-            }.thenCouldYou(duration = 150) {
-                animate(swipeTv) toBe {
-                    swipeTv.setAnimatedText(getString(_string.details_swipe_up_title), 250)
-                }
-            }.thenCouldYou(duration = 150) {
-                animate(swipeIv) toBe {
-                    swipeIv.setAnimatedImage(_drawable.ic_expand_more_white_24dp)
                 }
             }.start()
         }
     }
+
+    override fun getTitle(): String = ""
 
     // permissons
     override fun onRequestPermissionsResult(
@@ -201,7 +180,15 @@ class DetailsFragment : BaseFragment(), DragLayout.StateVisibilityControlContain
     private fun initObserver() {
         repository._data.observe(this, Observer { item ->
             if (item != null) {
-                detailToolbarProgress.hide()
+                please {
+                    animate(progress) toBe {
+                        invisible()
+                    }
+                }.thenCouldYou(duration = 10) {
+                    animate(installBtn) toBe {
+                        topOfItsParent()
+                    }
+                }.start()
                 if (item.fullCachePath?.isNotEmpty() == true) {
                     val uri = FileProvider.getUriForFile(
                         activity,
@@ -222,26 +209,20 @@ class DetailsFragment : BaseFragment(), DragLayout.StateVisibilityControlContain
             Toast.makeText(activity, "Ooopsss.", Toast.LENGTH_SHORT).show()
             return
         }
+
+        please {
+            animate(installBtn) toBe {
+                outOfScreen(Gravity.TOP)
+            }
+        }.thenCouldYou(duration = 10) {
+            animate(progress) toBe {
+                visible()
+            }
+        }.start()
+
         DownloadService.startDownloads(activity, wallpaper!!)
     }
 
-    // ads
-    private fun initAds() {
-        adView.blockId = "R-M-DEMO-320x50"
-        adView.adSize = AdSize.BANNER_320x50
-
-        adRequest = AdRequest
-            .builder()
-            .build()
-        adView.adEventListener = loadAdsBannerListener
-        adView.loadAd(adRequest)
-    }
-
-    private val loadAdsBannerListener = object : AdEventListener.SimpleAdEventListener() {
-        override fun onAdLoaded() {
-            super.onAdLoaded()
-        }
-    }
 
     companion object {
         private const val ARGS = "test.args"

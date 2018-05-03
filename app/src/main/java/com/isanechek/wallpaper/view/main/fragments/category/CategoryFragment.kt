@@ -48,6 +48,7 @@ class CategoryFragment : BaseFragment(), CategoryAdapter.ItemClickListener {
         errorInfoTv = view.findViewById(_id.progress_view_error_tv)
         errorRetryBtn = view.findViewById(_id.progress_view_error_btn)
         list = view.findViewById(_id.category_screen_list)
+        list.show()
 
         _adapter = CategoryAdapter()
         _adapter?.setOnClickListener(this)
@@ -92,19 +93,19 @@ class CategoryFragment : BaseFragment(), CategoryAdapter.ItemClickListener {
                         status.message == STATUS_HIDE_BIG_AND_SHOW_SMALL_PROGRESS -> {
                             progressView.hide()
                             progressErrorContainer.hide()
-                            list.show()
+//                            list.show()
                         }
                         status.message == STATUS_HIDE_PROGRESS -> {
                             progressView.hide()
                             progressErrorContainer.hide()
-                            list.show()
+//                            list.show()
                         }
                     }
-                    status.status == Status.SUCCESS -> {
-                        progressView.hide()
-                        progressErrorContainer.hide()
-                        list.show()
-                    }
+//                    status.status == Status.SUCCESS -> {
+//                        progressView.hide()
+//                        progressErrorContainer.hide()
+//                        list.show()
+//                    }
                     status.status == Status.ERROR -> {
                         progressView.hide()
                         errorContainer.show()

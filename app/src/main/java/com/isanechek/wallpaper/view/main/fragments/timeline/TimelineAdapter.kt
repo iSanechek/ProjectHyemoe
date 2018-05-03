@@ -14,7 +14,7 @@ class TimelineAdapter : PagedListAdapter<Wallpaper, TimelineHolder>(diffCallback
     private var listener: ItemClickListener? = null
 
     override fun onBindViewHolder(holder: TimelineHolder, position: Int) {
-        holder.bindTo(getItem(position), listener, position)
+//        holder.bindTo(getItem(position), listener, position)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TimelineHolder =

@@ -9,7 +9,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.support.v4.app.NotificationCompat
-import com.isanechek.wallpaper.view.details.DetailsActivity
 import java.io.File
 
 /**
@@ -67,30 +66,30 @@ class NotificationUtil(private val context: Context) {
     }
 
     private fun injectAppIntent(builder: NotificationCompat.Builder) {
-        Intent(context, DetailsActivity::class.java).run {
-            builder.setContentIntent(
-                PendingIntent.getActivity(
-                    context,
-                    0,
-                    this,
-                    PendingIntent.FLAG_UPDATE_CURRENT
-                )
-            )
-        }
+//        Intent(context, DetailsActivity::class.java).run {
+//            builder.setContentIntent(
+//                PendingIntent.getActivity(
+//                    context,
+//                    0,
+//                    this,
+//                    PendingIntent.FLAG_UPDATE_CURRENT
+//                )
+//            )
+//        }
     }
 
     private fun injectViewIntent(builder: NotificationCompat.Builder, filePath: String) {
-        Intent(context, DetailsActivity::class.java).run {
-            putExtra(Intent.EXTRA_STREAM, Uri.fromFile(File(filePath)))
-            builder.setContentIntent(
-                PendingIntent.getActivity(
-                    context,
-                    0,
-                    this,
-                    PendingIntent.FLAG_UPDATE_CURRENT
-                )
-            )
-        }
+//        Intent(context, DetailsActivity::class.java).run {
+//            putExtra(Intent.EXTRA_STREAM, Uri.fromFile(File(filePath)))
+//            builder.setContentIntent(
+//                PendingIntent.getActivity(
+//                    context,
+//                    0,
+//                    this,
+//                    PendingIntent.FLAG_UPDATE_CURRENT
+//                )
+//            )
+//        }
     }
 
     companion object {

@@ -6,6 +6,7 @@
     android:id="@+id/progress_view_container"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/my_primary_color"
+    tools:visibility="visible"
     android:visibility="gone">
 
     <com.vlad1m1r.lemniscate.BernoullisProgressView

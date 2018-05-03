@@ -3,6 +3,7 @@ package com.isanechek.wallpaper.view.main
 import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.widget.CardView
@@ -12,10 +13,7 @@ import android.view.View
 import android.widget.FrameLayout
 import android.widget.TextView
 import com.github.florent37.kotlin.pleaseanimate.please
-import com.isanechek.wallpaper.utils._drawable
-import com.isanechek.wallpaper.utils._id
-import com.isanechek.wallpaper.utils._layout
-import com.isanechek.wallpaper.utils._string
+import com.isanechek.wallpaper.utils.*
 import com.isanechek.wallpaper.utils.extensions.emptyString
 import com.isanechek.wallpaper.utils.extensions.onClick
 import com.isanechek.wallpaper.utils.extensions.scale
@@ -111,30 +109,30 @@ class MainActivity : BaseActivity(), NavAdapterItemSelectedListener {
 
         if (currentTag == Id.ABOUT.fullName) {
             categoryScreen = false
+            hideCustomToolbar(tag)
             setArcArrowState(true)
         } else if (currentTag == Id.CATEGORY.fullName) {
             categoryScreen = true
 
 //            toolbar.setBackgroundColor(Color.TRANSPARENT)
 
-            please(duration = 100) {
+            please(duration = 10) {
                 animate(toolbarTitle) toBe {
                     invisible()
-
                 }
-                animate(toolbar) toBe {
-                    backgroundAlpha(0f)
-                }
+//                animate(toolbar) toBe {
+//                    backgroundAlpha(0f)
+//                }
                 animate(toolbarHelperView) toBe {
                     alpha(1f)
                     topOfItsParent()
                 }
-            }.thenCouldYou(duration = 100) {
+            }.thenCouldYou(duration = 10) {
                 animate(toolbarCustomContainer) toBe {
                     alpha(1f)
                     topOfItsParent(52f)
                 }
-            }.thenCouldYou(duration = 100) {
+            }.thenCouldYou(duration = 10) {
                 animate(toolbarCustomTitle) toBe {
                     toolbarCustomTitle.text = getString(_string.category_title)
                     visible()
@@ -144,37 +142,12 @@ class MainActivity : BaseActivity(), NavAdapterItemSelectedListener {
             setArcHamburgerIconState()
         } else if (currentTag == Id.TIMELINE.fullName) {
             categoryScreen = false
-            please(duration = 100) {
-                animate(toolbar) toBe {
-                    backgroundAlpha(1f)
-                }
-            }.thenCouldYou(duration = 100) {
-                animate(toolbarCustomTitle) toBe {
-                    invisible()
-                }
-            }.thenCouldYou(duration = 100) {
-                animate(toolbarCustomContainer) toBe {
-                    outOfScreen(Gravity.TOP)
-                    alpha(0f)
-                }
-            }.thenCouldYou(duration = 100) {
-                animate(toolbarHelperView) toBe {
-                    outOfScreen(Gravity.TOP)
-                    alpha(0f)
-                }
-//                toolbar.setBackgroundColor(
-////                    ContextCompat.getColor(
-////                        this@MainActivity,
-////                        _color.my_primary_dark_color
-////                    )
-//                )
-                animate(toolbarTitle) toBe {
-                    visible()
-                    toolbarTitle.setAnimatedText(tag, 100)
-                }
-            }.start()
+            hideCustomToolbar(tag)
 
             setArcArrowState(true)
+        } else if (currentTag == Id.DETAILS.fullName) {
+            toolbarTitle.setAnimatedText(tag, 75)
+            toolbar.setBackgroundColor(Color.TRANSPARENT)
         }
 
         val checkPosition = when (tag) {
@@ -189,9 +162,41 @@ class MainActivity : BaseActivity(), NavAdapterItemSelectedListener {
         }
     }
 
+    private fun hideCustomToolbar(tag: String) {
+        please(duration = 10) {
+            animate(toolbar) toBe {
+                backgroundAlpha(1f)
+            }
+        }.thenCouldYou(duration = 10) {
+            animate(toolbarCustomTitle) toBe {
+                invisible()
+            }
+        }.thenCouldYou(duration = 10) {
+            animate(toolbarCustomContainer) toBe {
+                outOfScreen(Gravity.TOP)
+                alpha(0f)
+            }
+        }.thenCouldYou(duration = 10) {
+            animate(toolbarHelperView) toBe {
+                outOfScreen(Gravity.TOP)
+                alpha(0f)
+            }
+//                toolbar.setBackgroundColor(
+////                    ContextCompat.getColor(
+////                        this@MainActivity,
+////                        _color.my_primary_dark_color
+////                    )
+//                )
+            animate(toolbarTitle) toBe {
+                visible()
+                toolbarTitle.setAnimatedText(tag, 75)
+            }
+        }.start()
+    }
+
     private fun initViews() {
         // toolbar
-//        toolbar.setBackgroundColor(Color.TRANSPARENT)
+        toolbar.setBackgroundColor(Color.TRANSPARENT)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
         if (isDrawerOpened)

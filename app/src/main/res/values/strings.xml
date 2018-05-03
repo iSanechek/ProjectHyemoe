@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Wallpaper</string>
+    <string name="app_name">Wallpapers X</string>
     <string name="title_item_detail">Item Detail</string>
     <string name="list_item_img">img</string>
     <string name="details_toolbar_img">detailsImg</string>
@@ -38,4 +38,6 @@
     <string name="progress_view_error_btn_title">retry</string>
     <string name="load_data_with_error_text">Ooppss. Load data done with error. :(</string>
     <string name="load_wallpapers_bad_request_text">Ooopss. Bad request</string>
+    <string name="install_wall_btn_title">install</string>
+    <string name="about_screen_title">About</string>
 </resources>

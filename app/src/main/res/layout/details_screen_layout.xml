@@ -17,50 +17,45 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:bototmExtraIndicatorHeight="@dimen/card_extra_height"
-        app:bottomDragVisibleHeight="@dimen/card_bottom_info_height">
+        app:bottomDragVisibleHeight="60dp">
 
         <FrameLayout
             android:id="@+id/details_control_container"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="60dp"
             android:layout_gravity="bottom"
             android:alpha="0"
-            android:background="@color/my_primary_dark_color">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start|top"
-                android:layout_marginStart="@dimen/dp16"
-                android:layout_marginTop="@dimen/dp16"
-                android:textSize="16sp"
-                tools:text="title"
-                android:visibility="gone"/>
+            tools:alpha="1"
+            android:background="@color/my_primary_color">
 
             <android.support.v7.widget.AppCompatButton
                 android:id="@+id/details_install_button"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:layout_marginStart="@dimen/dp8"
-                android:layout_marginTop="@dimen/dp8"
-                android:layout_marginEnd="@dimen/dp8"
                 android:elevation="@dimen/dp0"
-                android:text="install"
-                android:layout_gravity="top|center"
+                android:text="@string/install_wall_btn_title"
+                android:layout_gravity="center"
                 android:textColor="@color/title_color"
                 android:textSize="18sp"
                 android:textAllCaps="true"
                 android:foreground="?android:attr/selectableItemBackground"
-                android:background="@drawable/install_button_bg"
-                tools:ignore="HardcodedText" />
+                android:background="@color/my_primary_dark_color"
+                tools:ignore="HardcodedText"
+                tools:visibility="gone"/>
 
-            <com.yandex.mobile.ads.AdView
-                android:id="@+id/details_screen_ads_widget"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_gravity="bottom"
-                android:visibility="gone"
-                tools:visibility="visible"/>
+            <com.vlad1m1r.lemniscate.BernoullisProgressView
+                android:id="@+id/details_screen_progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                app:duration="1250"
+                app:hasHole="true"
+                app:lineColor="@color/my_accent_color"
+                app:maxLineLength="0.9"
+                app:minLineLength="0.9"
+                app:strokeWidth="@dimen/dp2"
+                tools:visibility="visible" />
+
         </FrameLayout>
 
         <FrameLayout
@@ -71,6 +66,7 @@
                 android:id="@+id/details_wallpaper"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:scaleType="centerCrop"
                 android:transitionName="@string/wall_image"
                 android:contentDescription="@string/wallpaper_details_description"
                 tools:src="@tools:sample/avatars"
@@ -81,7 +77,8 @@
                 android:layout_height="40dp"
                 android:layout_gravity="bottom|center"
                 android:layout_marginBottom="@dimen/dp8"
-                android:background="@android:color/transparent">
+                android:background="@android:color/transparent"
+                android:visibility="gone">
                 <com.isanechek.wallpaper.view.widgets.AnimatedImageView
                     android:id="@+id/details_swipe_iv"
                     android:layout_width="wrap_content"
@@ -106,60 +103,4 @@
             </FrameLayout>
         </FrameLayout>
     </com.isanechek.wallpaper.view.widgets.DragLayout>
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top"
-        android:visibility="gone"
-        android:background="@android:color/transparent">
-
-        <android.support.constraint.ConstraintLayout
-            android:id="@+id/detailsCloseButtonContainer"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <com.isanechek.wallpaper.view.widgets.ArcView
-                android:id="@+id/detailArcView"
-                android:layout_width="85dp"
-                android:layout_height="63dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="4dp"
-                android:alpha="0"
-                tools:alpha="1"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-            <com.isanechek.wallpaper.view.widgets.AnimatedImageView
-                android:id="@+id/detailArcImage"
-                android:layout_width="28dp"
-                android:layout_height="0dp"
-                android:layout_gravity="center"
-                android:layout_marginBottom="2dp"
-                android:layout_marginStart="22dp"
-                android:alpha="0"
-                tools:alpha="1"
-                tools:srcCompat="@drawable/ic_close_white_24dp"
-                android:contentDescription="@string/arc_view_image"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.50" />
-
-            <ProgressBar
-                android:id="@+id/detailToolbarProgress"
-                style="?android:attr/progressBarStyleSmall"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="24dp"
-                android:layout_marginTop="8dp"
-                android:indeterminate="true"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:visibility="gone"
-                tools:visibility="visible"/>
-        </android.support.constraint.ConstraintLayout>
-    </FrameLayout>
 </FrameLayout>

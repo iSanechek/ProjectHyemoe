@@ -4,22 +4,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="200dp"
+    android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/dp16"
     android:layout_marginEnd="@dimen/dp0"
     android:layout_marginTop="@dimen/dp4"
     android:layout_marginBottom="@dimen/dp4"
     app:elevation="@dimen/dp16"
-    android:background="@drawable/list_item_background">
+    android:background="@drawable/ads_item_background">
 
-    <com.isanechek.wallpaper.view.widgets.SelectableRoundedImageView
-        android:id="@+id/list_item_cover"
+    <com.yandex.mobile.ads.nativeads.template.NativeBannerView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/timeline_ads_item"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:sriv_left_top_corner_radius="@dimen/dp8"
-        app:sriv_left_bottom_corner_radius="@dimen/dp8"
-        android:scaleType="centerCrop"
-        android:transitionName="@string/wall_image"
-        tools:src="@tools:sample/avatars"/>
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dp8"
+        tools:layout_height="match_parent"/>
 
 </FrameLayout>
