@@ -16,6 +16,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.AppCompatButton
 import android.view.Gravity
 import android.view.View
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.Toast
@@ -54,6 +55,7 @@ class DetailScreen : AppCompatActivity() {
     private val buttonBg: View by lazy { findViewById<View>(_id.detail_screen_btn_bg_view) }
     private val progress: ProgressBar by lazy { findViewById<ProgressBar>(_id.detail_screen_horizontal_progress) }
     private val rootView: ConstraintLayout by lazy { findViewById<ConstraintLayout>(_id.detail_screen_root) }
+    private val closeBtn: ImageButton by lazy { findViewById<ImageButton>(_id.detail_screen_close_btn) }
 
     private val viewModel: DetailScreenViewModel by inject()
 
@@ -111,6 +113,13 @@ class DetailScreen : AppCompatActivity() {
                 else -> startDownloadAction()
             }
         }
+
+        closeBtn.onClick {
+            if (isApi(lollipop)) {
+                finishAfterTransition()
+            } else finish()
+            overridePendingTransition(R.anim.fade, R.anim.activity_slide_down)
+        }
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
@@ -133,7 +142,9 @@ class DetailScreen : AppCompatActivity() {
             override fun onPullCancel(direction: Int) {}
 
             override fun onPullComplete(direction: Int) {
-                finishAfterTransition()
+                if (isApi(lollipop)) {
+                    finishAfterTransition()
+                } else finish()
                 if (direction == PullBackLayout.DIRECTION_DOWN) {
                     overridePendingTransition(R.anim.fade, R.anim.activity_slide_down)
                 } else {
