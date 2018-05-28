@@ -1,1 +1,1 @@
-include ':app', ':network', ':basemvp'
+include ':app'

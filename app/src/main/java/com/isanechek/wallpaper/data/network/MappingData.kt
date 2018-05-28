@@ -5,7 +5,6 @@ import com.isanechek.wallpaper.data.database.Wallpaper
 import com.isanechek.wallpaper.data.network.dto.Resource
 import com.isanechek.wallpaper.utils.MaterialColorPalette
 import com.isanechek.wallpaper.utils.extensions.emptyString
-import com.isanechek.wallpaper.utils.logger
 
 /**
  * Created by isanechek on 7/12/17.
@@ -26,18 +25,6 @@ object MappingData {
                     lastUpdate = it.modified,
                     size = it.size,
                     newItem = false) }.toList()
-
-    fun mappingResourceToAlbum2(resource: com.isanechek.wallpaper.data.network.dto.Resource?): List<Category> =
-            resource?.resourceList?.items?.map { Category(
-                    title = it.name,
-                    publicKey = it.publicKey,
-                    publicPath = it.path,
-                    createDate = it.created,
-                    lastUpdate = it.modified,
-                    size = it.size,
-                    color = MaterialColorPalette.randomColor(),
-                    cover = emptyString,
-                    newItem = false) }?.toList() ?: emptyList()
 
 
     fun mappingResourceToAlbum(resource: com.isanechek.wallpaper.data.network.dto.Resource?): List<Category> {

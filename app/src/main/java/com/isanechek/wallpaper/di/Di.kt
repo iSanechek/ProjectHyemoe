@@ -10,6 +10,8 @@ import com.isanechek.wallpaper.data.network.ApiInterface
 import com.isanechek.wallpaper.data.repository.Repository
 import com.isanechek.wallpaper.data.repository.YaRepository
 import com.isanechek.wallpaper.utils.NotificationUtil
+import com.isanechek.wallpaper.view.details.DetailScreen
+import com.isanechek.wallpaper.view.details.DetailScreenViewModel
 import com.isanechek.wallpaper.view.main.MainViewModel
 import com.isanechek.wallpaper.view.main.fragments.category.CategoryViewModel
 import com.isanechek.wallpaper.view.main.fragments.timeline.TimelineViewModel
@@ -40,6 +42,11 @@ val diModule = applicationContext {
     // category viewmodel
     viewModel {
         CategoryViewModel(get(), get())
+    }
+
+    // detail viewmodel
+    viewModel {
+        DetailScreenViewModel(get())
     }
 
     bean {

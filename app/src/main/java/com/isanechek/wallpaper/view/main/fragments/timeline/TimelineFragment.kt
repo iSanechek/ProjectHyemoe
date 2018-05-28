@@ -21,6 +21,7 @@ import com.isanechek.wallpaper.utils.extensions.extraWithKey
 import com.isanechek.wallpaper.utils.extensions.hide
 import com.isanechek.wallpaper.utils.extensions.show
 import com.isanechek.wallpaper.view.base.BaseFragment
+import com.isanechek.wallpaper.view.details.DetailScreen
 import com.isanechek.wallpaper.view.details.DetailsFragment
 import com.isanechek.wallpaper.view.navigation.BackStrategy
 import com.isanechek.wallpaper.view.widgets.navigation.NavigationId
@@ -183,13 +184,15 @@ class TimelineFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
         _adapter?.setOnClickItemListener(object: TestAdapter.ItemClickListener {
             override fun onItemClick(view: View, position: Int, id: String, wallpaper: Wallpaper) {
                 Log.e("TEST", "Click ${wallpaper.title}")
-                val args = DetailsFragment.args(wallpaper)
-                goTo<DetailsFragment>(
-                    keepState = false,
-                    withCustomAnimation = true,
-                    arg = args,
-                    backStrategy = BackStrategy.DESTROY
-                )
+//                val args = DetailsFragment.args(wallpaper)
+//                goTo<DetailsFragment>(
+//                    keepState = false,
+//                    withCustomAnimation = true,
+//                    arg = args,
+//                    backStrategy = BackStrategy.DESTROY
+//                )
+
+                DetailScreen.create(activity, wallpaper)
             }
         })
         with(tl) {    

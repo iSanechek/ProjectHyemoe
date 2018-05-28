@@ -3,15 +3,20 @@ package com.isanechek.wallpaper.utils.extensions
 import android.graphics.PorterDuff
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.*
 import android.view.ViewGroup
 import android.widget.ImageView
 
-fun View.show() {
-    visibility = View.VISIBLE
+fun View.setVisibility(visible: Boolean) {
+    if (visible) show() else hide()
 }
 
-fun View.hide() {
-    visibility = View.GONE
+fun View.show() {
+    if (visibility != VISIBLE) visibility = VISIBLE
+}
+
+fun View.hide(viewGone: Boolean = true) {
+    visibility = if (viewGone) GONE else INVISIBLE
 }
 
 fun View.invisible() {

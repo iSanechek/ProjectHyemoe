@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="360dp"
+    android:orientation="vertical"
+    android:id="@+id/detail_dialog_root_container"
+    app:behavior_hideable="true"
+    app:behavior_peekHeight="60dp"
+    app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
+
+    <FrameLayout
+        android:id="@+id/detail_control_container"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_gravity="top"
+        tools:ignore="UselessParent">
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/details_install_button"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:elevation="@dimen/dp0"
+            android:text="@string/install_wall_btn_title"
+            android:layout_gravity="center"
+            android:textColor="@color/title_color"
+            android:textSize="18sp"
+            android:textAllCaps="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:background="@color/my_primary_dark_color"
+            tools:ignore="HardcodedText"
+            tools:visibility="visible"/>
+
+        <com.vlad1m1r.lemniscate.BernoullisProgressView
+            android:id="@+id/details_screen_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            app:duration="1250"
+            app:hasHole="true"
+            app:lineColor="@color/my_accent_color"
+            app:maxLineLength="0.9"
+            app:minLineLength="0.9"
+            app:strokeWidth="@dimen/dp2"/>
+
+    </FrameLayout>
+</LinearLayout>

@@ -1,11 +1,16 @@
 package com.isanechek.wallpaper.utils.extensions
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
 import android.os.Build
 import android.os.Handler
+import android.support.annotation.AttrRes
+import android.support.annotation.StringRes
+import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
-import android.widget.FrameLayout
+import android.util.TypedValue
+import android.widget.Toast
 
 infix fun Context.takeColor(colorId: Int) = ContextCompat.getColor(this, colorId)
 
@@ -21,6 +26,12 @@ fun <T> nonSafeLazy(initializer: () -> T): Lazy<T> {
     return lazy(LazyThreadSafetyMode.NONE) {
         initializer()
     }
+}
+
+fun Activity.getResourceId(@AttrRes attribute: Int) : Int {
+    val typedValue = TypedValue()
+    theme.resolveAttribute(attribute, typedValue, true)
+    return typedValue.resourceId
 }
 
 fun Int.toPx(context: Context): Int {
@@ -41,3 +52,37 @@ val lollipop = Build.VERSION_CODES.LOLLIPOP
 val marshmallow = Build.VERSION_CODES.M
 val nougat = Build.VERSION_CODES.N_MR1
 val oreo = Build.VERSION_CODES.O
+
+fun Context.alertDialog(
+        title: CharSequence? = null,
+        message: CharSequence? = null,
+        positiveText: CharSequence? = null,
+        positiveEvent: (() -> Unit)? = null,
+        negativeText: CharSequence? = null,
+        negativeEvent: (() -> Unit)? = null
+
+): AlertDialog.Builder = AlertDialog.Builder(this).apply {
+    title?.let { setTitle(title) }
+    message?.let { setMessage(message) }
+    positiveText?.let {
+        setPositiveButton(positiveText) { _, _ ->
+            positiveEvent?.let { positiveEvent() }
+        }
+    }
+    negativeText?.let {
+        setNegativeButton(negativeText) { _, _ ->
+            negativeEvent?.let { negativeEvent() }
+        }
+    }
+}
+
+fun Fragment.toast(text: String) = activity?.toast(text)
+
+fun Fragment.toast(@StringRes resId: Int) = activity?.toast(resId)
+fun Context.toast(text: String) = Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
+fun Context.toast(@StringRes resId: Int) = Toast.makeText(this, resId, Toast.LENGTH_SHORT).show()
+
+fun Fragment.longToast(text: String) = activity?.longToast(text)
+fun Fragment.longToast(@StringRes resId: Int) = activity?.longToast(resId)
+fun Context.longToast(text: String) = Toast.makeText(this, text, Toast.LENGTH_LONG).show()
+fun Context.longToast(@StringRes resId: Int) = Toast.makeText(this, resId, Toast.LENGTH_LONG).show()

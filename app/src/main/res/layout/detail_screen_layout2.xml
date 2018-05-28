@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/detail_screen_root"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <eightbitlab.com.blurview.BlurView
+        android:id="@+id/detail_screen_blur_bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+        <com.github.chrisbanes.photoview.PhotoView
+            android:id="@+id/detail_screen_photo_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:scaleType="centerCrop"
+            tools:src="@tools:sample/avatars"/>
+
+        <!--<com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView-->
+            <!--android:id="@+id/detail_screen_photo_view"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:background="@android:color/transparent"-->
+            <!--tools:src="@tools:sample/avatars"/>-->
+
+    </eightbitlab.com.blurview.BlurView>
+
+    <View
+        android:id="@+id/detail_screen_btn_bg_view"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="@drawable/rounded_rect"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.50"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/detail_screen_blur_bg"
+        app:layout_constraintVertical_bias="1.0"
+        android:visibility="gone"/>
+
+    <ImageButton
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginEnd="@dimen/dp16"
+        android:background="@drawable/backgound_btn"
+        android:backgroundTint="@color/my_primary_dark_color"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:src="@drawable/arrow_left"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/detail_screen_install_btn"
+        app:layout_constraintHorizontal_bias="0.50"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/detail_screen_blur_bg"
+        app:layout_constraintVertical_bias="0.96" />
+
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/detail_screen_install_btn"
+        android:layout_width="150dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="@dimen/dp16"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="@dimen/dp8"
+        android:background="@drawable/btn_backgound"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:text="@string/install_wall_btn_title"
+        android:textAlignment="center"
+        android:textColor="@color/my_accent_color"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.95"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/detail_screen_blur_bg"
+        app:layout_constraintVertical_bias="0.96" />
+
+    <ProgressBar
+        android:id="@+id/detail_screen_horizontal_progress"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp2"
+        android:layout_marginTop="@dimen/dp8"
+        android:background="@color/my_accent_color"
+        android:indeterminate="true"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/detail_screen_blur_bg"
+        app:layout_constraintVertical_bias="1.0"
+        tools:visibility="visible" />
+
+</android.support.constraint.ConstraintLayout>

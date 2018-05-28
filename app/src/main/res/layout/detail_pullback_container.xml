@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.isanechek.wallpaper.view.widgets.PullBackLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/detail_pull_back_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent">
+
+    <include layout="@layout/detail_screen_layout2" />
+
+</com.isanechek.wallpaper.view.widgets.PullBackLayout>

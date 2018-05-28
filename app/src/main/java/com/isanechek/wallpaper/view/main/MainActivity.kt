@@ -3,8 +3,8 @@ package com.isanechek.wallpaper.view.main
 import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v4.content.ContextCompat
 import android.support.v4.view.GravityCompat
+import android.support.v4.view.animation.FastOutSlowInInterpolator
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.widget.CardView
 import android.support.v7.widget.Toolbar
@@ -38,6 +38,7 @@ class MainActivity : BaseActivity(), NavAdapterItemSelectedListener {
     private val SCALE_KEY = "SCALE_KEY"
 
     // view's
+    private val toolbarContainer: FrameLayout by lazy { findViewById<FrameLayout>(_id.main_screen_toolbar_container) }
     private val toolbar: Toolbar by lazy { findViewById<Toolbar>(_id.main_screen_toolbar) }
     private val toolbarTitle: AnimatedTextView by lazy { findViewById<AnimatedTextView>(_id.main_screen_title_toolbar_tv) }
 
@@ -58,9 +59,22 @@ class MainActivity : BaseActivity(), NavAdapterItemSelectedListener {
     private var categoryScreen = false
     private var currentNavigationSelectedItem = 0
 
+    private lateinit var systemUiHelper: SystemUiHelper
+    private val visibilityChangeListener = object : SystemUiHelper.OnVisibilityChangeListener {
+        override fun onVisibilityChange(visible: Boolean) {
+            toolbarContainer.animate()
+                .alpha(if (visible) 1f else 0f)
+                .translationY(if (visible) 0f else -toolbarContainer.bottom.toFloat())
+                .setDuration(100L)
+                .setInterpolator(INTERPOLATOR)
+                .start()
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(_layout.main_screen_layout)
+        systemUiHelper = SystemUiHelper(this, listener = visibilityChangeListener)
         viewModel = getViewModel()
         initViews()
         goTo<CategoryFragment>()
@@ -113,9 +127,6 @@ class MainActivity : BaseActivity(), NavAdapterItemSelectedListener {
             setArcArrowState(true)
         } else if (currentTag == Id.CATEGORY.fullName) {
             categoryScreen = true
-
-//            toolbar.setBackgroundColor(Color.TRANSPARENT)
-
             please(duration = 10) {
                 animate(toolbarTitle) toBe {
                     invisible()
@@ -142,12 +153,15 @@ class MainActivity : BaseActivity(), NavAdapterItemSelectedListener {
             setArcHamburgerIconState()
         } else if (currentTag == Id.TIMELINE.fullName) {
             categoryScreen = false
+            if (!systemUiHelper.isShowing) {
+                systemUiHelper.show()
+            }
             hideCustomToolbar(tag)
-
             setArcArrowState(true)
         } else if (currentTag == Id.DETAILS.fullName) {
-            toolbarTitle.setAnimatedText(tag, 75)
-            toolbar.setBackgroundColor(Color.TRANSPARENT)
+            if (systemUiHelper.isShowing) {
+                systemUiHelper.hide()
+            }
         }
 
         val checkPosition = when (tag) {
@@ -161,6 +175,8 @@ class MainActivity : BaseActivity(), NavAdapterItemSelectedListener {
             navView.setChecked(currentNavigationSelectedItem)
         }
     }
+
+
 
     private fun hideCustomToolbar(tag: String) {
         please(duration = 10) {
@@ -256,5 +272,19 @@ class MainActivity : BaseActivity(), NavAdapterItemSelectedListener {
         navBtn.onClick {
             drawer.openDrawer(GravityCompat.START)
         }
+    }
+
+    private fun getStatusBarHeight(): Int {
+        var result = 0
+        val resourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
+        if (resourceId <= 0) return result
+        result = resources.getDimensionPixelSize(resourceId)
+        return result
+    }
+
+    companion object {
+        @JvmStatic
+        private val INTERPOLATOR = FastOutSlowInInterpolator()
+        const val SHOW_UI_MILLIS = 4000L
     }
 }

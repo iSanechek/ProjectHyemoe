@@ -9,5 +9,6 @@ interface Repository {
     suspend fun loadImages(category: String, strategy: RequestStrategy)
     suspend fun loadImage(item: Wallpaper)
     suspend fun updateWallpaper(wallpaper: Wallpaper)
-    fun loadWallpaper(id: String): LiveData<Wallpaper>
+    fun loadWallpaperState(): LiveData<Wallpaper>
+    fun clearData()
 }

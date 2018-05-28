@@ -28,12 +28,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".view.details.DetailsActivity"
-            android:theme="@style/DetailsActivityTheme"
-            android:screenOrientation="portrait"/>
-
-        <activity android:name=".view.test.TestActivity"
-            android:theme="@style/AppTheme.NoActionBar" >
+        <activity android:name=".view.details.DetailScreen"
+            android:theme="@style/DetailsActivityTheme" >
 
         </activity>
 
