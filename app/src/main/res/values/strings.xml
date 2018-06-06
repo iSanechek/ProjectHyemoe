@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Wallpapers X</string>
+    <string name="app_name">Wallpapers X alpha</string>
     <string name="title_item_detail">Item Detail</string>
     <string name="list_item_img">img</string>
     <string name="details_toolbar_img">detailsImg</string>
@@ -41,4 +41,27 @@
     <string name="install_wall_btn_title">install</string>
     <string name="about_screen_title">About</string>
     <string name="load_wallpaper_error_toast_title">Ooops. Что-то пошло не так!</string>
+    <string name="about_app_icon">about_app_icon</string>
+    <string name="about_this_app_content">about app</string>
+    <string name="email">E-mail</string>
+    <string name="twitter">Twitter</string>
+    <string name="facebook">Facebook</string>
+    <string name="github">Source code</string>
+    <string name="mail">support@averdsoft.ru</string>
+    <string name="sen_us_emial">Send us email</string>
+    <string name="twitter_url">https://twitter.com/averdsoft</string>
+    <string name="facebook_url">https://web.facebook.com/averdsoft</string>
+    <string name="site_url">http://averdsoft.ru</string>
+    <string name="web_site">web</string>
+    <string name="github_url"></string>
+    <string name="instagram_url">htts://www.instagram.com/averdsoft</string>
+    <string name="instagram_title">Instagram</string>
+    <string name="vk_title">Vkontakte</string>
+    <string name="vk_url">https://vk.com/averdsoft</string>
+    <string name="g_plus_url">https://plus.google.com/+AVERDSOFT</string>
+    <string name="g_plus_title">Google plus</string>
+    <string name="youtube_title">YouTube</string>
+    <string name="youtube_url">https://youtube.com/averdsoft</string>
+
+    <string name="comment_user_image">Comment user image</string>
 </resources>

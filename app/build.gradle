@@ -26,7 +26,7 @@ android {
     buildToolsVersion '27.0.3'
 
     def fileNaming = "apk/ProjectHyemoe"
-    def versionNumber = 1
+    def versionNumber = 2
     def versionMajor = "2"
     def versionMinor = "0"
     def versionPatch = "0"
@@ -106,7 +106,7 @@ ext {
     room = '1.1.0'
     supportVersion = '27.1.1'
     glide = '4.7.1'
-    koin_version = '0.9.2'
+    koin_version = '0.9.3'
 }
 
 dependencies {

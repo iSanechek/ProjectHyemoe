@@ -1,11 +1,13 @@
 package com.isanechek.wallpaper.utils.extensions
 
 import android.graphics.PorterDuff
+import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.*
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 
 fun View.setVisibility(visible: Boolean) {
     if (visible) show() else hide()
@@ -42,3 +44,7 @@ fun ImageView.tint(colorId: Int) {
 
 infix fun ViewGroup.inflate(layoutResId: Int): View =
         LayoutInflater.from(context).inflate(layoutResId, this, false)
+
+fun TextView.leftIcon(drawableId: Int) {
+    setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(context, drawableId), null, null, null)
+}
