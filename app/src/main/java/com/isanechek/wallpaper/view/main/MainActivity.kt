@@ -1,7 +1,9 @@
 package com.isanechek.wallpaper.view.main
 
+import android.arch.lifecycle.Observer
 import android.graphics.Color
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.support.v4.view.GravityCompat
 import android.support.v4.view.animation.FastOutSlowInInterpolator
@@ -18,6 +20,7 @@ import com.isanechek.wallpaper.utils.extensions.emptyString
 import com.isanechek.wallpaper.utils.extensions.onClick
 import com.isanechek.wallpaper.utils.extensions.scale
 import com.isanechek.wallpaper.utils.extensions.toPx
+import com.isanechek.wallpaper.utils.network.Connection
 import com.isanechek.wallpaper.view.about.AboutFragment
 import com.isanechek.wallpaper.view.base.BaseActivity
 import com.isanechek.wallpaper.view.base.BaseFragment
@@ -77,6 +80,7 @@ class MainActivity : BaseActivity(), NavAdapterItemSelectedListener {
         systemUiHelper = SystemUiHelper(this, listener = visibilityChangeListener)
         viewModel = getViewModel()
         initViews()
+        initObserver()
         goTo<CategoryFragment>()
     }
 
@@ -91,16 +95,16 @@ class MainActivity : BaseActivity(), NavAdapterItemSelectedListener {
         }
     }
 
-    override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
-        super.onRestoreInstanceState(savedInstanceState)
-        savedInstanceState?.let {
-            with(mainView) {
-                translationX = it.getFloat(TRANSLATION_X_KEY)
-                scale = it.getFloat(CARD_ELEVATION_KEY)
-                cardElevation = it.getFloat(SCALE_KEY)
-            }
-        }
-    }
+//    override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
+//        super.onRestoreInstanceState(savedInstanceState)
+//        savedInstanceState?.let {
+//            with(mainView) {
+//                translationX = it.getFloat(TRANSLATION_X_KEY)
+//                scale = it.getFloat(CARD_ELEVATION_KEY)
+//                cardElevation = it.getFloat(SCALE_KEY)
+//            }
+//        }
+//    }
 
     override fun onBackPressed() {
         when {
@@ -280,6 +284,25 @@ class MainActivity : BaseActivity(), NavAdapterItemSelectedListener {
         if (resourceId <= 0) return result
         result = resources.getDimensionPixelSize(resourceId)
         return result
+    }
+
+    private lateinit var snackbar: Snackbar
+    private fun initObserver() {
+        connection.observe(this, Observer { conn ->
+            conn ?: return@Observer
+            when(conn.type) {
+                Connection.WIFI -> {}
+                Connection.MOBILE -> {}
+                Connection.OFFLINE -> {
+                    snackbar = Snackbar
+                            .make(
+                                    findViewById(android.R.id.content),
+                                    "No Connection",
+                                    Snackbar.LENGTH_INDEFINITE)
+                            .setAction("Ok") { snackbar.dismiss() }
+                }
+            }
+        })
     }
 
     companion object {

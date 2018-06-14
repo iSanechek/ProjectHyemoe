@@ -7,14 +7,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.isanechek.wallpaper.utils.extensions.emptyString
+import com.isanechek.wallpaper.utils.network.ConnectionLiveData
 import com.isanechek.wallpaper.view.navigation.BackStrategy
 import com.isanechek.wallpaper.view.navigation.Navigator
+import org.koin.android.ext.android.inject
 
 /**
  * Created by isanechek on 11/17/17.
  */
 abstract class BaseFragment : Fragment() {
 
+    val connection by inject<ConnectionLiveData>()
     lateinit var navigator: Navigator
     protected lateinit var activity: BaseActivity
 

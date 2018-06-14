@@ -30,6 +30,7 @@ import com.isanechek.wallpaper.BuildConfig
 import com.isanechek.wallpaper.R
 import com.isanechek.wallpaper.data.DownloadService
 import com.isanechek.wallpaper.data.database.Wallpaper
+import com.isanechek.wallpaper.data.network.RequestStrategy
 import com.isanechek.wallpaper.utils._id
 import com.isanechek.wallpaper.utils._layout
 import com.isanechek.wallpaper.utils._string
@@ -37,16 +38,20 @@ import com.isanechek.wallpaper.utils.extensions.*
 import com.isanechek.wallpaper.utils.glide.GlideApp
 import com.isanechek.wallpaper.utils.glide.palette.BitmapPalette
 import com.isanechek.wallpaper.utils.glide.palette.GlidePalette
+import com.isanechek.wallpaper.utils.network.Connection
+import com.isanechek.wallpaper.view.base.BaseActivity
 import com.isanechek.wallpaper.view.widgets.PullBackLayout
+import com.yandex.metrica.YandexMetrica
 import eightbitlab.com.blurview.BlurView
 import eightbitlab.com.blurview.RenderScriptBlur
+import org.json.JSONObject
 import org.koin.android.ext.android.inject
 import java.io.File
 
 private const val ARGS = "test.args"
 private const val REQUEST_PERMISSION_CODE = 303
 
-class DetailScreen : AppCompatActivity() {
+class DetailScreen : BaseActivity() {
 
     private val pullback: PullBackLayout by lazy { findViewById<PullBackLayout>(_id.detail_pull_back_container) }
     private val cover: PhotoView by lazy { findViewById<PhotoView>(_id.detail_screen_photo_view) }
@@ -189,7 +194,11 @@ class DetailScreen : AppCompatActivity() {
             Toast.makeText(this, "Ooopsss.", Toast.LENGTH_SHORT).show()
             return
         }
-
+        val jo = JSONObject()
+        jo.put("title", wallpaper!!.title)
+        jo.put("size", wallpaper!!.size)
+        jo.put("path", wallpaper!!.publicPath)
+        YandexMetrica.reportEvent("install wallpaper", jo.toString())
         DownloadService.startDownloads(this, wallpaper!!)
     }
 
@@ -210,6 +219,26 @@ class DetailScreen : AppCompatActivity() {
                 viewModel.clearData()
             } else toast(_string.load_wallpaper_error_toast_title)
         })
+
+        connection.observe(this, Observer { conn ->
+            conn ?: return@Observer
+            when(conn.type) {
+                Connection.WIFI -> {
+                    disableBtn(false)
+                }
+                Connection.MOBILE -> {
+                    disableBtn(false)
+                }
+                Connection.OFFLINE -> {
+                    disableBtn()
+                }
+            }
+        })
+    }
+
+    private fun disableBtn(disable: Boolean = true) {
+        if (!disable) installBtn.isEnabled = true else
+            if (installBtn.isEnabled) installBtn.isEnabled = false
     }
 
     companion object {

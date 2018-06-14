@@ -10,6 +10,7 @@ import com.isanechek.wallpaper.data.network.ApiInterface
 import com.isanechek.wallpaper.data.repository.Repository
 import com.isanechek.wallpaper.data.repository.YaRepository
 import com.isanechek.wallpaper.utils.NotificationUtil
+import com.isanechek.wallpaper.utils.network.ConnectionLiveData
 import com.isanechek.wallpaper.view.details.DetailScreen
 import com.isanechek.wallpaper.view.details.DetailScreenViewModel
 import com.isanechek.wallpaper.view.main.MainViewModel
@@ -74,6 +75,10 @@ val diModule = applicationContext {
     // preference
     provide {
         sharedPreferences(get())
+    }
+
+    bean {
+        ConnectionLiveData(androidApplication())
     }
 }
 

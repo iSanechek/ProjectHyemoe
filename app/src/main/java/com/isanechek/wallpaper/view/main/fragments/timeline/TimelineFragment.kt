@@ -1,7 +1,6 @@
 package com.isanechek.wallpaper.view.main.fragments.timeline
 
 import android.arch.lifecycle.Observer
-import android.content.Context
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v4.widget.SwipeRefreshLayout
@@ -9,7 +8,6 @@ import android.support.v7.widget.AppCompatButton
 import android.support.v7.widget.AppCompatTextView
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.View
 import android.view.animation.OvershootInterpolator
 import com.isanechek.wallpaper.R
@@ -20,10 +18,9 @@ import com.isanechek.wallpaper.utils.*
 import com.isanechek.wallpaper.utils.extensions.extraWithKey
 import com.isanechek.wallpaper.utils.extensions.hide
 import com.isanechek.wallpaper.utils.extensions.show
+import com.isanechek.wallpaper.utils.network.Connection
 import com.isanechek.wallpaper.view.base.BaseFragment
 import com.isanechek.wallpaper.view.details.DetailScreen
-import com.isanechek.wallpaper.view.details.DetailsFragment
-import com.isanechek.wallpaper.view.navigation.BackStrategy
 import com.isanechek.wallpaper.view.widgets.navigation.NavigationId
 import com.vlad1m1r.lemniscate.BernoullisProgressView
 import com.yandex.mobile.ads.AdRequest
@@ -60,19 +57,14 @@ class TimelineFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
 
     private var _adapter: TestAdapter? = null
     private var showMsgToolbar = false
-    private var category = Const.EMPTY
+    private val category: String
+        get() = this extraWithKey SAVE_CATEGORY_KEY
+                ?: Const.EMPTY
 
     // ads
     private lateinit var nativeAdLoader: NativeAdLoader;
 
     override fun layoutResId(): Int = _layout.timeline_screen_layout
-
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-        if (arguments != null && arguments!!.containsKey(SAVE_CATEGORY_KEY)) {
-            category = this extraWithKey SAVE_CATEGORY_KEY
-        }
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -90,7 +82,6 @@ class TimelineFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = getViewModel()
-        viewModel.load(category, RequestStrategy.DATA_REQUEST)
         setupRequestObserver(category)
         createNativeAdLoader()
     }
@@ -98,31 +89,6 @@ class TimelineFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
     override fun onRefresh() {
         viewModel.load(category, RequestStrategy.UPDATE_REQUEST)
     }
-//
-//    override fun onItemClick(view: View, position: Int, id: String, wallpaper: Wallpaper) {
-//        Log.e("TEST", "Click ${wallpaper.title}")
-//        val args = DetailsFragment.args(wallpaper)
-//        goTo<DetailsFragment>(
-//            keepState = false,
-//            withCustomAnimation = true,
-//            arg = args,
-//            backStrategy = BackStrategy.DESTROY
-//        )
-//
-//
-////        val f = DetailsFragment.create(wallpaper)
-////        f.sharedElementEnterTransition = SharedTransitionSet()
-////        f.enterTransition = Fade()
-////        exitTransition = Fade()
-////        f.sharedElementReturnTransition = SharedTransitionSet()
-////
-////        activity.supportFragmentManager
-////            .beginTransaction()
-////            .addSharedElement(view, getString(_string.wall_image))
-////            .replace(_id.main_screen_fragment_contaner, f)
-////            .addToBackStack(null)
-////            .commit()
-//    }
 
     override fun getTitle(): String = if (category == Const.EMPTY) NavigationId.TIMELINE.name else category
 
@@ -166,6 +132,27 @@ class TimelineFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                 _adapter?.submitList(response)
             }
         })
+
+        connection.observe(this, Observer { conn ->
+            conn ?: return@Observer
+            when(conn.type) {
+                Connection.WIFI -> {
+                    refreshDisable(false)
+                    viewModel.load(category, RequestStrategy.DATA_REQUEST)
+                }
+                Connection.MOBILE -> {
+                    refreshDisable(false)
+                    viewModel.load(category, RequestStrategy.DATA_REQUEST)
+                }
+                Connection.OFFLINE -> {
+                    refreshDisable()
+                }
+            }
+        })
+    }
+
+    private fun refreshDisable(disable: Boolean = true) {
+        srl.isEnabled = !disable
     }
 
     private fun hideProgress() {
@@ -183,7 +170,6 @@ class TimelineFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
         _adapter = TestAdapter()
         _adapter?.setOnClickItemListener(object: TestAdapter.ItemClickListener {
             override fun onItemClick(view: View, position: Int, id: String, wallpaper: Wallpaper) {
-                Log.e("TEST", "Click ${wallpaper.title}")
 //                val args = DetailsFragment.args(wallpaper)
 //                goTo<DetailsFragment>(
 //                    keepState = false,

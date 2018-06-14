@@ -15,10 +15,12 @@ import com.isanechek.wallpaper.utils.*
 import com.isanechek.wallpaper.utils.extensions.hide
 import com.isanechek.wallpaper.utils.extensions.onClick
 import com.isanechek.wallpaper.utils.extensions.show
+import com.isanechek.wallpaper.utils.network.Connection
 import com.isanechek.wallpaper.view.base.BaseFragment
 import com.isanechek.wallpaper.view.main.fragments.timeline.TimelineFragment
 import com.isanechek.wallpaper.view.widgets.navigation.NavigationId
 import com.vlad1m1r.lemniscate.BernoullisProgressView
+import com.yandex.metrica.YandexMetrica
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
 import org.koin.android.architecture.ext.getViewModel
 
@@ -66,11 +68,11 @@ class CategoryFragment : BaseFragment(), CategoryAdapter.ItemClickListener {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = getViewModel()
-        viewModel.load(RequestStrategy.DATA_REQUEST)
         initObserver()
     }
 
     override fun onItemClickListener(view: View, position: Int, category: String) {
+        YandexMetrica.reportEvent("open category", category)
         val bundle = TimelineFragment.getBundle(category)
         goTo<TimelineFragment>(
             keepState = false,
@@ -120,6 +122,20 @@ class CategoryFragment : BaseFragment(), CategoryAdapter.ItemClickListener {
 
         viewModel.loadCategory.observe(this, Observer { response ->
             _adapter?.submitList(response)
+        })
+
+        connection.observe(this, Observer { conn ->
+            conn ?: return@Observer
+            when(conn.type) {
+                Connection.WIFI -> {
+                    viewModel.load(RequestStrategy.DATA_REQUEST)
+                }
+                Connection.MOBILE -> {
+                    viewModel.load(RequestStrategy.DATA_REQUEST)
+                }
+                Connection.OFFLINE -> {
+                }
+            }
         })
     }
 

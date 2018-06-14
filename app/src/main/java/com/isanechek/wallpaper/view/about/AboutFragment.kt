@@ -17,6 +17,7 @@ import com.isanechek.wallpaper.R
 import com.isanechek.wallpaper.utils.*
 import com.isanechek.wallpaper.utils.extensions.*
 import com.isanechek.wallpaper.view.base.BaseFragment
+import com.yandex.metrica.YandexMetrica
 
 /**
  * Created by isanechek on 4/23/18.
@@ -44,6 +45,7 @@ class AboutFragment : BaseFragment(), View.OnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        sendEvent("open about screen")
         appIcon = view.findViewById(_id.app_icon)
         val con = view.findViewById<LinearLayout>(_id.content_container)
         listOf(
@@ -56,7 +58,7 @@ class AboutFragment : BaseFragment(), View.OnClickListener {
                 AboutItem(id = YOUTUBE, title = getString(_string.youtube_title), icon =_drawable.youtube, data = _string.youtube_url),
                 AboutItem(id = GPLUS, title = getString(_string.g_plus_title), icon =_drawable.gplus, data = _string.g_plus_url),
                 AboutItem(id = INFO, title = """${getString(_string.app_name)} ${BuildConfig.VERSION_NAME}
-        |AverdSoft (c)
+        |AVERDSOFT (c)
     """.trimMargin(), icon =_drawable.about, data = _string.app_name))
                 .forEach {
                     con.addView(createView(it))
@@ -101,17 +103,44 @@ class AboutFragment : BaseFragment(), View.OnClickListener {
 
     override fun onClick(v: View) {
         when (v.id) {
-            EMAIL -> activity.sendEmail(getString(_string.app_name), getString(_string.mail), getString(_string.sen_us_emial))
-            WEB -> actionView { _string.site_url }
-            TWITTER -> actionView { _string.twitter_url}
-            FACEBOOK -> actionView { _string.facebook_url }
-            VK -> actionView { _string.vk_url}
-            INSTAGRAM -> actionView { _string.instagram_url }
-            GPLUS -> actionView { _string.g_plus_url }
-            YOUTUBE -> actionView { _string.youtube_url }
+            EMAIL -> {
+                sendEvent("click email")
+                activity.sendEmail(getString(_string.app_name), getString(_string.mail), getString(_string.sen_us_emial))
+            }
+            WEB -> {
+                sendEvent("click web")
+                actionView { _string.site_url }
+            }
+            TWITTER -> {
+                sendEvent("click twitter")
+                actionView { _string.twitter_url}
+            }
+            FACEBOOK -> {
+                sendEvent("click facebook")
+                actionView { _string.facebook_url }
+            }
+            VK -> {
+                sendEvent("click vk")
+                actionView { _string.vk_url}
+            }
+            INSTAGRAM -> {
+                sendEvent("click instagram")
+                actionView { _string.instagram_url }
+            }
+            GPLUS -> {
+                sendEvent("click g+")
+                actionView { _string.g_plus_url }
+            }
+            YOUTUBE -> {
+                sendEvent("click youtube")
+                actionView { _string.youtube_url }
+            }
         }
     }
 
+    private fun sendEvent(event: String) {
+        YandexMetrica.reportEvent(event)
+    }
 
     private inline fun actionView(action: () -> Int) {
         activity.actionView { getString(action()) }

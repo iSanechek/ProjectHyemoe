@@ -16,9 +16,6 @@ class RoundKornerFrameLayout
         val cornerRadius = array.getDimension(R.styleable.RoundKornerFrameLayout_corner_radius, 0f)
         array.recycle()
         canvasRounder = CanvasRounder(cornerRadius)
-//        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2) {
-//            setLayerType(LAYER_TYPE_SOFTWARE, null)
-//        }
         updateOutlineProvider(cornerRadius)
     }
 
