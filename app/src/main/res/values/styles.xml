@@ -3,10 +3,11 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/my_primary_color</item>
-        <item name="colorPrimaryDark">@color/my_primary_dark_color2</item>
+        <item name="colorPrimary">@color/my_primary_dark_color</item>
+        <item name="colorPrimaryDark">@color/my_primary_dark_color</item>
         <item name="colorAccent">@color/my_accent_color</item>
-        <item name="android:windowBackground">@color/bg_light_color</item>
+        <item name="android:windowBackground">@color/my_accent_color</item>
+        <item name="android:navigationBarColor">@color/my_primary_dark_color</item>
     </style>
 
     <!--Main Theme-->
@@ -30,5 +31,18 @@
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+
+    <!--Bottom Sheet Dialog Theme-->
+    <style name="BottomSheet" parent="@style/Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/bg_bottom_sheet_dialog_fragment</item>
+    </style>
+
+    <style name="BottomSheetDialogTheme" parent="@style/Theme.Design.Light.BottomSheetDialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="bottomSheetStyle">@style/BottomSheet</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@color/bg_light_color</item>
+    </style>
 
 </resources>

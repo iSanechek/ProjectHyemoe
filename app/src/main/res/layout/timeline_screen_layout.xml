@@ -8,17 +8,17 @@
 
     <include layout="@layout/progress_error_layout" />
 
-    <android.support.v4.widget.SwipeRefreshLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/list_refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"
         tools:visibility="gone">
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/list_rv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context="com.isanechek.wallpaper.view.main.MainActivity" />
-    </android.support.v4.widget.SwipeRefreshLayout>
+            tools:context=".ui.main.MainActivity" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </FrameLayout>

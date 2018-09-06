@@ -3,13 +3,13 @@
     <color name="my_primary_color">#6339ac</color>
     <color name="my_primary_dark_color">#4f2e87</color>
     <color name="my_primary_dark_color2">#4f2e87</color>
-    <color name="my_accent_color">#f7e305</color>
+    <color name="my_accent_color">#ffffff</color>
     <color name="aboutItemDividerColor">#30dadada</color>
     <color name="twitter">#23A4F2</color>
     <color name="facebook">#4267B2</color>
     <color name="googlePlus">#DB4437</color>
 
-    <color name="title_color">#f7e305</color>
+    <color name="title_color">#ffffff</color>
     <color name="bg_light_color">#ffffff</color>
 
 

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/mainView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:cardElevation="0dp"
+        app:cardCornerRadius="0dp"
+        app:cardUseCompatPadding="false"
+        app:cardBackgroundColor="@color/my_primary_color"
+        tools:context=".ui.main.MainActivity">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <com.hugocastelani.waterfalltoolbar.WaterfallToolbar
+                android:id="@+id/aterfallToolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/main_screen_toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:layout_gravity="top"
+                    android:background="@color/my_primary_dark_color"
+                    android:padding="0dp"
+                    app:contentInsetEnd="0dp"
+                    app:contentInsetStart="0dp">
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                        <com.isanechek.wallpaper.ui.widgets.AnimatedImageView
+                            android:id="@+id/main_screen_ads_info_btn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center|end"
+                            android:layout_marginEnd="@dimen/dp16"
+                            android:foreground="?android:attr/selectableItemBackground"
+                            tools:src="@drawable/ic_error_outline_black_24dp"
+                            tools:ignore="ContentDescription,UnusedAttribute" />
+                        <com.isanechek.wallpaper.ui.widgets.AnimatedTextView
+                            android:id="@+id/main_screen_title_toolbar_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center|start"
+                            android:layout_marginStart="56dp"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:textAllCaps="true"
+                            android:textColor="@color/my_primary_dark_color"
+                            android:background="@drawable/toolbar_title_bg"
+                            tools:text="@string/category_title"/>
+                        <com.isanechek.wallpaper.ui.widgets.AnimatedImageView
+                            android:id="@+id/main_screen_navigation_btn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center|start"
+                            android:layout_marginStart="@dimen/dp16"
+                            android:tint="@color/bg_light_color"
+                            android:foreground="?android:attr/selectableItemBackground"
+                            tools:src="@drawable/navigation_closed_24dp"
+                            tools:ignore="ContentDescription,UnusedAttribute" />
+                    </FrameLayout>
+                </androidx.appcompat.widget.Toolbar>
+            </com.hugocastelani.waterfalltoolbar.WaterfallToolbar>
+            <FrameLayout
+                android:id="@+id/main_screen_fragment_contaner"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="?attr/actionBarSize"/>
+
+        </FrameLayout>
+    </androidx.cardview.widget.CardView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

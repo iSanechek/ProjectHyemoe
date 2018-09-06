@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp16"
+        android:layout_marginTop="@dimen/dp8"
+        android:padding="@dimen/dp8"
+        android:text="@string/no_wallpaper_dialog_title"
+        style="@style/Base.TextAppearance.AppCompat.Title"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp16"
+        android:layout_marginEnd="@dimen/dp16"
+        android:padding="@dimen/dp8"
+        android:textSize="18sp"
+        android:textColor="@color/my_primary_text_color"
+        android:text="@string/no_wallpaper_dialog_message"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/dp24"
+        android:layout_marginStart="@dimen/dp16"
+        android:layout_marginEnd="@dimen/dp16"
+        android:layout_marginBottom="@dimen/dp24">
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+        <Button
+            style="@style/Base.Widget.AppCompat.Button.Borderless"
+            android:id="@+id/no_wallpaper_dialog_cancel_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/my_primary_dark_color"
+            android:text="@string/no_wallpaper_dialog_cancel_title"/>
+        <Button
+            style="@style/Base.Widget.AppCompat.Button.Borderless"
+            android:id="@+id/no_wallpaper_dialog_remove_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/my_text_color"
+            android:background="@color/my_primary_dark_color"
+            android:text="@string/no_wallpaper_dialog_remove_title"/>
+    </LinearLayout>
+
+</LinearLayout>

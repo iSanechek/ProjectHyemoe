@@ -5,51 +5,21 @@ import android.content.ContentUris
 import android.content.Context
 import android.database.Cursor
 import android.database.DatabaseUtils
-import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.DocumentsContract
 import android.provider.MediaStore
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.FutureTarget
-import com.bumptech.glide.request.target.Target
 import com.isanechek.wallpaper.BuildConfig
 import com.isanechek.wallpaper.BuildConfig.DEBUG
-import com.isanechek.wallpaper.utils.extensions.emptyString
-import java.io.File
-import java.io.FileOutputStream
+import com.isanechek.extensions.emptyString
 
 
 object FileUtils {
 
-    fun saveFile(context: Context, downloadUrl: String): String? {
-        val directory = context.getExternalFilesDir("Wallpaper")
-        val fileName = Uri.parse(downloadUrl).lastPathSegment
-        val cacheFile = File(directory, "temp.jpg")
-        if (directory.exists()) {
-            directory.mkdirs()
-//            if (created) {
-//                File(directory, ".nomedia").mkdirs()
-//            }
-        }
-
-        val future: FutureTarget<Bitmap> = Glide
-            .with(context)
-            .asBitmap()
-            .load(downloadUrl)
-            .submit(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
-        val bitmap: Bitmap = future.get()
-        FileOutputStream(cacheFile).use { output ->
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, output)
-        }
-
-        return getPath(context, Uri.fromFile(cacheFile))
-    }
-
     // Еще хз какой будет минимум сдк
     @SuppressLint("ObsoleteSdkInt")
-    private fun getPath(context: Context, uri: Uri): String? {
+    fun getPath(context: Context, uri: Uri): String? {
         val isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT
         when {
             isKitKat && DocumentsContract.isDocumentUri(context, uri) -> when {

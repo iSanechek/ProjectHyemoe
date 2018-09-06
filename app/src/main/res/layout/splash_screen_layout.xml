@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/splashMotionContainer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/my_primary_dark_color">
+
+    <TextView
+        android:id="@+id/x_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="X"
+        android:textColor="@color/my_primary_dark_color"
+        android:background="@drawable/test_bg"
+        android:paddingStart="36dp"
+        android:paddingEnd="36dp"
+        android:textSize="160sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="HardcodedText" />
+
+
+    <com.isanechek.wallpaper.ui.widgets.CircleProgressView
+        android:id="@+id/splash_progress"
+        android:layout_width="37dp"
+        android:layout_height="37dp"
+        android:layout_marginStart="@dimen/dp8"
+        android:layout_marginEnd="@dimen/dp8"
+        android:layout_marginBottom="@dimen/dp8"
+        app:layout_constraintBottom_toTopOf="@+id/splash_info_tv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:visibility="invisible"
+        tools:visibility="visible"/>
+
+    <TextView
+        android:id="@+id/splash_info_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp8"
+        android:layout_marginEnd="@dimen/dp8"
+        android:layout_marginBottom="@dimen/dp16"
+        tools:text="@string/splash_screen_check_update_title"
+        android:textColor="@color/my_text_color"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

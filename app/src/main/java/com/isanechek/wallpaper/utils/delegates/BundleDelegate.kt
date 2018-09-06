@@ -3,8 +3,7 @@ package com.isanechek.wallpaper.utils.delegates
 import android.os.Bundle
 import android.os.Parcel
 import android.os.Parcelable
-import android.support.v4.app.Fragment
-import com.isanechek.wallpaper.utils.extensions.isNull
+import com.isanechek.extensions.isNull
 import java.io.Serializable
 import java.math.BigDecimal
 import java.math.BigInteger
@@ -17,11 +16,11 @@ import kotlin.reflect.KProperty
  */
 
 
-inline fun <reified VALUE> bundle() = object : ReadOnlyProperty<Fragment, VALUE> {
+inline fun <reified VALUE> bundle() = object : ReadOnlyProperty<androidx.fragment.app.Fragment, VALUE> {
 
     private var value: VALUE? = null
 
-    override fun getValue(thisRef: Fragment, property: KProperty<*>): VALUE {
+    override fun getValue(thisRef: androidx.fragment.app.Fragment, property: KProperty<*>): VALUE {
         if (value.isNull) {
             value = thisRef.arguments!![property.name] as VALUE
         }
@@ -60,7 +59,7 @@ infix fun String.bundleWith(value: Any?): Bundle {
 }
 
 
-// for test
+// for com.hanks.htextview.test
 
 interface KParcelable : Parcelable {
     override fun writeToParcel(p0: Parcel, p1: Int)

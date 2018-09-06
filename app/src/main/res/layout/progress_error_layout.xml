@@ -6,22 +6,15 @@
     android:id="@+id/progress_view_container"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/my_primary_color"
-    tools:visibility="visible"
+    tools:visibility="gone"
     android:visibility="gone">
 
-    <com.vlad1m1r.lemniscate.BernoullisProgressView
+
+    <com.isanechek.wallpaper.ui.widgets.CircleProgressView
         android:id="@+id/progress_view_progress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        app:duration="1250"
-        app:hasHole="true"
-        app:lineColor="@color/my_accent_color"
-        app:maxLineLength="0.9"
-        app:minLineLength="0.9"
-        app:strokeWidth="@dimen/dp2"
-        tools:visibility="visible"
-        />
+        android:layout_width="37dp"
+        android:layout_height="37dp"
+        android:layout_gravity="center"/>
 
     <FrameLayout
         android:id="@+id/progress_view_error_container"
@@ -34,7 +27,7 @@
         android:background="@drawable/error_view_bg"
         tools:visibility="gone">
 
-        <android.support.v7.widget.AppCompatTextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/progress_view_error_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -42,7 +35,7 @@
             android:layout_gravity="center"
             tools:text="Any Error"/>
 
-        <android.support.v7.widget.AppCompatButton
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/progress_view_error_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

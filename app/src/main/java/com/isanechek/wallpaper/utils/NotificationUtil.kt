@@ -3,13 +3,10 @@ package com.isanechek.wallpaper.utils
 import android.annotation.TargetApi
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.app.PendingIntent
 import android.content.Context
-import android.content.Intent
 import android.net.Uri
 import android.os.Build
-import android.support.v4.app.NotificationCompat
-import java.io.File
+import androidx.core.app.NotificationCompat
 
 /**
  * Created by isanechek on 2/27/18.
@@ -19,9 +16,7 @@ import java.io.File
 class NotificationUtil(private val context: Context) {
 
     private val nm: NotificationManager
-        get() {
-            return context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        }
+        get() = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
     init {
         @TargetApi(Build.VERSION_CODES.O)

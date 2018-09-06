@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.isanechek.wallpaper.view.widgets.PullBackLayout
+<com.isanechek.wallpaper.ui.widgets.PullBackLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/detail_pull_back_container"
     android:layout_width="match_parent"
@@ -8,4 +8,4 @@
 
     <include layout="@layout/detail_screen_layout2" />
 
-</com.isanechek.wallpaper.view.widgets.PullBackLayout>
+</com.isanechek.wallpaper.ui.widgets.PullBackLayout>

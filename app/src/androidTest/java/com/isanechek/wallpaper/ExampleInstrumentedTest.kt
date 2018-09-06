@@ -1,7 +1,7 @@
 package com.isanechek.wallpaper
 
-import android.support.test.InstrumentationRegistry
-import android.support.test.runner.AndroidJUnit4
+import androidx.test.InstrumentationRegistry
+import androidx.test.runner.AndroidJUnit4
 
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -9,7 +9,7 @@ import org.junit.runner.RunWith
 import org.junit.Assert.*
 
 /**
- * Instrumented test, which will execute on an Android device.
+ * Instrumented com.hanks.htextview.test, which will execute on an Android device.
  *
  * See [testing documentation](http://d.android.com/tools/testing).
  */
@@ -17,7 +17,7 @@ import org.junit.Assert.*
 class ExampleInstrumentedTest {
     @Test
     fun useAppContext() {
-        // Context of the app under test.
+        // Context of the app under com.hanks.htextview.test.
         val appContext = InstrumentationRegistry.getTargetContext()
         assertEquals("com.isanechek.wallpaper", appContext.packageName)
     }

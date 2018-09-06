@@ -1,7 +1,7 @@
 package com.isanechek.wallpaper.data.network.dto
 
 import com.google.gson.annotations.SerializedName
-import com.isanechek.wallpaper.utils.extensions.emptyString
+import com.isanechek.extensions.emptyString
 import com.isanechek.wallpaper.utils.parse
 import java.util.*
 
@@ -21,6 +21,7 @@ data class ResourceList(
 
 data class Resource(
         @SerializedName("public_key") var publicKey: String = emptyString,
+        @SerializedName("resource_id") var id: String = emptyString,
         @SerializedName("_embedded") var resourceList: ResourceList = ResourceList(),
         @SerializedName("name") var name: String = emptyString,
         @SerializedName("created") var created: String = emptyString,
@@ -29,6 +30,7 @@ data class Resource(
         @SerializedName("modified") var modified: String = emptyString,
         @SerializedName("deleted") var deleted: String = emptyString,
         @SerializedName("path") var path: String = emptyString,
+        @SerializedName("file") var file: String = emptyString,
         @SerializedName("md5") var md5: String = emptyString,
         @SerializedName("type") var type: String = emptyString,
         @SerializedName("mime_type") var mimeType: String = emptyString,

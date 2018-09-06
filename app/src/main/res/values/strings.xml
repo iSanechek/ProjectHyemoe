@@ -53,7 +53,7 @@
     <string name="facebook_url">https://web.facebook.com/averdsoft</string>
     <string name="site_url">http://averdsoft.ru</string>
     <string name="web_site">web</string>
-    <string name="github_url"></string>
+    <string name="github_url"> </string>
     <string name="instagram_url">https://www.instagram.com/averdsoft</string>
     <string name="instagram_title">Instagram</string>
     <string name="vk_title">Vkontakte</string>
@@ -64,4 +64,16 @@
     <string name="youtube_url">https://youtube.com/averdsoft</string>
 
     <string name="comment_user_image">Comment user image</string>
+    <string name="drawer_open">nevigation open</string>
+    <string name="drawer_close">navigation close</string>
+    <string name="no_wallpaper_dialog_title">Remove wallpaper?</string>
+    <string name="no_wallpaper_dialog_message">Black picture to save battery power.\nThe most effective on AMOLED display.</string>
+    <string name="no_wallpaper_dialog_cancel_title">cancel</string>
+    <string name="no_wallpaper_dialog_remove_title">remove</string>
+    <string name="remove_wallpaper_toolbar_title">remove wallpaper</string>
+    <string name="load_category_failed_msg">Load category failed! :(</string>
+    <string name="error_msg_bad_request">Bad request! :(</string>
+    <string name="error_msg_not_find">Not find! :(</string>
+    <string name="error_msg_root_folder_empty">Root folder empty! :(</string>
+    <string name="splash_screen_check_update_title">Check update...</string>
 </resources>
