@@ -8,4 +8,9 @@
 /.idea/
 /.gitignore
 app/libs/
+app/src/main/res/drawable/test_bg.xml
+app/src/main/res/layout/test_end_layout.xml
+app/src/main/res/layout/test_layout.xml
+storage/libs/
+storage/src/main/res/drawable/
 app/release/

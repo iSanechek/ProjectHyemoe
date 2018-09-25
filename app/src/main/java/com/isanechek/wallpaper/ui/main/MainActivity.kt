@@ -1,35 +1,36 @@
 package com.isanechek.wallpaper.ui.main
 
+import _drawable
+import _id
+import _layout
 import android.app.WallpaperManager
-import androidx.lifecycle.Observer
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
-import androidx.core.view.GravityCompat
-import androidx.interpolator.view.animation.FastOutSlowInInterpolator
-import androidx.drawerlayout.widget.DrawerLayout
-import androidx.appcompat.app.AlertDialog
-import androidx.cardview.widget.CardView
-import androidx.appcompat.widget.Toolbar
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import com.isanechek.wallpaper.R
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.Toolbar
+import androidx.cardview.widget.CardView
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
+import com.hugocastelani.waterfalltoolbar.Dp
 import com.isanechek.common.DebugUtils
 import com.isanechek.extensions.*
-import com.isanechek.wallpaper.common.PrefManager
 import com.isanechek.repository.Response
-import com.isanechek.repository.Status
 import com.isanechek.repository.Status.*
+import com.isanechek.wallpaper.R
+import com.isanechek.wallpaper.common.PrefManager
 import com.isanechek.wallpaper.models.Update
-import com.isanechek.wallpaper.utils.*
-import com.isanechek.wallpaper.utils.network.Connection
 import com.isanechek.wallpaper.ui.about.AboutFragment
 import com.isanechek.wallpaper.ui.base.BaseActivity
 import com.isanechek.wallpaper.ui.base.BaseFragment
-import com.isanechek.wallpaper.ui.dialogs.NoWallpaperDialog
 import com.isanechek.wallpaper.ui.category.CategoryFragment
+import com.isanechek.wallpaper.ui.dialogs.NoWallpaperBottomDialog
 import com.isanechek.wallpaper.ui.splash.ARGS_KEY
 import com.isanechek.wallpaper.ui.splash.ARGS_PATH
 import com.isanechek.wallpaper.ui.widgets.AnimatedImageView
@@ -37,8 +38,10 @@ import com.isanechek.wallpaper.ui.widgets.AnimatedTextView
 import com.isanechek.wallpaper.ui.widgets.navigation.NavAdapterItemSelectedListener
 import com.isanechek.wallpaper.ui.widgets.navigation.NavigationDrawerView
 import com.isanechek.wallpaper.ui.widgets.navigation.NavigationItem
+import com.isanechek.wallpaper.utils.network.Connection
 import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.RoundedCornersTransformation
+import kotlinx.android.synthetic.main.main_screen_content_layout.*
 import org.koin.android.ext.android.inject
 import java.io.IOException
 import com.isanechek.wallpaper.ui.widgets.navigation.NavigationId as Id
@@ -51,7 +54,6 @@ private const val SCALE_KEY = "SCALE_KEY"
 class MainActivity : BaseActivity(), NavAdapterItemSelectedListener {
 
     // view's
-
     private val toolbar: Toolbar by lazy {
         findViewById<Toolbar>(_id.main_screen_toolbar)
     }
@@ -94,12 +96,6 @@ class MainActivity : BaseActivity(), NavAdapterItemSelectedListener {
     private var categoryScreen = false
     private var currentNavigationSelectedItem = 0
 
-    private lateinit var systemUiHelper: SystemUiHelper
-    private val visibilityChangeListener = object : SystemUiHelper.OnVisibilityChangeListener {
-        override fun onVisibilityChange(visible: Boolean) {
-
-        }
-    }
 
     private val menuClickListener = Toolbar.OnMenuItemClickListener { p0 ->
         p0?.let {
@@ -119,7 +115,6 @@ class MainActivity : BaseActivity(), NavAdapterItemSelectedListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(_layout.main_screen_layout)
-        systemUiHelper = SystemUiHelper(this, listener = visibilityChangeListener)
         initViews()
         initObserver()
         goTo<CategoryFragment>(arg = Bundle().apply {
@@ -188,14 +183,14 @@ class MainActivity : BaseActivity(), NavAdapterItemSelectedListener {
             }
             Id.CATEGORY.fullName -> {
                 categoryScreen = true
+                if (waterfallToolbar.elevation != 0f)
+                    waterfallToolbar.elevation = 0f
                 setTitle(tag)
                 setArcHamburgerIconState()
             }
             Id.TIMELINE.fullName -> {
                 categoryScreen = false
-//                if (!systemUiHelper.isShowing) {
-//                    systemUiHelper.show()
-//                }
+
                 setTitle(tag)
                 setArcArrowState(true)
             }
@@ -211,6 +206,10 @@ class MainActivity : BaseActivity(), NavAdapterItemSelectedListener {
             currentNavigationSelectedItem = checkPosition
             navView.setChecked(currentNavigationSelectedItem)
         }
+    }
+
+    override fun setupWaterfall(recycler: RecyclerView) {
+        waterfallToolbar.recyclerView = recycler
     }
 
     private fun setTitle(title: String) {
@@ -343,7 +342,7 @@ class MainActivity : BaseActivity(), NavAdapterItemSelectedListener {
     }
 
     private fun showNoWallpaperDialog() {
-        val dialog = NoWallpaperDialog {
+        val dialog = NoWallpaperBottomDialog {
             try {
                 val wm = WallpaperManager.getInstance(this@MainActivity)
                 val bitmap = BitmapFactory.decodeResource(resources, _drawable.black)
@@ -353,5 +352,7 @@ class MainActivity : BaseActivity(), NavAdapterItemSelectedListener {
             }
         }
         dialog.show(supportFragmentManager, "RemoveWallpaperDialog")
+
+
     }
 }

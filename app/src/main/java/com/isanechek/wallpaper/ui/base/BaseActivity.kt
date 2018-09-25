@@ -2,6 +2,7 @@ package com.isanechek.wallpaper.ui.base
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.RecyclerView
 import com.isanechek.wallpaper.utils.network.ConnectionLiveData
 import com.isanechek.wallpaper.ui.navigation.Navigator
 import com.yandex.metrica.YandexMetrica
@@ -49,4 +50,6 @@ abstract class BaseActivity : AppCompatActivity(), Navigator.FragmentChangeListe
     }
 
     fun getInstanceNavigator() : Navigator = navigator
+
+    abstract fun setupWaterfall(recycler: RecyclerView)
 }

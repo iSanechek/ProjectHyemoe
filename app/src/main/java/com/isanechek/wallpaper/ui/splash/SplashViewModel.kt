@@ -27,7 +27,7 @@ class SplashViewModel(private val pref: PrefManager,
     }
 
     override fun onCleared() {
-        super.onCleared()
         job.cancel()
+        super.onCleared()
     }
 }

@@ -1,8 +1,10 @@
 package com.isanechek.extensions
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.os.Parcelable
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import java.io.Serializable
 
 infix fun androidx.fragment.app.Fragment.takeColor(colorId: Int) = context?.let { ContextCompat.getColor(it, colorId) }
@@ -24,3 +26,5 @@ inline infix fun <reified T> androidx.fragment.app.Fragment.extraWithKey(key: St
     val value: Any = arguments!![key]
     return value as T
 }
+
+fun Fragment.isPortrait() = resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT

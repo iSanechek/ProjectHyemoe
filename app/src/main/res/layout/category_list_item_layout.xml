@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="150dp"
-    android:layout_height="200dp"
+    android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cat_item_root"
     android:layout_marginEnd="@dimen/dp8"
     android:layout_marginStart="@dimen/dp8"
+    android:layout_marginTop="@dimen/dp4"
+    android:layout_marginBottom="@dimen/dp4"
     app:cardCornerRadius="@dimen/dp8"
-    app:cardElevation="@dimen/dp8"
-    app:cardBackgroundColor="@color/colorAccent_light">
+    app:cardElevation="@dimen/dp4"
+    app:cardBackgroundColor="@color/colorAccent_light"
+    tools:layout_height="200dp">
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="match_parent" >
         <ImageView
             android:id="@+id/cat_item_cover_iv"
             android:layout_width="match_parent"
@@ -27,14 +29,17 @@
             android:id="@+id/cat_item_title_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
+            android:layout_gravity="bottom|start"
+            android:layout_marginBottom="@dimen/dp8"
             android:layout_marginStart="@dimen/dp8"
-            android:layout_marginEnd="@dimen/dp8"
-            android:textColor="#fff"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            tools:text="Walera"
-            />
+            android:textColor="#000000"
+            android:textSize="12sp"
+            android:textAllCaps="true"
+            android:paddingStart="@dimen/dp8"
+            android:paddingEnd="@dimen/dp8"
+            android:paddingTop="@dimen/dp2"
+            android:paddingBottom="@dimen/dp2"
+            android:background="@drawable/title_category_item_bg"
+            tools:text="Walera" />
     </FrameLayout>
 </androidx.cardview.widget.CardView>

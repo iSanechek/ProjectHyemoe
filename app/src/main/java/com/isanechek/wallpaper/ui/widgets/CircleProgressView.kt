@@ -47,7 +47,7 @@ class CircleProgressView(context: Context, attrs: AttributeSet) : View(context, 
             field = value
             backgroundPaint.color = field
         }
-    var progresTicknes: Int = R.dimen.progress_tickness
+    var progressTicknes: Int = R.dimen.progress_tickness
         set(@DimenRes value) {
             field = value
             paint.strokeWidth = resources.getDimension(field)
@@ -56,10 +56,10 @@ class CircleProgressView(context: Context, attrs: AttributeSet) : View(context, 
 
     init {
         if (!isInEditMode)
-            hide()
+            hide(false)
         with(paint) {
             color = progressColor
-            strokeWidth = progresTicknes.toFloat()
+            strokeWidth = progressTicknes.toFloat()
             style = Paint.Style.STROKE
             strokeCap = Paint.Cap.ROUND
         }
@@ -90,7 +90,7 @@ class CircleProgressView(context: Context, attrs: AttributeSet) : View(context, 
         progressAnimator.cancel()
         rotateAnimation.cancel()
         clearAnimation()
-        hide()
+        hide(false)
     }
 
     override fun onDraw(canvas: Canvas) {

@@ -66,6 +66,7 @@ class SplashScreen : AppCompatActivity() {
                 }
                 BAD_REQUEST -> TODO()
                 NOT_FIND -> TODO()
+                INITIAL -> TODO()
             }
         })
 

@@ -4,10 +4,8 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/progress_view_container"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/my_primary_color"
-    tools:visibility="gone"
-    android:visibility="gone">
+    tools:visibility="visible"
+    android:visibility="visible">
 
 
     <com.isanechek.wallpaper.ui.widgets.CircleProgressView

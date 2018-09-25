@@ -16,6 +16,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.RecyclerView
 import com.github.chrisbanes.photoview.PhotoView
 import com.isanechek.common.models.Wallpaper
 import com.isanechek.extensions.*
@@ -97,6 +98,10 @@ class DetailScreen : BaseActivity() {
 
     override fun onFragmentChanged(currentTag: String, currentFragment: androidx.fragment.app.Fragment) {
         //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun setupWaterfall(recycler: RecyclerView) {
+
     }
 
     private fun setupPullback() {

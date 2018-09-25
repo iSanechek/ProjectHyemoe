@@ -5,14 +5,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/my_primary_color"
     android:id="@+id/categoryMotionContainer">
 
 
-    <androidx.recyclerview.widget.RecyclerView
+    <com.isanechek.wallpaper.ui.widgets.GridRecyclerView
         android:id="@+id/category_screen_list"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="75dp"
+        android:layout_marginBottom="@dimen/dp12"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_default="spread"
@@ -20,15 +22,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/category_title_bg"
         app:layout_constraintVertical_bias="1.0"
-        app:layout_constraintWidth_default="percent"/>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:background="@color/my_primary_dark_color"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintWidth_default="percent"
+        android:clipToPadding="false"
+        android:layoutAnimation="@anim/layout_animation_from_bottom"
+        android:overScrollMode="never"
+        tools:context=".ui.main.MainActivity"
+        tools:itemCount="2"
+        tools:listitem="@layout/category_list_item_layout"/>
 
     <View
         android:id="@+id/category_title_bg"
@@ -40,10 +40,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/my_primary_dark_color"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <include layout="@layout/progress_error_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

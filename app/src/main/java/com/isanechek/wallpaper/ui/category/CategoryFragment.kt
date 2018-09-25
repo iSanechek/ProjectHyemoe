@@ -9,11 +9,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import com.isanechek.common.DebugUtils
 import com.isanechek.common.models.Category
+import com.isanechek.extensions.*
 import com.isanechek.repository.Status.*
-import com.isanechek.extensions.extraWithKey
-import com.isanechek.extensions.hide
-import com.isanechek.extensions.onClick
-import com.isanechek.extensions.show
 import com.isanechek.wallpaper.ui.base.BaseFragment
 import com.isanechek.wallpaper.ui.timeline.TimelineFragment
 import com.isanechek.wallpaper.ui.widgets.navigation.NavigationId
@@ -59,13 +56,11 @@ class CategoryFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         progress_view_progress.progressColor = _color.my_primary_dark_color
-
+        setupTestObserver()
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        setupTestObserver()
-        debug.log("$TAG hya")
+    override fun onStart() {
+        super.onStart()
         viewModel.loadData(key, path)
     }
 
@@ -77,9 +72,6 @@ class CategoryFragment : BaseFragment() {
             debug.log("$TAG data ${it.isEmpty()}")
             with(category_screen_list) {
                 setHasFixedSize(true)
-                val animator = SlideInUpAnimator(OvershootInterpolator(1f))
-                animator.addDuration = 350
-                itemAnimator = animator
                 bind(diffCallback, _layout.category_list_item_layout) { category: Category ->
                     debug.log("$TAG item ${category.title}")
                     cat_item_root.onClick {
@@ -103,12 +95,14 @@ class CategoryFragment : BaseFragment() {
 
                                 override fun onError(e: Exception?) {
                                     debug.log("$TAG ${category.title} fail ${e?.message}")
+                                    debug.log("$TAG ${category.title} fail ${e?.stackTrace}")
                                 }
 
                             })
-                }.layoutManager(GridLayoutManager(activity, 2, GridLayoutManager.HORIZONTAL, false))
+                }.layoutManager(GridLayoutManager(activity, if (isPortrait()) 2 else 3, GridLayoutManager.HORIZONTAL, false))
                         .submitList(it)
             }
+
         })
 
         viewModel.networkState.observe(this@CategoryFragment, Observer {
@@ -118,18 +112,19 @@ class CategoryFragment : BaseFragment() {
                     progress_view_progress.stop()
                     progress_view_container.hide()
                 }
-
                 RUNNING -> {
 
                 }
-
                 SUCCESS -> {
                     progress_view_progress.stop()
                     progress_view_container.hide()
                 }
+                BAD_REQUEST -> {
 
-                BAD_REQUEST -> TODO()
-                NOT_FIND -> TODO()
+                }
+                NOT_FIND -> {
+
+                }
                 INITIAL -> {
                     progress_view_container.show()
                     progress_view_progress.start()

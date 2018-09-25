@@ -1,25 +1,25 @@
 package com.isanechek.repository.category
 
+import _string
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
-import com.isanechek.common.models.Category
-import com.isanechek.repository.Repository
-import com.isanechek.storage.dao.CategoryDao
-import com.isanechek.storage.entity.CategoryEntity
 import com.isanechek.common.DebugUtils
-import com.isanechek.repository.NetworkState
-import com.isanechek.repository.Request
-import com.isanechek.wallpaper.data.network.YandexService
-import com.isanechek.wallpaper.data.network.dto.Resource
-import com.isanechek.repository.Listing
+import com.isanechek.common.models.Category
 import com.isanechek.extensions.ifError
 import com.isanechek.extensions.ifException
 import com.isanechek.extensions.ifFailed
 import com.isanechek.extensions.ifSucceeded
-import com.isanechek.wallpaper.utils.isUiThread
+import com.isanechek.repository.Listing
+import com.isanechek.repository.NetworkState
+import com.isanechek.repository.Repository
+import com.isanechek.repository.Request
+import com.isanechek.storage.dao.CategoryDao
+import com.isanechek.storage.entity.CategoryEntity
+import com.isanechek.wallpaper.data.network.YandexService
+import com.isanechek.wallpaper.data.network.dto.Resource
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.withContext
 import ru.gildor.coroutines.retrofit.awaitResult
@@ -33,7 +33,6 @@ class CategoryRepository(private val debug: DebugUtils,
 
     override fun listing(request: Request?): Listing<Category> {
         val cache = LivePagedListBuilder(dao.load().map {
-            debug.log("$TAG item -> ${it.title}")
             Category(
                     id = it.id,
                     lastUpdateDate = it.lastUpdateDate,
@@ -64,7 +63,6 @@ class CategoryRepository(private val debug: DebugUtils,
 
     override suspend fun loadData(request: Request?) {
         request ?: return
-        debug.log("$TAG load data -->> path ${request.path}")
         postLoadState()
         api.loadCategory2(
                 request.key,
@@ -112,15 +110,10 @@ class CategoryRepository(private val debug: DebugUtils,
     }
 
     private suspend fun loadCategory(resource: Resource) = withContext(CommonPool) {
-        debug.log("$TAG load category")
-
         val folders = CategoriesMapping.switchMapFolder(resource)
-        debug.log("$TAG load category -->> folders size ${folders.size}")
-
         if (folders.isNotEmpty()) {
             val temp = mutableListOf<CategoryEntity>()
             for (folder in folders) {
-                debug.log("$TAG load category -->> category ${folder.name}")
                 val response = api.loadCategoryData(
                         key = folder.key,
                         path = folder.path,
@@ -145,25 +138,28 @@ class CategoryRepository(private val debug: DebugUtils,
     }
 
     private fun saveData(categories: List<CategoryEntity>) {
-        debug.log("$TAG save data -->> run thread is main $isUiThread")
         val count = dao.getCategoriesSize()
-        debug.log("$TAG save data -->> count cache $count")
         if (count > 0) {
             val tempIds = categories.map { it.id }.toSet()
             val cacheIds = dao.loadCategoriesIds().map { it.id }.toSet()
 
             val removeIds = cacheIds.filterNot { it in tempIds }.toSet()
-            val tempUpdate = dao.loadCategories().filter { it.id in tempIds }.toList()
+            val tempUpdate = dao.loadCategories()
+                    .map {
+                        categories
+                                .filter { n ->
+                                    n.id == it.id
+                                }
+                                .find { n->
+                                    n.previewUrl != it.previewUrl
+                                }!! // FIX ME
+                    }.toList()
             val insertTemp = categories.filterNot { it.id in cacheIds }.toList()
             dao.transaction(removeIds, tempUpdate, insertTemp)
-            debug.log("$TAG save data -->> remove count ${removeIds.size}")
-            debug.log("$TAG save data -->> update count ${tempUpdate.size}")
-            debug.log("$TAG save data -->> insert count ${insertTemp.size}")
         } else {
             dao.insert(categories)
         }
     }
-
 }
 
 private const val TAG = "CategoryRepository"

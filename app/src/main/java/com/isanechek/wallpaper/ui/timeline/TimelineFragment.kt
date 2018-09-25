@@ -10,12 +10,10 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.isanechek.common.models.Wallpaper
-import com.isanechek.extensions.emptyString
-import com.isanechek.extensions.extraWithKey
-import com.isanechek.extensions.hide
-import com.isanechek.extensions.show
+import com.isanechek.extensions.*
 import com.isanechek.repository.Status
 import com.isanechek.wallpaper.ui.base.BaseFragment
+import com.isanechek.wallpaper.ui.details.DetailScreen
 import com.isanechek.wallpaper.ui.widgets.navigation.NavigationId
 import com.isanechek.wallpaper.utils.network.Connection
 import com.list.rados.fastlist.bind
@@ -26,6 +24,7 @@ import com.yandex.mobile.ads.nativeads.NativeAdLoader
 import com.yandex.mobile.ads.nativeads.NativeAdLoaderConfiguration
 import com.yandex.mobile.ads.nativeads.NativeAppInstallAd
 import com.yandex.mobile.ads.nativeads.NativeContentAd
+import jp.wasabeef.picasso.transformations.RoundedCornersTransformation
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
 import kotlinx.android.synthetic.main.progress_error_layout.*
 import kotlinx.android.synthetic.main.timeline_item_layout.view.*
@@ -60,7 +59,7 @@ class TimelineFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
 
     private val diffCallback = object : DiffUtil.ItemCallback<Wallpaper>() {
         override fun areItemsTheSame(oldItem: Wallpaper, newItem: Wallpaper): Boolean =
-                oldItem.title == newItem.title
+                oldItem.id == newItem.id
 
         override fun areContentsTheSame(oldItem: Wallpaper, newItem: Wallpaper): Boolean =
                 oldItem == newItem
@@ -71,6 +70,14 @@ class TimelineFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         progress_view_progress.progressColor = _color.my_primary_dark_color
+        with(list_rv) {
+            activity.setupWaterfall(this)
+            setHasFixedSize(true)
+            val animator = SlideInUpAnimator(OvershootInterpolator(1f))
+            animator.addDuration = 350
+            animator.moveDuration = 150
+            itemAnimator = animator
+        }
         setupSwipeRefresh()
     }
 
@@ -82,6 +89,7 @@ class TimelineFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
     }
 
     override fun onRefresh() {
+        viewModel.refresh()
     }
 
     override fun getTitle(): String = if (screenTitle == "") NavigationId.TIMELINE.name else screenTitle
@@ -93,13 +101,11 @@ class TimelineFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
             when(state.status) {
                 Status.INITIAL -> {
                     initialLoading = true
-                    progress_view_container.show()
                     progress_view_progress.start()
                 }
                 Status.RUNNING -> {}
                 Status.SUCCESS -> {
                     progress_view_progress.stop()
-                    progress_view_container.hide()
                 }
                 Status.FAILED -> {}
                 Status.BAD_REQUEST -> {}
@@ -109,19 +115,15 @@ class TimelineFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
 
         viewModel.data.observe(this, Observer { data ->
             data ?: return@Observer
-            with(list_rv) {
-                show()
-                setHasFixedSize(true)
-                bind(diffCallback, _layout.timeline_item_layout) { wallpaper: Wallpaper ->
-                    Picasso.get()
-                            .load(wallpaper.previewUrl)
-                            .into(list_item_cover)
-                }.submitList(data)
-                val animator = SlideInUpAnimator(OvershootInterpolator(1f))
-                animator.addDuration = 350
-                animator.moveDuration = 150
-                itemAnimator = animator
-            }
+            list_rv.bind(diffCallback, _layout.timeline_item_layout) { wallpaper: Wallpaper ->
+                Picasso.get()
+                        .load(wallpaper.previewUrl)
+                        .into(list_item_cover)
+
+                list_item_cover.onClick {
+                    DetailScreen.create(activity, wallpaper)
+                }
+            }.submitList(data)
         })
 
 

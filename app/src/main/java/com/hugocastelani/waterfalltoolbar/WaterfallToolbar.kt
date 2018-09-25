@@ -52,9 +52,9 @@ open class WaterfallToolbar : CardView {
     /**
      * The elevation with which the toolbar starts
      */
-    var initialElevation: Px? = null
+    var initialElevation: Px = Dp(0f).toPx()
         set(value) {
-            if (value != null) {
+            if (true) {
                 field = value
 
                 // got to update elevation in case this value have
@@ -67,9 +67,9 @@ open class WaterfallToolbar : CardView {
     /**
      * The elevation the toolbar gets when it reaches final scroll elevation
      */
-    var finalElevation: Px? = null
+    var finalElevation: Px = Dp(8f).toPx()
         set(value) {
-            if (value != null) {
+            if (true) {
                 field = value
 
                 // got to update elevation in case this value have
@@ -105,7 +105,7 @@ open class WaterfallToolbar : CardView {
      * Values related to Waterfall Toolbar behavior in their default forms
      */
     val defaultInitialElevation = Dp(0f).toPx()
-    val defaultFinalElevation = Dp(4f).toPx()
+    val defaultFinalElevation = Dp(8f).toPx()
     val defaultScrollFinalElevation = 12
 
     /**
